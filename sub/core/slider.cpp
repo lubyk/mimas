@@ -26,65 +26,36 @@
 
   ==============================================================================
 */
-#ifndef RUBYK_INCLUDE_MIMAS_WIDGET_H_
-#define RUBYK_INCLUDE_MIMAS_WIDGET_H_
 
-#include "rubyk.h"
-#include <QtGui/QWidget>
+#include "mimas/Slider.h"
 
-#include <iostream>
+#include <QMouseEvent>
+
+#define SLIDER_BORDER_WIDTH 2
 
 namespace mimas {
 
-/** Display view.
- */
-class Widget : public QWidget
-{
-  Q_OBJECT
+// Slider::paintEvent is in paint.cpp
 
-public:
-  Widget()
-   : hue_(80.0f) {}
+void Slider::mousePressEvent(QMouseEvent *event) {
+  range_.setDragged(true);
+}
 
-  ~Widget() {}
-
-  QWidget *widget() {
-    return this;
+void Slider::mouseMoveEvent(QMouseEvent *event) {
+  if (range_.isDragged()) {
+    if (slider_type_ == HorizontalSliderType) {
+      if (range_.setPosition(event->x(), width()))
+        emit valueChanged(range_.value());
+    } else {
+      if (range_.setPosition(height() - event->y(), height()))
+        emit valueChanged(range_.value());
+    }
+    update();
   }
+}
 
-  void resize(int w, int h) {
-    QWidget::resize(w, h);
-  }
-
-  void show() {
-    QWidget::show();
-  }
-
-  void activateWindow() {
-    QWidget::activateWindow();
-  }
-
-  /** Set widget color.
-   */
-  void setHue(float hue);
-
-protected:
-  //virtual void mousePressEvent(QMouseEvent *event);
-  //virtual void mouseMoveEvent(QMouseEvent *event);
-  //virtual void paintEvent(QPaintEvent *event);
-
-  /** The component's color.
-   */
-  float hue_;
-
-  /** Cached border color.
-   */
-  QColor border_color_;
-
-  /** Cached fill color.
-   */
-  QColor fill_color_;
-};
+void Slider::mouseReleaseEvent(QMouseEvent* event) {
+  range_.setDragged(false);
+}
 
 } // mimas
-#endif // RUBYK_INCLUDE_MIMAS_WIDGET_H_

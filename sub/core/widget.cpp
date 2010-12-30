@@ -26,65 +26,20 @@
 
   ==============================================================================
 */
-#ifndef RUBYK_INCLUDE_MIMAS_WIDGET_H_
-#define RUBYK_INCLUDE_MIMAS_WIDGET_H_
 
-#include "rubyk.h"
-#include <QtGui/QWidget>
+#include "mimas/Widget.h"
 
-#include <iostream>
+#define SLIDER_BORDER_WIDTH 2
 
 namespace mimas {
 
-/** Display view.
- */
-class Widget : public QWidget
-{
-  Q_OBJECT
+// Widget::paintEvent is in paint.cpp
 
-public:
-  Widget()
-   : hue_(80.0f) {}
-
-  ~Widget() {}
-
-  QWidget *widget() {
-    return this;
-  }
-
-  void resize(int w, int h) {
-    QWidget::resize(w, h);
-  }
-
-  void show() {
-    QWidget::show();
-  }
-
-  void activateWindow() {
-    QWidget::activateWindow();
-  }
-
-  /** Set widget color.
-   */
-  void setHue(float hue);
-
-protected:
-  //virtual void mousePressEvent(QMouseEvent *event);
-  //virtual void mouseMoveEvent(QMouseEvent *event);
-  //virtual void paintEvent(QPaintEvent *event);
-
-  /** The component's color.
-   */
-  float hue_;
-
-  /** Cached border color.
-   */
-  QColor border_color_;
-
-  /** Cached fill color.
-   */
-  QColor fill_color_;
-};
+void Widget::setHue(float hue) {
+  hue_ = (hue < 0 || hue >= 360) ? 0 : hue;
+  //                    hue   sat   bri  alpha
+  border_color_.setHsv( hue_, 255,  255, 255);
+  fill_color_.setHsv(   hue_, 127,  127, 255);
+}
 
 } // mimas
-#endif // RUBYK_INCLUDE_MIMAS_WIDGET_H_
