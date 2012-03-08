@@ -30,9 +30,6 @@
 #define LUBYK_INCLUDE_MIMAS_WIDGET_H_
 
 #include "mimas/mimas.h"
-#include "mimas/constants.h"
-
-using namespace lubyk;
 
 #include <QtGui/QWidget>
 #include <QtGui/QMouseEvent>
@@ -47,60 +44,29 @@ class Painter;
  * click, keyboard, move and resized.
  *
  * @see QWidget
- * @dub destructor: 'luaDestroy'
- *      ignore: 'keyboard,click,paint,resized,moved,closed,paint'
- *      super: 'QWidget'
+ * @dub push: pushobject
+ *      register: Widget_core
+ *      ignore: keyboard, click, paint, resized, moved, closed, paint
  */
-class Widget : public QWidget, public ThreadedLuaObject {
+class Widget : public QWidget, public dub::Thread {
   Q_OBJECT
   Q_PROPERTY(QString class READ cssClass)
-  Q_PROPERTY(float hue READ hue WRITE setHue)
 
-  /** Class name to use when matching stylesheets.
-   */
-  QString css_class_;
 public:
+  MIMAS_COMMON
+
   Widget(int window_flags) :
     QWidget(NULL, (Qt::WindowFlags)window_flags) {
     setAttribute(Qt::WA_DeleteOnClose);
-    MIMAS_DEBUG_CC
   }
 
   Widget(QWidget *parent = 0, int window_flags = 0) :
     QWidget(parent, (Qt::WindowFlags)window_flags) {
     setAttribute(Qt::WA_DeleteOnClose);
-    MIMAS_DEBUG_CC
   }
 
-  ~Widget() {
-    MIMAS_DEBUG_GC
-  }
+  ~Widget() {}
 
-  QString cssClass() const {
-    if (css_class_.isNull()) {
-      return parent() ? QString("window") : QString("widget");
-    } else {
-      return css_class_;
-    }
-  }
-
-  void setCssClass(const char *name) {
-    css_class_ = name;
-    update();
-  }
-
-  /** Is this used ???
-   */
-  void setHue(float hue) {
-    hue_ = hue;
-    update();
-  }
-
-  float hue() {
-    return hue_;
-  }
-
-  QSize size_hint_;
   // ============================================================ Dialog
   LuaStackSize getOpenFileName(const char *caption,
                           const char *base_dir,
@@ -113,14 +79,14 @@ LuaStackSize getExistingDirectory(const char *caption, const char *base_dir,
 
   /** Common keyboard, mouse and click event handling to many widgets.
    */
-  static bool keyboard(ThreadedLuaObject *obj, QKeyEvent *event, bool isPressed);
-  static bool mouse(ThreadedLuaObject *obj, QMouseEvent *event);
-  static bool click(ThreadedLuaObject *obj, QMouseEvent *event, int type);
-  static void paint(ThreadedLuaObject *obj, Painter *p, int w, int h);
-  static void resized(ThreadedLuaObject *obj, double width, double height);
-  static void moved(ThreadedLuaObject *obj, QMoveEvent *event);
-  static void closed(ThreadedLuaObject *obj, QCloseEvent *event);
-  static void showHide(ThreadedLuaObject *obj, bool shown);
+  static bool keyboard(dub::Thread *obj, QKeyEvent *event, bool isPressed);
+  static bool mouse(dub::Thread *obj, QMouseEvent *event);
+  static bool click(dub::Thread *obj, QMouseEvent *event, int type);
+  static void paint(dub::Thread *obj, Painter *p, int w, int h);
+  static void resized(dub::Thread *obj, double width, double height);
+  static void moved(dub::Thread *obj, QMoveEvent *event);
+  static void closed(dub::Thread *obj, QCloseEvent *event);
+  static void showHide(dub::Thread *obj, bool shown);
 protected:
 
   virtual void paintEvent(QPaintEvent *event);
@@ -176,15 +142,6 @@ protected:
     if (!Widget::keyboard(this, event, false))
       QWidget::keyReleaseEvent(event);
   }
-
-  // --=============================================== COMMON CALLBACKS END
-  virtual QSize sizeHint() const {
-    return size_hint_;
-  }
-
-  /** The component's color.
-   */
-  float hue_;
 };
 
 } // mimas

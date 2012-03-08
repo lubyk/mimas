@@ -1,12 +1,4 @@
 lua:
-# Example on how yml based bindings could work: we let dub generate the try/
-# catch and getting 'self_'. We then take over up to the return (we must
-# raise en error and avoid luaL_error in this code.
-  widget: |
-    QWidget* retval__ = self;
-    lua_pushclass<QWidget>(L, retval__, "mimas.QWidget");
-    return 1;
-
 # void addWidget(QWidget *widget)
   addWidget: |
     widget->setParent(self);
@@ -44,6 +36,10 @@ lua:
     lua_pushnumber(L, self->fontMetrics().height());
     return 2;
                               
+  setCssClass: |
+    self->css_class_ = css_class;
+    self->update();
+
   setSizeHint: |
     self->size_hint_ = QSize(w, h);
     self->updateGeometry();

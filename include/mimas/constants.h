@@ -34,8 +34,6 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QAbstractSlider>
 
-#include "lubyk.h"
-
 #include <string>
 
 namespace mimas {

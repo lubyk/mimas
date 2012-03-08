@@ -6,9 +6,8 @@ namespace mimas {
  * @see Widget
  * @see QObject
  * @dub bind: 'QWidget.yml'
- *      super: 'QObject'
  */
-class QWidget {
+class QWidget : public QObject {
  public:
   void move(int x, int y);
   void resize(int w, int h);
@@ -37,19 +36,14 @@ class QWidget {
   void activateWindow();
   bool isFullScreen();
   void addAction(Action *action);
-  // TODO: change for QString with new Dub (we fake QString with
-  // const char *)...
-  void setWindowTitle(const char *text);
+  void setWindowTitle(const QString &text);
+  QString windowTitle();
 
   // ==============================================
   // === custom (implementation in QWidget.yml)
   // ==============================================
 
-  void widget();
   void addWidget(QWidget *widget);
-
-  // TODO: remove custom binding when using new Dub.
-  LuaStackSize windowTitle();
 
   /** Return the size of the widget as a pair (width, height).
    */
@@ -59,10 +53,9 @@ class QWidget {
   /** Get size of text with current widget font.
    */
   void textSize(const char *text);
-  /** Set the prefered size. Use setSizePolicy to define how the
-   * widget resizes compared to this value.
-   */
-  void setSizeHint(float w, float h);
+  
+  void setCssClass(const char *css_class);
+  void setSizeHit(int w, int h);
 
   /** Control how the widget behaves in a layout related to it's sizeHint().
    */

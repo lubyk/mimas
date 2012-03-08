@@ -6,21 +6,19 @@
   ...
 
 --]]------------------------------------------------------
-mimas.Widget  = mimas_core.Widget
-local mt      = mimas_core.Widget_
-mimas.Widget_ = mt
+local lib     = mimas.Widget_core
+mimas.Widget  = lib
 -- We use this from C++. Make sure it is loaded to use the
 -- Lua changes before being used.
 require 'mimas.Menu'
 
-local constr  = mimas.Widget
-function mimas.Widget_constr(parent, flag)
+local constr = lib.new
+-- This will become lib.new once bootstrapping is done.
+local function new(parent, flag)
   if flag and parent then
-    return constr(parent:widget(), flag)
+    return constr(parent, flag)
   elseif flag then
     return constr(flag)
-  elseif type(parent) == 'table' then
-    return constr(parent:widget())
   elseif parent then
     return constr(parent)
   else
@@ -28,29 +26,14 @@ function mimas.Widget_constr(parent, flag)
   end
 end
 
-function mimas.Widget(...)
-  return mimas.bootstrap('Widget', mimas.Widget_constr, ...)
+function lib.new(...)
+  return mimas.bootstrap('Widget', new, ...)
 end
 
 
 --=============================================== COPY CODE TO GLWidget
-local addWidget = mt.addWidget
-function mt:addWidget(other, ...)
-  addWidget(self, other:widget(), ...)
-end
-
-local setParent = mt.setParent
-function mt:setParent(other, ...)
-  setParent(self, other:widget(), ...)
-end
-
-local addLayout = mt.addLayout
-function mt:addLayout(other)
-  addLayout(self, other:layout())
-end
-
-local close  = mt.close
-function mt:close()
+local close  = lib.close
+function lib:close()
   if self:deleted() then
     return false
   else
@@ -59,7 +42,7 @@ function mt:close()
   end
 end
 
-function mt:center()
+function lib:center()
   local w, h = app:screenSize()
   local sw, sh = self:size()
   self:move((w - sw) / 2, (h - sh) / 2)
@@ -68,13 +51,13 @@ end
 --=============================================== dialog (maybe we should have
 --                                                        this in GLWidget too)
 
-local getOpenFileName = mt.getOpenFileName
+local getOpenFileName = lib.getOpenFileName
 
-function mt:getOpenFileName(caption, base_dir, filter, options)
+function lib:getOpenFileName(caption, base_dir, filter, options)
   return getOpenFileName(self, caption, base_dir or '', filter or '', options or 0)
 end
 
-local getExistingDirectory = mt.getExistingDirectory
-function mt:getExistingDirectory(caption, base_dir, options)
+local getExistingDirectory = lib.getExistingDirectory
+function lib:getExistingDirectory(caption, base_dir, options)
   return getExistingDirectory(self, caption, base_dir or '', options or mimas.ShowDirsOnly)
 end

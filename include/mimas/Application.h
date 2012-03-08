@@ -45,13 +45,13 @@ namespace mimas {
 /** Application (starts the GUI and manages the event loop). We do not
  * really need to use DeletableOutOfLua here but we never know.
  *
- * @dub lib_name:'Application_core'
- *      constructor: 'MakeApplication'
- *      destructor: 'luaDestroy'
- *      ignore: 'event'
+ * @dub push: pushobject
+ *      register: Application_core
+ *      constructor: MakeApplication
+ *      ignore: event
  *      super: 'QObject'
  */
-class Application : public QApplication, public ThreadedLuaObject {
+class Application : public QApplication, public dub::Thread {
   Q_OBJECT
 public:
   /** Private constructor. Use MakeApplication instead.
@@ -82,7 +82,7 @@ public:
     }
 
     Application *app = new Application();
-    app->luaInit(L, app, "mimas.Application");
+    app->pushobject(L, app, "mimas.Application");
     // <app>
     return 1;
   }

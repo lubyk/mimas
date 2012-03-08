@@ -11,11 +11,11 @@
   good.
 
 --]]------------------------------------------------------
-local constr = mimas_core.Application
-local mt     = mimas_core.Application_
-mimas.Application_ = mt
+local lib         = mimas.Application_core
+mimas.Application = lib
 
-function mimas.Application(type)
+local constr = lib.new
+function lib.new(type)
   local self = constr(type)
   self:setQuitOnLastWindowClosed(mimas.Settings.quit_on_close)
   self:setStyleSheet [[
@@ -153,8 +153,8 @@ function mimas.Application(type)
   return self
 end
 
-local singleShot = mt.singleShot
-function mt.singleShot(app, timeout, func_or_clbk)
+local singleShot = lib.singleShot
+function lib.singleShot(app, timeout, func_or_clbk)
   local clbk = func_or_clbk
   if type(func_or_clbk) == 'function' then
     clbk = mimas.Callback(function(self)
@@ -164,6 +164,6 @@ function mt.singleShot(app, timeout, func_or_clbk)
     -- avoid gc
     app[clbk] = clbk
   end
-  singleShot(app, timeout, clbk:object(), '1callback()')
+  singleShot(app, timeout, clbk, '1callback()')
 end
 

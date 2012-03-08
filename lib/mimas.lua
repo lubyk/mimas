@@ -7,14 +7,7 @@
 
 --]]------------------------------------------------------
 require 'mimas.core'
-mimas_core = mimas
-mimas = Autoload('mimas')
--- copy constants
-for k, v in pairs(mimas_core) do
-  if type(v) == 'number' then
-    mimas[k] = v
-  end
-end
+mimas = Autoload('mimas', mimas)
 
 --=============================================== app
 local singleApp = mimas.Application()

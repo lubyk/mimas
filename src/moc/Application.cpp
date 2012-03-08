@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Application.h'
 **
-** Created: Tue Mar 6 16:32:05 2012
+** Created: Thu Mar 8 21:01:27 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -56,8 +56,8 @@ void *mimas::Application::qt_metacast(const char *_clname)
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_mimas__Application))
         return static_cast<void*>(const_cast< Application*>(this));
-    if (!strcmp(_clname, "ThreadedLuaObject"))
-        return static_cast< ThreadedLuaObject*>(const_cast< Application*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< Application*>(this));
     return QApplication::qt_metacast(_clname);
 }
 

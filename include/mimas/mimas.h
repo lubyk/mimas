@@ -29,25 +29,22 @@
 #ifndef LUBYK_INCLUDE_MIMAS_MIMAS_H_
 #define LUBYK_INCLUDE_MIMAS_MIMAS_H_
 
-#if 0
-#define MIMAS_DEBUG_CC printf("[%p] %s\n", this, this->metaObject()->className());
-#define MIMAS_DEBUG_GC printf("[%p] ~%s\n", this, this->metaObject()->className());
-#define MIMAS_DEBUG_GX(name) printf("[%p] %s\n", this, name);
-#else
-#define MIMAS_DEBUG_CC
-#define MIMAS_DEBUG_GC
-#define MIMAS_DEBUG_GX(name)
-#endif
+#include "dub/dub.h"
+#include <QtCore/QVariant>
 
-#include "lubyk.h"
-using namespace lubyk;
-
-#include <QtGui/QWidget>
+#define MIMAS_COMMON QSize size_hint_; \
+  QString css_class_; \
+  virtual QSize sizeHint() const { \
+    return size_hint_; \
+  } \
+  QString cssClass() const { \
+    return css_class_; \
+  } \
 
 namespace mimas {
 
-void setHue(QPalette &palette, float hue);
 QVariant variantFromLua(lua_State *L, int index);
+void pushVariantInLua(lua_State *L, const QVariant &value);
 
 } // mimas
 #endif // LUBYK_INCLUDE_MIMAS_MIMAS_H_
