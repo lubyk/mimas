@@ -147,12 +147,6 @@ enum MouseButtons {
   XButton2     = Qt::XButton2,
 };
 
-enum ClickTypes {
-  MousePress   = 1,
-  MouseRelease = 2,
-  DoubleClick  = 3,
-};
-
 enum KeyboardModifiers {
   NoModifier          = Qt::NoModifier,
   ShiftModifier       = Qt::ShiftModifier,

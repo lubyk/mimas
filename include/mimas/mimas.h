@@ -32,6 +32,13 @@
 #include "dub/dub.h"
 #include <QtCore/QVariant>
 
+enum ClickTypes {
+  MousePress   = 1,
+  MouseRelease = 2,
+  DoubleClick  = 3,
+};
+
+
 #define MIMAS_COMMON QSize size_hint_; \
   QString css_class_; \
   virtual QSize sizeHint() const { \

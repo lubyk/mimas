@@ -52,11 +52,9 @@ public:
   Painter(QWidget *widget) :
    QPainter(widget) {
     setRenderHints(QPainter::Antialiasing);
-    MIMAS_DEBUG_GX("Painter")
   }
 
   ~Painter() {
-    MIMAS_DEBUG_GX("~Painter")
   }
 
   // FIXME: temporary hack until we can use new dub with "NO DESTROY"
