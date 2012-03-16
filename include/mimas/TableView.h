@@ -30,10 +30,7 @@
 #define LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
 
 #include "mimas/mimas.h"
-#include "mimas/constants.h"
 #include "mimas/DataSource.h"
-
-using namespace lubyk;
 
 #include <QtGui/QTableView>
 #include <QtGui/QHeaderView>
@@ -42,30 +39,21 @@ using namespace lubyk;
 
 #include <iostream>
 
-
-namespace mimas {
-
 /** The TableView is used to display data in a table.
  *
- * @dub destructor: 'luaDestroy'
- *      ignore: 'luaInit'
+ * @dub push: pushobject
  *      super: 'QWidget'
  */
-class TableView : public QTableView, public ThreadedLuaObject {
+class TableView : public QTableView, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
-  Q_PROPERTY(float hue READ hue WRITE setHue)
-
 public:
   TableView() {
     setAttribute(Qt::WA_DeleteOnClose);
     // Not editable
     setEditTriggers(QAbstractItemView::NoEditTriggers);
-    MIMAS_DEBUG_CC
   }
 
   ~TableView() {
-    MIMAS_DEBUG_GC
   }
 
   /** Show or hide horizontal and vertical headers.
@@ -105,30 +93,13 @@ public:
     QTableView::selectColumn(row - 1);
   }
 
-  // ============================ common code to all mimas Widgets
-
-  QSize size_hint_;
-
-  QString cssClass() const {
-    return QString("table");
-  }
-
-  void setHue(float hue) {
-    hue_ = hue;
-    update();
-  }
-
-  float hue() {
-    return hue_;
-  }
-
   /** Use an external model instead of the default one.
    */
   void setModel(DataSource *model) {
     QTableView::setModel(model);
   }
 
-  int luaInit(lua_State *L, TableView *obj, const char *class_name) {
+  int pushobject(lua_State *L, TableView *obj, const char *class_name) {
     ThreadedLuaObject::luaInit(L, obj, class_name);
     // <self>
     lua_pushlstring(L, "data_source", 5);
@@ -167,18 +138,9 @@ protected:
     if (!click(event, MouseRelease))
       QTableView::mouseReleaseEvent(event);
   }
-
-  virtual QSize sizeHint() const {
-    return size_hint_;
-  }
-
-  /** The component's color.
-   */
-  float hue_;
 private:
   bool click(QMouseEvent *event, int type);
   bool select(QMouseEvent *event, int type);
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_

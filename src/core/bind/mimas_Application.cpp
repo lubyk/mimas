@@ -9,7 +9,6 @@
 #include "dub/dub.h"
 #include "mimas/Application.h"
 
-using namespace mimas;
 
 /** Set attributes (key, value)
  * 
@@ -75,8 +74,8 @@ static int Application__cast_(lua_State *L) {
   return 0;
 }
 
-/** mimas::Application::Application()
- * include/mimas/Application.h:58
+/** Application::Application()
+ * include/mimas/Application.h:56
  */
 static int Application_Application(lua_State *L) {
   try {
@@ -91,8 +90,8 @@ static int Application_Application(lua_State *L) {
   return dub_error(L);
 }
 
-/** mimas::Application::~Application()
- * include/mimas/Application.h:89
+/** Application::~Application()
+ * include/mimas/Application.h:87
  */
 static int Application__Application(lua_State *L) {
   try {
@@ -111,8 +110,8 @@ static int Application__Application(lua_State *L) {
   return dub_error(L);
 }
 
-/** void mimas::Application::setQuitOnLastWindowClosed(bool quit)
- * include/mimas/Application.h:94
+/** void Application::setQuitOnLastWindowClosed(bool quit)
+ * include/mimas/Application.h:92
  */
 static int Application_setQuitOnLastWindowClosed(lua_State *L) {
   try {
@@ -128,8 +127,8 @@ static int Application_setQuitOnLastWindowClosed(lua_State *L) {
   return dub_error(L);
 }
 
-/** virtual void mimas::Application::luaDestroy()
- * include/mimas/Application.h:99
+/** virtual void Application::luaDestroy()
+ * include/mimas/Application.h:97
  */
 static int Application_luaDestroy(lua_State *L) {
   try {
@@ -144,8 +143,8 @@ static int Application_luaDestroy(lua_State *L) {
   return dub_error(L);
 }
 
-/** int mimas::Application::exec()
- * include/mimas/Application.h:105
+/** int Application::exec()
+ * include/mimas/Application.h:103
  */
 static int Application_exec(lua_State *L) {
   try {
@@ -160,8 +159,8 @@ static int Application_exec(lua_State *L) {
   return dub_error(L);
 }
 
-/** void mimas::Application::processEvents(int maxtime)
- * include/mimas/Application.h:111
+/** void Application::processEvents(int maxtime)
+ * include/mimas/Application.h:109
  */
 static int Application_processEvents(lua_State *L) {
   try {
@@ -177,8 +176,8 @@ static int Application_processEvents(lua_State *L) {
   return dub_error(L);
 }
 
-/** void mimas::Application::quit()
- * include/mimas/Application.h:126
+/** void Application::quit()
+ * include/mimas/Application.h:124
  */
 static int Application_quit(lua_State *L) {
   try {
@@ -193,8 +192,8 @@ static int Application_quit(lua_State *L) {
   return dub_error(L);
 }
 
-/** void mimas::Application::setStyleSheet(const char *text)
- * include/mimas/Application.h:130
+/** void Application::setStyleSheet(const char *text)
+ * include/mimas/Application.h:128
  */
 static int Application_setStyleSheet(lua_State *L) {
   try {
@@ -210,8 +209,8 @@ static int Application_setStyleSheet(lua_State *L) {
   return dub_error(L);
 }
 
-/** LuaStackSize mimas::Application::styleSheet(lua_State *L)
- * include/mimas/Application.h:134
+/** LuaStackSize Application::styleSheet(lua_State *L)
+ * include/mimas/Application.h:132
  */
 static int Application_styleSheet(lua_State *L) {
   try {
@@ -225,8 +224,8 @@ static int Application_styleSheet(lua_State *L) {
   return dub_error(L);
 }
 
-/** LuaStackSize mimas::Application::screenSize(lua_State *L)
- * include/mimas/Application.h:142
+/** LuaStackSize Application::screenSize(lua_State *L)
+ * include/mimas/Application.h:140
  */
 static int Application_screenSize(lua_State *L) {
   try {
@@ -240,8 +239,8 @@ static int Application_screenSize(lua_State *L) {
   return dub_error(L);
 }
 
-/** void mimas::Application::singleShot(int msec, QObject *receiver, const char *member)
- * include/mimas/Application.h:153
+/** void Application::singleShot(int msec, QObject *receiver, const char *member)
+ * include/mimas/Application.h:151
  */
 static int Application_singleShot(lua_State *L) {
   try {
@@ -259,8 +258,8 @@ static int Application_singleShot(lua_State *L) {
   return dub_error(L);
 }
 
-/** static LuaStackSize mimas::Application::MakeApplication(lua_State *L)
- * include/mimas/Application.h:68
+/** static LuaStackSize Application::MakeApplication(lua_State *L)
+ * include/mimas/Application.h:66
  */
 static int Application_MakeApplication(lua_State *L) {
   try {
@@ -273,8 +272,8 @@ static int Application_MakeApplication(lua_State *L) {
   return dub_error(L);
 }
 
-/** static void mimas::Application::terminate(int sig)
- * include/mimas/Application.h:124
+/** static void Application::terminate(int sig)
+ * include/mimas/Application.h:122
  */
 static int Application_terminate(lua_State *L) {
   try {

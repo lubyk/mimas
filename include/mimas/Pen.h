@@ -35,13 +35,10 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** Pen used by Painter.
  *
  */
-class Pen : public QPen
-{
+class Pen : public QPen {
 public:
   Pen() : QPen(Qt::NoPen) {
   }

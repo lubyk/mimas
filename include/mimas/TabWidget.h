@@ -35,25 +35,20 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** A TabWidget displays widgets with tabs.
  *
- * @see QWidget
- * @dub destructor: 'luaDestroy'
- *      super: 'QTabWidget'
+ * @see QTabWidget
+ * @dub push: pushobject
+ *
  */
-class TabWidget : public QTabWidget, public ThreadedLuaObject {
+class TabWidget : public QTabWidget, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
 public:
   TabWidget(QWidget *parent = NULL)
       : QTabWidget(parent) {
-    MIMAS_DEBUG_CC
   }
 
   ~TabWidget() {
-    MIMAS_DEBUG_GC
   }
 
   /** Add a tab to the view at the given position.
@@ -101,13 +96,6 @@ public:
     }
     QTabWidget::setCurrentIndex(idx % sz);
   }
-
-  QString cssClass() const {
-    return QString("tab_widget");
-  }
-
-  QSize size_hint_;
-
 protected:
   virtual void keyPressEvent(QKeyEvent *event) {
     if (!Widget::keyboard(this, event, true))
@@ -120,7 +108,6 @@ protected:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_TAB_WIDGET_H_
 
 

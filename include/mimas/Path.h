@@ -34,14 +34,10 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** Pen used by Painter.
  *
- * @dub super: 'QPainterPath'
  */
-class Path : public QPainterPath
-{
+class Path : public QPainterPath {
   QPainterPathStroker *stroker_;
 public:
   Path() : stroker_(NULL) {}
@@ -78,5 +74,4 @@ public:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_PATH_H_

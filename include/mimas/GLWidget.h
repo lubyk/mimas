@@ -99,14 +99,10 @@ public:
     destroyVBO();
   }
 
-  QString cssClass() const {
-    return parent() ? QString("glwindow") : QString("glwidget");
-  }
-
   // =============================================================
 
-  void updateGL() {
-    update();
+  void update() {
+    QGLWidget::update();
   }
   
   LuaStackSize openGLVersion(lua_State *L) {
@@ -127,7 +123,7 @@ public:
       createShaders(vertex_shader, fragment_shader);
       createVBO();
     }
-    updateGL();
+    update();
     return true;
   }
 

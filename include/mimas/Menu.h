@@ -36,41 +36,28 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** A Menu is an element from a MenuBar.
- * FIXME: The Menu does not need to have lua_ and worker_ set: what is the
+ * FIXME: The Menu does not need to have dub_L: what is the
  * cost of this lua thread ? Should we remove it ?
  *
  * @see MenuBar
  * @see QMenu
- * @dub destructor: 'luaDestroy'
- *      super: 'QMenu'
+ * @dub push: pushobject
  */
-class Menu : public QMenu, public ThreadedLuaObject {
+class Menu : public QMenu, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
 public:
   Menu(const char *name = "")
       : QMenu(QString(name)) {
-    MIMAS_DEBUG_CC
   }
 
   ~Menu() {
-    MIMAS_DEBUG_GC
   }
 
   void popup(int gx, int gy) {
     QMenu::popup(QPoint(gx,gy));
   }
-
-  QString cssClass() const {
-    return QString("menu");
-  }
-
-  QSize size_hint_;
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_MENU_H_
 

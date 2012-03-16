@@ -18,7 +18,9 @@ local ins = dub.Inspector {
   INPUT    = {
     base .. '/include/mimas',
     base .. '/bind',
-  }
+  },
+  --doc_dir = base .. '/tmp',
+  --html = true,
 }
 
 local binder = dub.LuaBinder()
@@ -59,6 +61,15 @@ binder:addCustomTypes {
 -- bind
 ----------------------------------------------------------------
 
+local dir = lk.Dir(base .. '/include/mimas')
+local only = {}
+for file in lfs.dir(base .. '/include/mimas') do
+  local name = file:match('^([A-Z][a-zA-Z]+)%.h$')
+  if name then
+    table.insert(only, name)
+  end
+end
+
 binder:bind(ins, {
   output_directory = base .. '/src/core/bind',
   -- Remove this part in included headers
@@ -67,9 +78,6 @@ binder:bind(ins, {
   single_lib = 'mimas',
   -- Open the library with require 'mimas.core' (not 'mimas')
   luaopen    = 'mimas_core',
-  only = {
-    'mimas::Application',
-    'mimas::Widget',
-  },
+  only = only,
 })
 

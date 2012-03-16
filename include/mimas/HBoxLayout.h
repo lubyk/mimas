@@ -31,30 +31,24 @@
 
 #include "mimas/mimas.h"
 
-using namespace lubyk;
-
 #include <QtGui/QHBoxLayout>
 
 #include <iostream>
 
-namespace mimas {
-
 /** HBoxLayout (arrange widgets horizontally).
  *
- * @dub lib_name:'HBoxLayout_core'
+ * @dub push: pushobject
+ *      register: HBoxLayout_core
+ *      super: QLayout
  */
-class HBoxLayout : public QHBoxLayout, public LuaObject
-{
+class HBoxLayout : public QHBoxLayout, public dub::Object {
   Q_OBJECT
-
 public:
   HBoxLayout(QWidget *parent = NULL)
-      : QHBoxLayout(parent) {
-    MIMAS_DEBUG_CC
+    : QHBoxLayout(parent) {
   }
 
   ~HBoxLayout() {
-    MIMAS_DEBUG_GC
   }
 
   void addWidget(QWidget *widget, int stretch = 0, int alignment = 0) {
@@ -121,11 +115,6 @@ public:
     lua_pushnumber(L, s.height());
     return 2;
   }
-
-  QLayout *layout() {
-    return this;
-  }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_H_BOX_LAYOUT_H_

@@ -32,39 +32,25 @@
 #include "mimas/mimas.h"
 #include "mimas/Action.h"
 
-using namespace lubyk;
-
 #include <QtGui/QGroupBox>
 
 #include <iostream>
 
-namespace mimas {
-
 /** GroupBox (arrange widgets vertically).
  *
- * @dub lib_name:'GroupBox_core'
+ * @dub register:'GroupBox_core'
+ *      push: pushobject
  *      super: 'QWidget'
  */
-class GroupBox : public QGroupBox, public LuaObject
-{
+class GroupBox : public QGroupBox, public dub::Object {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
-
 public:
   GroupBox(const char *title = NULL, QWidget *parent = NULL)
    : QGroupBox(title, parent) {
-    MIMAS_DEBUG_CC
   }
 
   ~GroupBox() {
-    MIMAS_DEBUG_GC
   }
-
-  QString cssClass() const {
-    return QString("group_box");
-  }
-
-  QSize size_hint_;
 };
 
 } // mimas

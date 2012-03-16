@@ -35,32 +35,21 @@
 
 #include <QtGui/QMenuBar>
 
-namespace mimas {
-
 /** This lets us define menus.
  *
  * @see Menu
  * @see QMenuBar
- * @dub destructor: 'luaDestroy'
- *      super: 'QMenuBar'
+ * @dub push: pushobject
  */
-class MenuBar : public QMenuBar, public ThreadedLuaObject {
+class MenuBar : public QMenuBar, public dub::Thread {
   Q_OBJECT
 public:
   MenuBar(QWidget *parent = 0)
       : QMenuBar(parent) {
-    MIMAS_DEBUG_CC
   }
 
   ~MenuBar() {
-    MIMAS_DEBUG_GC
   }
-
-  QString cssClass() const {
-    return QString("menu_bar");
-  }
-
-  QSize size_hint_;
 };
 
 } // mimas

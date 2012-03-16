@@ -31,17 +31,12 @@
 
 #include "mimas/mimas.h"
 #include "mimas/Widget.h"
-#include "mimas/constants.h"
 #include "mimas/Menu.h"
 #include "mimas/MenuBar.h"
-
-using namespace lubyk;
 
 #include <QtGui/QMainWindow>
 #include <QtGui/QMouseEvent>
 #include <QtCore/QPoint>
-
-namespace mimas {
 
 class Painter;
 
@@ -50,25 +45,16 @@ class Painter;
  * items.
  *
  * @see QMainWindow
- * @dub destructor: 'luaDestroy'
- *      super: 'QMainWindow'
+ * @dub push: pushobject
  */
-class MainWindow : public QMainWindow, public ThreadedLuaObject {
+class MainWindow : public QMainWindow, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
-
 public:
   MainWindow() {
     setAttribute(Qt::WA_DeleteOnClose);
-    MIMAS_DEBUG_CC
   }
 
   ~MainWindow() {
-    MIMAS_DEBUG_GC
-  }
-
-  QString cssClass() const {
-    return QString("main_window");
   }
 
   void testMenus(bool inplace, lua_State *L);
@@ -84,8 +70,6 @@ public:
                           const char *base_dir,
                           int options,
                           lua_State *L);
-
-  QSize size_hint_;
 protected:
 
   virtual void paintEvent(QPaintEvent *event);
@@ -149,5 +133,4 @@ protected:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_MAIN_WINDOW_H_

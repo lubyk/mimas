@@ -34,8 +34,6 @@
 #include "mimas/DataSource.h"
 #include "mimas/Widget.h"
 
-using namespace lubyk;
-
 #include <QtGui/QListView>
 #include <QtGui/QHeaderView>
 #include <QtGui/QMouseEvent>
@@ -44,32 +42,18 @@ using namespace lubyk;
 #include <iostream>
 
 
-namespace mimas {
-
-
 /** The ListView is used to display data as a list.
  *
- * @dub destructor: 'luaDestroy'
- *      ignore: 'luaInit'
- *      super: 'QWidget'
+ * @dub push: pushobject
  */
-class ListView : public QListView, public ThreadedLuaObject {
+class ListView : public QListView, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
-
   QAbstractItemDelegate *item_delegate_;
  public:
-
-  float hue_;
-  QSize size_hint_;
 
   ListView();
 
   ~ListView();
-
-  QString cssClass() const {
-    return QString("list");
-  }
 
   // ============================================================= ListView
 
@@ -117,14 +101,8 @@ class ListView : public QListView, public ThreadedLuaObject {
         selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
   }
 
-  /** Use an external model instead of the default one.
-   */
-  void setModel(DataSource *model) {
-    QListView::setModel(model);
-  }
-
-  int luaInit(lua_State *L, ListView *obj, const char *class_name) {
-    ThreadedLuaObject::luaInit(L, obj, class_name);
+  int pushobject(lua_State *L, ListView *obj, const char *class_name) {
+    dub::Thread::pushobject(L, obj, class_name);
     // <self>
     lua_pushlstring(L, "data_source", 11);
     // <self> <'data_source'>
@@ -137,23 +115,14 @@ class ListView : public QListView, public ThreadedLuaObject {
     // make DataSource look in <self> for callbacks
     lua_pushvalue(L, -1);
     // <self> <self>
-    lua_pop(data->lua_, 1);
-    lua_xmove(L, data->lua_, 1);
+    lua_pop(data->dub_L, 1);
+    lua_xmove(L, data->dub_L, 1);
     // data: <self>
     // <self>
     setModel(data);
     return 1;
   }
 
-  void scrollToBottom() {
-    QListView::scrollToBottom();
-  }
-
-  void scrollToTop() {
-    QListView::scrollToTop();
-  }
-
-  
   /** Turning this option on will call the 'paintItem' callback to draw
    * each cell (with the text as parameter).
    */
@@ -243,5 +212,4 @@ private:
 
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_

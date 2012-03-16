@@ -34,14 +34,11 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** An Action can be connected to a menu or and will trigger it's
  * callback on call (or shortcut).
  *
  * @see QAction
  * @dub push: pushobject
- *      super: 'QAction'
  */
 class Action : public QAction, public dub::Thread {
   Q_OBJECT
@@ -76,6 +73,5 @@ private slots:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_ACTION_H_
 

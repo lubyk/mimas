@@ -30,9 +30,6 @@
 #define LUBYK_INCLUDE_MIMAS_FILE_OBSERVER_H_
 
 #include "mimas/mimas.h"
-#include "mimas/constants.h"
-
-using namespace lubyk;
 
 #include <QtCore/QFileSystemWatcher>
 #include <QtGui/QMouseEvent>
@@ -41,16 +38,14 @@ using namespace lubyk;
 #include <iostream>
 
 
-namespace mimas {
-
 /** The DataSource is used to provide data to Views such as TableView, ListView or
  * TreeView.
  *
+ * @dub push: pushobject
+ *
  */
-class FileObserver : public QFileSystemWatcher, public ThreadedLuaObject
-{
+class FileObserver : public QFileSystemWatcher, public dub::Thread {
   Q_OBJECT
-
 public:
   FileObserver() {
     QObject::connect(this, SIGNAL(fileChanged(QString)),
@@ -58,11 +53,9 @@ public:
 
     //QObject::connect(this, SIGNAL(directoryChanged(QString)),
     //                 this, SLOT(pathChangedSlot(QString)));
-    MIMAS_DEBUG_CC
   }
 
   ~FileObserver() {
-    MIMAS_DEBUG_GC
   }
 
   void addPath(const char *path) {
@@ -76,19 +69,13 @@ public:
 private slots:
   // connected to the pathChanged signal
 	void pathChangedSlot(const QString &path) {
-    lua_State *L = lua_;
+    lua_State *L = dub_L;
 
-    if (!pushLuaCallback("pathChanged")) return;
+    if (!dub_pushcallback("pathChanged")) return;
     lua_pushstring(L, path.toUtf8().data());
     // <func> <self> <path>
-    int status = lua_pcall(L, 2, 0, 0);
-
-    if (status) {
-      // cannot raise an error here...
-      fprintf(stderr, "Error in 'pathChanged' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(2, 0);
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_FILE_OBSERVER_H

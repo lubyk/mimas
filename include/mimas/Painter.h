@@ -40,14 +40,11 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** Painter.
  *
  * @dub destructor: 'noDestroy'
  */
-class Painter : public QPainter
-{
+class Painter : public QPainter {
 public:
   Painter(QWidget *widget) :
    QPainter(widget) {
@@ -61,21 +58,6 @@ public:
   void noDestroy(lua_State *L) {
     // noop
   }
-  void setupDeletable(void **x) {
-    // noop
-  }
-
-  void fillRect( int x, int y, int width, int height, const Color &color) {
-    QPainter::fillRect(x, y, width, height, color);
-  }
-
-  void drawPath(const Path &path) {
-    QPainter::drawPath(path);
-  }
-
-  void setPen(const Pen &pen) {
-    QPainter::setPen(pen);
-  }
 
   void setPen(float width, const Color &color) {
     QPainter::setPen(Pen(width, color));
@@ -85,44 +67,18 @@ public:
     QPainter::setPen(Pen(width, h, s, v, a));
   }
 
-  void setBrush(const Brush &brush) {
-    QPainter::setBrush(brush);
-  }
-
-  void setBrush(const Color &color) {
-    // if we do not wrap, it seems that the brush is changed
-    // BUG:
-    // p:setBrush(mimas.NoBrush)
-    // p:setBrush(mimas.colors.Red)
-    // ...
-    // p:setBrush(mimas.NoBrush) --- creates red surfaces
-    QPainter::setBrush(QBrush(color));
-  }
-
   /** Set brush with the given hsva color.
    */
   void setBrush(float h, float s=1.0, float v=1.0, float a=1.0) {
     QPainter::setBrush(Brush(h, s, v, a));
   }
 
-  /** Draw a single point with the current pen.
-   */
-  void drawPoint(int x, int y) {
-    QPainter::drawPoint(x, y);
-  }
-
-  /** Draw a single line with the current pen.
-   */
-  void drawLine(int x1, int y1, int x2, int y2) {
-    QPainter::drawLine(x1, y1, x2, y2);
-  }
-
   /** Draw a chord (filled arc). TODO: How the rectangle is used is not clear...
    * Angles are specified in degrees.
    */
-  void drawChord(int x, int y, int width, int height, float startAngle, float spanAngle) {
-    QPainter::drawChord(x, y, width, height, startAngle * 16, spanAngle * 16);
-  }
+  //void drawChord(int x, int y, int width, int height, float startAngle, float spanAngle) {
+  //  QPainter::drawChord(x, y, width, height, startAngle * 16, spanAngle * 16);
+  //}
 
   /** Draw a rectangle.
    */
@@ -137,12 +93,6 @@ public:
     QPainter::drawRoundedRect(QRectF(x, y, w, h), xRadius, yRadius);
   }
 
-  /** Draw an ellipse in the given rectangle.
-   */
-  void drawEllipse(int x, int y, int width, int height) {
-    QPainter::drawEllipse(x, y, width, height);
-  }
-
   /** Draw some text.
    */
   void drawText(float x, float y, float w, float h, int flags, const char *text) {
@@ -150,5 +100,4 @@ public:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_PAINTER_H_

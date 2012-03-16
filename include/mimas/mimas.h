@@ -48,10 +48,7 @@ enum ClickTypes {
     return css_class_; \
   } \
 
-namespace mimas {
-
 QVariant variantFromLua(lua_State *L, int index);
 void pushVariantInLua(lua_State *L, const QVariant &value);
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_MIMAS_H_

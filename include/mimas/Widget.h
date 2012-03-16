@@ -35,8 +35,6 @@
 #include <QtGui/QMouseEvent>
 #include <QtCore/QPoint>
 
-namespace mimas {
-
 class Painter;
 
 /** The Widget is used to display custom elements or windows.
@@ -156,5 +154,4 @@ protected:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_WIDGET_H_

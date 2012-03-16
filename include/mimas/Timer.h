@@ -33,16 +33,12 @@
 
 #include <QtCore/QTimer>
 
-using namespace lubyk;
-
-namespace mimas {
-
 /** The Timer class calls the "timeout" callback at regular intervals.
  *
  * @dub lib_name:'Timer_core'
  *      super: 'QObject'
  */
-class Timer : public QTimer, public ThreadedLuaObject {
+class Timer : public QTimer, public dub::Thread {
   Q_OBJECT
 public:
 
@@ -55,13 +51,9 @@ public:
     QObject::connect(this, SIGNAL(timeout()),
                      this, SLOT(timeoutSlot()));
 
-    //printf("[%p] Timer\n", this);
-    MIMAS_DEBUG_CC
   }
 
   virtual ~Timer() {
-    //printf("[%p] ~Timer\n", this);
-    MIMAS_DEBUG_GC
   }
 
   void start(int timeout) {
@@ -82,17 +74,9 @@ public:
 
 private slots:
   void timeoutSlot() {
-    lua_State *L = lua_;
-    if (pushLuaCallback("timeout")) {
+    if (dub_pushcallback("timeout")) {
       // <func> <self>
-      int status = lua_pcall(L, 1, 0, 0);
-
-      if (status) {
-        // cannot raise an error here...
-        fprintf(stderr, "Error in 'timeout': %s\n", lua_tostring(L, -1));
-      }
-    } else {
-      printf("NO CALLBACK!\n");
+      dub_call(1, 0);
     }
   }
 };

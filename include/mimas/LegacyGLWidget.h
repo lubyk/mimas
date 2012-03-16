@@ -29,38 +29,31 @@
 #ifndef LUBYK_INCLUDE_MIMAS_GLWIDGET_H_
 #define LUBYK_INCLUDE_MIMAS_GLWIDGET_H_
 
-#include "lubyk.h"
-using namespace lubyk;
-
 #include "mimas/mimas.h"
 #include "mimas/Widget.h"
+
 #include <QtGui/QWidget>
 #include <QtGui/QGraphicsScene>
 #include <QtOpenGL/QtOpenGL>
 
 #include <iostream>
 
-namespace mimas {
-
-
-/** GLWidget
- * This class lets you draw OpenGL elements with Widgets on top.
+/** LegacyGLWidget
+ * This class lets you draw OpenGL 1.x elements with Widgets on top.
  * http://doc.trolltech.com/qq/qq26-openglcanvas.html
  *
- * @dub destructor: 'luaDestroy'
+ * @dub push: pushobject
  *      super: 'QWidget'
  */
-class GLWidget : public QGraphicsView, public ThreadedLuaObject
-{
+class LegacyGLWidget : public QGraphicsView, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
 
   class OpenGLScene : public QGraphicsScene {
   public:
-    GLWidget *master_;
+    LegacyGLWidget *master_;
     bool resized_;
 
-    OpenGLScene(GLWidget *master)
+    OpenGLScene(LegacyGLWidget *master)
         : master_(master)
         , resized_(false)
     {}
@@ -79,7 +72,7 @@ class GLWidget : public QGraphicsView, public ThreadedLuaObject
 
   OpenGLScene *gl_scene_;
 public:
-  GLWidget() {
+  LegacyGLWidget() {
     setViewport(new QGLWidget(QGLFormat(
             QGL::SampleBuffers
             )));
@@ -90,11 +83,9 @@ public:
     setAttribute(Qt::WA_DeleteOnClose);
     // get focus on tab and click
     setFocusPolicy(Qt::StrongFocus);
-    MIMAS_DEBUG_CC
   }   
 
-  ~GLWidget() {
-    MIMAS_DEBUG_GC
+  ~LegacyGLWidget() {
   }
 
   void addWidgetToScene(QWidget *widget, float x=0, float y=0) {
@@ -103,14 +94,9 @@ public:
     widget->show();
   }
 
-  QString cssClass() const {
-    return parent() ? QString("glwindow") : QString("glwidget");
-  }
-
-  QSize size_hint_;
   // =============================================================
 
-  void updateGL() {
+  void update() {
     gl_scene_->update();
   }
 
@@ -236,5 +222,4 @@ private:
   // }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_GLWIDGET_H_

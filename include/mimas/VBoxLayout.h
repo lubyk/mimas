@@ -31,30 +31,25 @@
 
 #include "mimas/mimas.h"
 
-using namespace lubyk;
-
 #include <QtGui/QVBoxLayout>
 
 #include <iostream>
 
-namespace mimas {
-
 /** VBoxLayout (arrange widgets vertically).
  *
- * @dub lib_name:'VBoxLayout_core'
+ * @dub register: VBoxLayout_core
+ *      push: pushobject
+ *      super: QLayout
  */
-class VBoxLayout : public QVBoxLayout, public LuaObject
+class VBoxLayout : public QVBoxLayout, public dub::Thread
 {
   Q_OBJECT
-
 public:
   VBoxLayout(QWidget *parent = NULL)
    : QVBoxLayout(parent) {
-    MIMAS_DEBUG_CC
   }
 
   ~VBoxLayout() {
-    MIMAS_DEBUG_GC
   }
 
   void addWidget(QWidget *widget, int stretch = 0, int alignment = 0) {
@@ -125,10 +120,6 @@ public:
     lua_pushnumber(L, s.width());
     lua_pushnumber(L, s.height());
     return 2;
-  }
-
-  QLayout *layout() {
-    return this;
   }
 };
 

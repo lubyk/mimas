@@ -33,18 +33,14 @@
 
 #include <QtCore/QSocketNotifier>
 
-using namespace lubyk;
-
-namespace mimas {
-
 /** SocketNotifer wraps filedescriptors so that they can be used
  * in Qt's event loop. A SocketNotifer can only be used for a single
  * file descriptor and a single event (read or write).
  *
- * @dub lib_name:'SocketNotifier_core'
- *      super: 'QObject'
+ * @dub register: SocketNotifier_core
+ *      super: QObject
  */
-class SocketNotifier : public QSocketNotifier, public ThreadedLuaObject {
+class SocketNotifier : public QSocketNotifier, public dub::Thread {
   Q_OBJECT
 public:
   enum EventType {
@@ -56,12 +52,9 @@ public:
       : QSocketNotifier(fd, (QSocketNotifier::Type)event_type) {
     QObject::connect(this, SIGNAL(activated(int)),
                      this, SLOT(activatedSlot(int)));
-
-    MIMAS_DEBUG_CC
   }
 
   virtual ~SocketNotifier() {
-    MIMAS_DEBUG_GC
   }
 
   int socket() const {
@@ -88,19 +81,10 @@ private slots:
     // 2. ref for callback set in weak on create (luaL_ref)
     // lua_rawgeti(L, -1, clbk_idx_)
     //
-    if (pushLuaCallback("activated")) {
+    if (dub_pushcallback("activated")) {
       // <func> <self>
-      int status = lua_pcall(L, 1, 0, 0);
-
-      if (status) {
-        // cannot raise an error here...
-        fprintf(stderr, "Error in 'callback': %s\n", lua_tostring(L, -1));
-      }
-    } else {
-      printf("NO CALLBACK!\n");
+      dub_call(1, 0);
     }
   }
 };
-
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_SOCKET_NOTIFIER_H_

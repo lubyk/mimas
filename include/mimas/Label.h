@@ -39,8 +39,7 @@
  *      push: pushobject
  *      super: QWidget
  */
-class Label : public QLabel, public dub::Object
-{
+class Label : public QLabel, public dub::Object {
   Q_OBJECT
 public:
   Label(const char *title = NULL)
@@ -49,10 +48,6 @@ public:
 
   Label(const char *title, QWidget *parent)
    : QLabel(title, parent) {
-  }
-
-  QString cssClass() const {
-    return QString("Label");
   }
 
   ~Label() {
