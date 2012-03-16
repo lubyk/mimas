@@ -29,9 +29,6 @@
 #ifndef LUBYK_INCLUDE_MIMAS_BUTTON_H_
 #define LUBYK_INCLUDE_MIMAS_BUTTON_H_
 
-#include "lubyk.h"
-using namespace lubyk;
-
 #include "mimas/mimas.h"
 #include "mimas/constants.h"
 #include "mimas/Widget.h"
@@ -41,66 +38,30 @@ using namespace lubyk;
 
 #include <iostream>
 
-namespace mimas {
-
 /** Button widget.
  *
  * @dub lib_name:'Button_core'
- *      destructor: 'luaDestroy'
- *      super: 'QWidget'
+ *      push: pushobject
+ *      super: QPushButton
  */
-class Button : public QPushButton, public ThreadedLuaObject {
+class Button : public QPushButton, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
-  Q_PROPERTY(float hue READ hue WRITE setHue)
-
 public:
   Button(const char *title = NULL, QWidget *parent = NULL)
       : QPushButton(title, parent) {
     QObject::connect(this, SIGNAL(clicked()),
                      this, SLOT(clickedSlot()));
-    MIMAS_DEBUG_CC
   }
 
   ~Button() {
-    MIMAS_DEBUG_GC
-  }
-
-  QString cssClass() const {
-    return QString("button");
-  }
-
-  QSize size_hint_;
-
-  void setHue(float hue) {
-    hue_ = hue;
-    update();
-  }
-
-  void setText(const char *txt) {
-    QPushButton::setText(QString(txt));
-  }
-
-  float hue() {
-    return hue_;
   }
 
 private slots:
   void clickedSlot() {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("click")) return;
+    if (!dub_pushcallback("click")) return;
     // <func> <self>
-    int status = lua_pcall(L, 1, 0, 0);
-
-    if (status) {
-      // cannot raise an error here...
-      fprintf(stderr, "Error in 'click' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(1, 0);
   }
-private:
-  float hue_;
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_BUTTON_H_

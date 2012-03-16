@@ -38,16 +38,13 @@
 
 #include <iostream>
 
-using namespace lubyk;
-
-namespace mimas {
-
 /** Application (starts the GUI and manages the event loop). We do not
  * really need to use DeletableOutOfLua here but we never know.
  *
  * @dub push: pushobject
  *      register: Application_core
  *      constructor: MakeApplication
+ *      destrucor: luaDestroy
  *      ignore: event
  *      super: 'QObject'
  */
@@ -88,7 +85,6 @@ public:
   }
 
   ~Application() {
-    MIMAS_DEBUG_GC
   }
 
   /** If this is true (default), mimas quits when the last window is closed.
@@ -98,8 +94,7 @@ public:
   }
 
   // Destructor method called when the object goes out of Lua scope
-  virtual void dub_destroy() {
-    luaCleanup();
+  virtual void luaDestroy() {
     deleteLater();
   }
 
@@ -109,6 +104,7 @@ public:
 
   /** Process events from an external event loop
    * FIXME: check deffered delete....
+   * FIXME: Is this used ????
    */
   void processEvents(int maxtime);
 
@@ -157,5 +153,4 @@ public:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_APPLICATION_H_

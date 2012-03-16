@@ -38,30 +38,22 @@
 
 #include <string>
 
-namespace mimas {
-
-class Application;
-class Slider;
-
 /** Calls a lua function back.
  *
  * @dub lib_name:'Callback_core'
  *      ignore: 'callback'
  *      super: 'QObject'
  */
-class Callback : public QObject, public lubyk::ThreadedLuaObject
-{
+class Callback : public QObject, public dub::Thread {
   Q_OBJECT
 public:
   // Our own custom event id
   static const QEvent::Type EventType;
 
-  Callback() : self_in_app_(-1) {
-    MIMAS_DEBUG_CC
+  Callback() {
   }
 
   virtual ~Callback() {
-    MIMAS_DEBUG_GC
   }
 
   void connect(QObject *obj, const char *method, const char *callback) {
@@ -82,87 +74,21 @@ public:
 
 public slots:
   void callback() {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("callback")) return;
+    if (!dub_pushcallback("callback")) return;
     // <func> <self>
-    int status = lua_pcall(L, 1, 0, 0);
-    if (status) {
-      printf("Error in 'callback': %s\n", lua_tostring(L, -1));
-    }
-
-    deleteOnCall();
+    dub_call(1, 0);
   }
 
   void callback(double value) {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("callback")) return;
-    lua_pushnumber(L, value);
+    if (!dub_pushcallback("callback")) return;
+    lua_pushnumber(dub_L, value);
     // <func> <self> <number>
-    int status = lua_pcall(L, 2, 0, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in receive callback: %s\n", lua_tostring(lua_, -1));
-    }
-
-    deleteOnCall();
+    dub_call(2, 0);
   }
 
   void callback(int value) {
     callback((double)value);
   }
-
-private:
-  friend class Application;
-  friend class Slider;
-
-  /** Define a callback and store a reference inside the application
-   * so that it is not garbage collected too soon.
-   */
-  void setCallbackFromApp(lua_State *L) {
-    // ... <app> <func> <clbk>
-    lua_pushlstring(L, "callback", 8);
-    // ... <app> <func> <clbk> <'callback'>
-    lua_pushvalue(L, -3);
-    // ... <app> <func> <clbk> <'callback'> <func>
-    lua_settable(L, -3);  // clbk.callback = func
-    // ... <app> <func> <clbk>
-    lua_pushvalue(L, -1);
-    // ... <app> <func> <clbk> <clbk>
-    self_in_app_ = luaL_ref(L, -4);
-    // ... <app> <func> <clbk>
-
-
-    // Now store 'app' in the callback to remove oneself on delete.
-    lua_pushvalue(L, -3);
-    // L    = ... <app> <func> <clbk> <app>
-    lua_xmove(L, lua_, 1);
-    // L    = ... <app> <func> <clbk>
-    // lua_ = ... <app>
-    app_in_thread_ = luaL_ref(lua_, LUA_REGISTRYINDEX);
-    // lua_ = ...
-    // L    = ... <app> <func> <clbk>
-  }
-
-  void deleteOnCall() {
-    if (self_in_app_ != -1) {
-      lua_rawgeti(lua_, LUA_REGISTRYINDEX, app_in_thread_);
-      // ... <app>
-      // cut link from app to callback: app->clbk
-      luaL_unref(lua_, -1, self_in_app_);
-      // Now the callback is not reachable and will be GC
-      self_in_app_ = -1;
-    }
-  }
-
-  /** To protect from garbage collection before app is deleted.
-   */
-  int self_in_app_;
-
-  /** To unprotect self from garbage collection when deleted.
-   */
-  int app_in_thread_;
 };
 
 } // mimas

@@ -1,13 +1,13 @@
 /** This is a dummy class to create bindings for objects inheriting from Qt's
- * QMenu.
+ * QPushButton.
  *
+ * @see Button
  * @see QWidget
  * @dub super: 'QWidget'
- *
  */
-class QMainWindow {
+class QPushButton {
  public:
-  void setMenuBar(MenuBar *bar);
-  void setCentralWidget(QWidget *w);
+  void setText(const QString &text);
 };
+
 

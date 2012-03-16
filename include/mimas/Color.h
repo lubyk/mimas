@@ -34,13 +34,10 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** Color used by Painter.
  *
  */
-class Color : public QColor
-{
+class Color : public QColor {
 public:
   Color() {}
 
@@ -111,5 +108,4 @@ public:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_COLOR_H_

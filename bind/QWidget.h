@@ -1,5 +1,3 @@
-namespace mimas {
-
 /** This is a dummy class to create bindings for objects inheriting from Qt's
  * QWidget.
  *
@@ -81,4 +79,3 @@ class QWidget : public QObject {
   void globalMove(float x, float y);
 };
 
-} // mimas

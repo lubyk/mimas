@@ -29,101 +29,125 @@
 #ifndef LUBYK_INCLUDE_MIMAS_GLWIDGET_H_
 #define LUBYK_INCLUDE_MIMAS_GLWIDGET_H_
 
-#include "lubyk.h"
-using namespace lubyk;
+#include "GL/glew.h"
 
 #include "mimas/mimas.h"
 #include "mimas/Widget.h"
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsScene>
-#include <QtOpenGL/QtOpenGL>
 
-#include <iostream>
+#include <QtOpenGL/QGLWidget>
+#include <QtOpenGL/QGLContext>
 
-namespace mimas {
+#ifdef __macosx__
+  //#include <OpenGL/gl.h>
+  //#include <OpenGL/glu.h>
+  void* mimasSelectModernOpenGLMac(GDHandle handle);
+#else
+  //#include <GL/gl.h>
+  //#include <GL/glu.h>
+#endif
 
-
+#define CHECKERROR(msg) ErrorCheckValue = glGetError();\
+if (ErrorCheckValue != GL_NO_ERROR) { \
+  fprintf(stderr, "%s: %s \n", #msg, gluErrorString(ErrorCheckValue)); \
+  exit(-1); \
+}
+  
 /** GLWidget
  * This class lets you draw OpenGL elements with Widgets on top.
  * http://doc.trolltech.com/qq/qq26-openglcanvas.html
  *
- * @dub destructor: 'luaDestroy'
- *      super: 'QWidget'
+ * @dub push: pushobject
+ *      super: QWidget
  */
-class GLWidget : public QGraphicsView, public ThreadedLuaObject
-{
+class GLWidget : public QGLWidget, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
+#ifdef __macosx__
+  struct GLSLContext : public QGLContext {
+    GLSLContext(const QGLFormat& format, QPaintDevice* device) : QGLContext(format,device) {}
+    GLSLContext(const QGLFormat& format) : QGLContext(format) {}
 
-  class OpenGLScene : public QGraphicsScene {
-  public:
-    GLWidget *master_;
-    bool resized_;
-
-    OpenGLScene(GLWidget *master)
-        : master_(master)
-        , resized_(false)
-    {}
-
-    virtual void drawBackground(QPainter *painter, const QRectF &rect) {
-      master_->initializeGL();
-      if (resized_) {
-        master_->resizeGL(width(), height());
-        resized_ = false;
-      }
-      master_->paintGL();
-      // Could we draw 2D stuff with painter also ?
-      // master_->paint(painter, width(), height());
+    virtual void* chooseMacVisual(GDHandle handle) {
+      return mimasSelectModernOpenGLMac(handle);
     }
   };
+#else
+  struct GLSLFormat : public QGLFormat {
+    GLSLFormat() {
+      setVersion(3, 2);
+      setProfile(QGLFormat::CoreProfile);
+      setSampleBuffers(true);
+    }
+  };
+#endif // __macosx__
 
-  OpenGLScene *gl_scene_;
 public:
-  GLWidget() {
-    setViewport(new QGLWidget(QGLFormat(
-            QGL::SampleBuffers
-            )));
-    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    gl_scene_ = new OpenGLScene(this);
-    setScene(gl_scene_);
-
+ 
+  GLWidget()
+#ifdef __macosx__
+    : QGLWidget(new GLSLContext(QGLFormat::defaultFormat()))
+#else
+    : QGLWidget(GLSLFormat())
+#endif
+  {
     setAttribute(Qt::WA_DeleteOnClose);
     // get focus on tab and click
     setFocusPolicy(Qt::StrongFocus);
-    MIMAS_DEBUG_CC
   }   
 
   ~GLWidget() {
-    MIMAS_DEBUG_GC
-  }
-
-  void addWidgetToScene(QWidget *widget, float x=0, float y=0) {
-    gl_scene_->addWidget(widget);
-    widget->move(x, y);
-    widget->show();
+    destroyShaders();
+    destroyVBO();
   }
 
   QString cssClass() const {
     return parent() ? QString("glwindow") : QString("glwidget");
   }
 
-  QSize size_hint_;
   // =============================================================
 
   void updateGL() {
-    gl_scene_->update();
+    update();
+  }
+  
+  LuaStackSize openGLVersion(lua_State *L) {
+    lua_pushstring(L, (char*)glGetString(GL_VERSION));
+    lua_pushstring(L, (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+    return 2;
+  }
+
+  bool compile(const char *vertex_shader, const char *fragment_shader) {
+    if (!isVisible()) {
+      // This should initialize OpenGL
+      show();
+    }
+    if (!glGetString(GL_VERSION)) {
+      printf("OpenGL not initialized. Show window before compiling.\n");
+    } else {
+      printf("COMPILE...\n");
+      createShaders(vertex_shader, fragment_shader);
+      createVBO();
+    }
+    updateGL();
+    return true;
   }
 
 protected:
-  /** Force the scene to have the same size as the view.
-   */
-  void resizeEvent(QResizeEvent *event) {
-    gl_scene_->resized_ = true;
-    gl_scene_->setSceneRect(QRect(QPoint(0, 0), event->size()));
-    QGraphicsView::resizeEvent(event);
-  }
-
   virtual void initializeGL() {
+    printf("glewInit\n");     
+    glewExperimental = GL_TRUE;
+    GLenum err = glewInit();
+    if (GLEW_OK != err) {
+      fprintf(
+        stderr,
+        "glewInit error: %s\n",
+        glewGetErrorString(err)
+        );
+      exit(EXIT_FAILURE);
+    } 
+    glClearColor(0,0,0,0);
+    glClear(GL_COLOR_BUFFER_BIT);
+  }
+  /*
     lua_State *L = lua_;
 
     if (!pushLuaCallback("initializeGL")) return;
@@ -134,8 +158,13 @@ protected:
       fprintf(stderr, "Error in 'initializeGL' callback: %s\n", lua_tostring(L, -1));
     }
   }
+  */
 
   virtual void resizeGL(int width, int height) {
+    glViewport(0, 0, width, height);
+  }
+/*
+
     lua_State *L = lua_;
 
     if (!pushLuaCallback("resizeGL")) return;
@@ -148,8 +177,13 @@ protected:
       fprintf(stderr, "Error in 'resizeGL' callback: %s\n", lua_tostring(L, -1));
     }
   }
+  */
 
   virtual void paintGL() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+  }
+  /*
     lua_State *L = lua_;
 
     if (!pushLuaCallback("paintGL")) return;
@@ -160,81 +194,167 @@ protected:
       fprintf(stderr, "Error in 'paintGL' callback: %s\n", lua_tostring(L, -1));
     }
   }
+  */
+
+  // --=============================================== Widget callbacks
+  virtual void closeEvent(QCloseEvent *event) {
+    Widget::closed(this, event);
+  }
+
+  virtual void mouseMoveEvent(QMouseEvent *event) {
+    Widget::mouse(this, event);
+  }
 
   virtual void mousePressEvent(QMouseEvent *event) {
     if (!Widget::click(this, event, MousePress))
-      QGraphicsView::mousePressEvent(event);
+      QWidget::mousePressEvent(event);
   }
 
   virtual void mouseDoubleClickEvent(QMouseEvent *event) {
     if (!Widget::click(this, event, DoubleClick))
-      QGraphicsView::mouseDoubleClickEvent(event);
+      QWidget::mouseDoubleClickEvent(event);
   }
 
   virtual void mouseReleaseEvent(QMouseEvent *event) {
     if (!Widget::click(this, event, MouseRelease))
-      QGraphicsView::mouseReleaseEvent(event);
+      QWidget::mouseReleaseEvent(event);
   }
 
-  virtual void mouseMoveEvent(QMouseEvent *event) {
-    if (!Widget::mouse(this, event))
-      QGraphicsView::mouseMoveEvent(event);
+  virtual void resizeEvent(QResizeEvent *event) {
+    Widget::resized(this, width(), height());
   }
 
-  //virtual void paintEvent(QPaintEvent *event);
+  virtual void moveEvent(QMoveEvent * event) {
+    Widget::moved(this, event);
+  }
 
   virtual void keyPressEvent(QKeyEvent *event) {
     if (!Widget::keyboard(this, event, true))
-      QGraphicsView::keyPressEvent(event);
+      QWidget::keyPressEvent(event);
   }
 
   virtual void keyReleaseEvent(QKeyEvent *event) {
     if (!Widget::keyboard(this, event, false))
-      QGraphicsView::keyReleaseEvent(event);
+      QWidget::keyReleaseEvent(event);
   }
 
+
+
+  //virtual void paintEvent(QPaintEvent *event);
 private:
-  // virtual void paintEvent(QPaintEvent *event) {
-  //   makeCurrent();
+  GLuint
+    VertexShaderId,
+    FragmentShaderId,
+    ProgramId,
+    VaoId,
+    VboId,
+    ColorBufferId;
+   
+  // FIXME: Write gl bindings so that we can do all this in Lua.
+  void createVBO() {
+    GLenum ErrorCheckValue;
 
-  //   glMatrixMode(GL_MODELVIEW);
-  //   glPushMatrix();
+    GLfloat Vertices[] = {
+        -0.8f, -0.8f, 0.0f, 1.0f,
+         0.0f,  0.8f, 0.0f, 1.0f,
+         0.8f, -0.8f, 0.0f, 1.0f
+    };
+ 
+    GLfloat Colors[] = {
+        1.0f, 0.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f
+    };
+ 
+    CHECKERROR(createVBO);
+ 
+    glGenVertexArrays(1, &VaoId);
+    glBindVertexArray(VaoId);
+ 
+    glGenBuffers(1, &VboId);
+    glBindBuffer(GL_ARRAY_BUFFER, VboId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
+ 
+    glGenBuffers(1, &ColorBufferId);
+    glBindBuffer(GL_ARRAY_BUFFER, ColorBufferId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Colors), Colors, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(1);
+ 
+    ErrorCheckValue = glGetError();
+    if (ErrorCheckValue != GL_NO_ERROR)
+    {
+        fprintf(
+            stderr,
+            "ERROR: Could not create a VBO: %s \n",
+            gluErrorString(ErrorCheckValue)
+        );
+ 
+        exit(-1);
+    }
+  }
 
-  //   setupViewport(width(), height());
-  //   initializeGL();
-  //   paintGL();
+  void destroyVBO() {
 
-  //   // Paint
-  //   glShadeModel(GL_FLAT);
-  //   glDisable(GL_CULL_FACE);
-  //   glDisable(GL_DEPTH_TEST);
-  //   glDisable(GL_LIGHTING);
-  //   glMatrixMode(GL_MODELVIEW);
-  //   glPopMatrix();
-  //   Painter painter(this);
-  //   painter.setRenderHint(QPainter::Antialiasing);
-  //   paint(painter);
-  //   // Paint children ??
-  //   painter.end();
-  // }
+    GLenum ErrorCheckValue = glGetError();
 
-  // void paint(Painter &p) {
-  //   lua_State *L = lua_;
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(0);
 
-  //   if (!pushLuaCallback("paint")) return;
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-  //   // Deletable out of Lua
-  //   lua_pushclass2<Painter>(L, &p, "mimas.Painter");
-  //   lua_pushnumber(L, width());
-  //   lua_pushnumber(L, height());
-  //   // <func> <self> <Painter> <width> <height>
-  //   int status = lua_pcall(L, 4, 0, 0);
+    glDeleteBuffers(1, &ColorBufferId);
+    glDeleteBuffers(1, &VboId);
 
-  //   if (status) {
-  //     fprintf(stderr, "Error in 'paint' callback: %s\n", lua_tostring(L, -1));
-  //   }
-  // }
+    glBindVertexArray(0);
+    glDeleteVertexArrays(1, &VaoId);
+
+    ErrorCheckValue = glGetError();
+    if (ErrorCheckValue != GL_NO_ERROR)
+    {
+      fprintf(
+          stderr,
+          "ERROR: Could not destroy the VBO: %s \n",
+          gluErrorString(ErrorCheckValue)
+          );
+
+      exit(-1);
+    }
+  }
+
+
+  void createShaders(const char *vertex_shader, const char *fragment_shader);
+
+  void destroyShaders(void) {
+    GLenum ErrorCheckValue = glGetError();
+ 
+    glUseProgram(0);
+ 
+    glDetachShader(ProgramId, VertexShaderId);
+    glDetachShader(ProgramId, FragmentShaderId);
+ 
+    glDeleteShader(FragmentShaderId);
+    glDeleteShader(VertexShaderId);
+ 
+    glDeleteProgram(ProgramId);
+ 
+    ErrorCheckValue = glGetError();
+    if (ErrorCheckValue != GL_NO_ERROR)
+    {
+        fprintf(
+            stderr,
+            "ERROR: Could not destroy the shaders: %s \n",
+            gluErrorString(ErrorCheckValue)
+        );
+ 
+        exit(-1);
+    }
+  }
+
 };
 
 } // mimas
-#endif // LUBYK_INCLUDE_MIMAS_GLWIDGET_H_
+#endif // LUBYK_INCLUDE_MIMAS_GLSLWIDGET_H_
+

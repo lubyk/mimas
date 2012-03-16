@@ -1,5 +1,3 @@
-namespace mimas {
-
 /** This is a dummy class to create bindings for objects inheriting from Qt's
  * QPainterPath.
  *
@@ -17,6 +15,3 @@ class QPainterPath {
 
   void lineTo(float x, float y);
 };
-
-} // mimas
-

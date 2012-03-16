@@ -33,74 +33,37 @@
 using namespace lubyk;
 
 #include "mimas/mimas.h"
-#include "mimas/constants.h"
-#include "mimas/Widget.h"
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QMouseEvent>
 
 #include <iostream>
 
-namespace mimas {
-
 /** CheckBox widget.
  *
- * @dub lib_name:'CheckBox_core'
- *      destructor: 'luaDestroy'
+ * @dub register: CheckBox_core
+ *      push: pushobject
  *      super: 'QCheckBox'
  */
-class CheckBox: public QCheckBox, public ThreadedLuaObject {
+class CheckBox: public QCheckBox, public dub::Thread {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
-  Q_PROPERTY(float hue READ hue WRITE setHue)
-
 public:
   CheckBox(const char *title = NULL, QWidget *parent = NULL)
       : QCheckBox(title, parent) {
     QObject::connect(this, SIGNAL(clicked(bool)),
                      this, SLOT(clickedSlot(bool)));
-    MIMAS_DEBUG_CC
   }
 
   ~CheckBox() {
-    MIMAS_DEBUG_GC
-  }
-
-  QString cssClass() const {
-    return QString("checkbox");
-  }
-
-  QSize size_hint_;
-
-  void setHue(float hue) {
-    hue_ = hue;
-    update();
-  }
-
-  void setText(const char *txt) {
-    QCheckBox::setText(QString(txt));
-  }
-
-  float hue() {
-    return hue_;
   }
 
 private slots:
   void clickedSlot(bool checked) {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("click")) return;
+    if (!dub_pushcallback("click")) return;
     lua_pushboolean(L, checked);
     // <func> <self> <checked>
-    int status = lua_pcall(L, 2, 0, 0);
-
-    if (status) {
-      // cannot raise an error here...
-      fprintf(stderr, "Error in 'click' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(2, 0);
   }
-private:
-  float hue_;
 };
 
 } // mimas

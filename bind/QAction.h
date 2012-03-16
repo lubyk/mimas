@@ -1,5 +1,3 @@
-namespace mimas {
-
 /** This is a dummy class to create bindings for objects inheriting from Qt's
  * QAction.
  *
@@ -19,5 +17,3 @@ class QAction {
   bool isCheckable() const;
   void setCheckable(bool on);
 };
-
-} // mimas

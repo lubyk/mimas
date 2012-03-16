@@ -1,13 +1,12 @@
 /** This is a dummy class to create bindings for objects inheriting from Qt's
- * QMenu.
+ * QLabel.
  *
+ * @see Label
  * @see QWidget
  * @dub super: 'QWidget'
- *
  */
-class QMainWindow {
+class QLabel {
  public:
-  void setMenuBar(MenuBar *bar);
-  void setCentralWidget(QWidget *w);
+  void setText(const QString &text);
 };
 

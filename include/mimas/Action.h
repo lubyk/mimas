@@ -40,17 +40,16 @@ namespace mimas {
  * callback on call (or shortcut).
  *
  * @see QAction
- * @dub destructor: 'luaDestroy'
+ * @dub push: pushobject
  *      super: 'QAction'
  */
-class Action : public QAction, public ThreadedLuaObject {
+class Action : public QAction, public dub::Thread {
   Q_OBJECT
 public:
   Action(const char *name, QObject *parent = 0)
       : QAction(QString(name), parent) {
     QObject::connect(this, SIGNAL(triggered()),
                      this, SLOT(triggeredSlot()));
-    MIMAS_DEBUG_CC
   }
 
   /** A sequence can contain multiple shortcuts and the format is:
@@ -67,21 +66,13 @@ public:
   }
 
   ~Action() {
-    MIMAS_DEBUG_GC
   }
 
 private slots:
   void triggeredSlot() {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("trigger")) return;
+    if (!dub_pushcallback("trigger")) return;
     // <func> <self>
-    int status = lua_pcall(L, 1, 0, 0);
-
-    if (status) {
-      // cannot raise an error here...
-      fprintf(stderr, "Error in 'trigger' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(1, 0);
   }
 };
 

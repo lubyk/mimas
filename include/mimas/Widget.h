@@ -52,11 +52,13 @@ class Widget : public QWidget, public dub::Thread {
   Q_OBJECT
   Q_PROPERTY(QString class READ cssClass)
 
+  QString css_class_;
 public:
   MIMAS_COMMON
 
-  Widget(int window_flags) :
-    QWidget(NULL, (Qt::WindowFlags)window_flags) {
+  Widget(int window_flags)
+    : QWidget(NULL, (Qt::WindowFlags)window_flags)
+    , css_class_("widget") {
     setAttribute(Qt::WA_DeleteOnClose);
   }
 
@@ -67,15 +69,25 @@ public:
 
   ~Widget() {}
 
+  QString cssClass() const {
+    return css_class_;
+  }
+
+  void setCssClass(const char *css_class) {
+    css_class_ = css_class;
+    update();
+  }
+
   // ============================================================ Dialog
   LuaStackSize getOpenFileName(const char *caption,
-                          const char *base_dir,
-                          const char *filter,
-                          int options,
-                          lua_State *L);
-LuaStackSize getExistingDirectory(const char *caption, const char *base_dir,
-                          int options,
-                          lua_State *L);
+      const char *base_dir,
+      const char *filter,
+      int options,
+      lua_State *L);
+  LuaStackSize getExistingDirectory(const char *caption,
+      const char *base_dir,
+      int options,
+      lua_State *L);
 
   /** Common keyboard, mouse and click event handling to many widgets.
    */

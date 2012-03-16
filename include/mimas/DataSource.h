@@ -30,9 +30,6 @@
 #define LUBYK_INCLUDE_MIMAS_DATA_SOURCE_H_
 
 #include "mimas/mimas.h"
-#include "mimas/constants.h"
-
-using namespace lubyk;
 
 #include <QtCore/QAbstractItemModel>
 #include <QtGui/QMouseEvent>
@@ -41,25 +38,19 @@ using namespace lubyk;
 #include <iostream>
 
 
-namespace mimas {
-
 /** The DataSource is used to provide data to Views such as TableView, ListView or
  * TreeView.
  *
- * @dub destructor: 'luaDestroy'
+ * @dub push: pushobject
  *      ignore: 'index'
  */
-class DataSource : public QAbstractItemModel, public ThreadedLuaObject
-{
+class DataSource : public QAbstractItemModel, public dub::Thread {
   Q_OBJECT
-
 public:
   DataSource() {
-    MIMAS_DEBUG_CC
   }
 
   ~DataSource() {
-    MIMAS_DEBUG_GC
   }
 
   void reset() {
@@ -83,16 +74,11 @@ protected:
   }
 
   virtual int rowCount(const QModelIndex &parent = QModelIndex()) const {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("rowCount")) {
+    if (!dub_pushcallback("rowCount")) {
       return 0;
     }
-    // <func> <self>
-    int status = lua_pcall(L, 1, 1, 0);
 
-    if (status) {
-      fprintf(stderr, "Error in 'rowCount' callback: %s\n", lua_tostring(L, -1));
+    if (!dub_call(1, 1)) {
       return 0;
     }
 
@@ -102,14 +88,9 @@ protected:
   }
 
   virtual int columnCount(const QModelIndex &parent = QModelIndex()) const {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("columnCount")) return 0;
+    if (!dub_pushcallback("columnCount")) return 0;
     // <func> <self>
-    int status = lua_pcall(L, 1, 1, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in 'columnCount' callback: %s\n", lua_tostring(L, -1));
+    if (!dub_call(1, 1)) {
       return 0;
     }
 
@@ -120,16 +101,15 @@ protected:
 
   virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const {
     if (role != Qt::DisplayRole) return QVariant();
-    lua_State *L = lua_;
+    lua_State *L = dub_L;
 
-    if (!pushLuaCallback("data")) return QVariant();
+    if (!dub_pushcallback("data")) return QVariant();
     lua_pushnumber(L, index.row() + 1);
     lua_pushnumber(L, index.column() + 1);
     // <func> <self> <row> <column>
     int status = lua_pcall(L, 3, 1, 0);
 
-    if (status) {
-      fprintf(stderr, "Error in 'data' callback: %s\n", lua_tostring(L, -1));
+    if (!dub_call(3, 1)) {
       return QVariant();
     }
     QVariant res = variantFromLua(L, -1);
@@ -139,16 +119,15 @@ protected:
 
   virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const {
     if (role != Qt::DisplayRole) return QVariant();
-    lua_State *L = lua_;
+    lua_State *L = dub_L;
 
-    if (!pushLuaCallback("header")) return QVariant();
-    lua_pushnumber(L, section + 1);
-    lua_pushnumber(L, orientation);
-    // <func> <self> <section> <orientation>
+    if (!dub_pushcallback("data")) return QVariant();
+    lua_pushnumber(L, index.row() + 1);
+    lua_pushnumber(L, index.column() + 1);
+    // <func> <self> <row> <column>
     int status = lua_pcall(L, 3, 1, 0);
 
-    if (status) {
-      fprintf(stderr, "Error in 'header' callback: %s\n", lua_tostring(L, -1));
+    if (!dub_call(3, 1)) {
       return QVariant();
     }
     QVariant res = variantFromLua(L, -1);
@@ -157,5 +136,4 @@ protected:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_DATA_SOURCE_H

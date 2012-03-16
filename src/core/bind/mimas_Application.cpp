@@ -76,7 +76,7 @@ static int Application__cast_(lua_State *L) {
 }
 
 /** mimas::Application::Application()
- * include/mimas/Application.h:59
+ * include/mimas/Application.h:58
  */
 static int Application_Application(lua_State *L) {
   try {
@@ -92,7 +92,7 @@ static int Application_Application(lua_State *L) {
 }
 
 /** mimas::Application::~Application()
- * include/mimas/Application.h:90
+ * include/mimas/Application.h:89
  */
 static int Application__Application(lua_State *L) {
   try {
@@ -112,7 +112,7 @@ static int Application__Application(lua_State *L) {
 }
 
 /** void mimas::Application::setQuitOnLastWindowClosed(bool quit)
- * include/mimas/Application.h:96
+ * include/mimas/Application.h:94
  */
 static int Application_setQuitOnLastWindowClosed(lua_State *L) {
   try {
@@ -128,24 +128,24 @@ static int Application_setQuitOnLastWindowClosed(lua_State *L) {
   return dub_error(L);
 }
 
-/** virtual void mimas::Application::dub_destroy()
- * include/mimas/Application.h:101
+/** virtual void mimas::Application::luaDestroy()
+ * include/mimas/Application.h:99
  */
-static int Application_dub_destroy(lua_State *L) {
+static int Application_luaDestroy(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    self->dub_destroy();
+    self->luaDestroy();
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "dub_destroy: %s", e.what());
+    lua_pushfstring(L, "luaDestroy: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "dub_destroy: Unknown exception");
+    lua_pushfstring(L, "luaDestroy: Unknown exception");
   }
   return dub_error(L);
 }
 
 /** int mimas::Application::exec()
- * include/mimas/Application.h:108
+ * include/mimas/Application.h:105
  */
 static int Application_exec(lua_State *L) {
   try {
@@ -161,7 +161,7 @@ static int Application_exec(lua_State *L) {
 }
 
 /** void mimas::Application::processEvents(int maxtime)
- * include/mimas/Application.h:113
+ * include/mimas/Application.h:111
  */
 static int Application_processEvents(lua_State *L) {
   try {
@@ -178,7 +178,7 @@ static int Application_processEvents(lua_State *L) {
 }
 
 /** void mimas::Application::quit()
- * include/mimas/Application.h:128
+ * include/mimas/Application.h:126
  */
 static int Application_quit(lua_State *L) {
   try {
@@ -194,7 +194,7 @@ static int Application_quit(lua_State *L) {
 }
 
 /** void mimas::Application::setStyleSheet(const char *text)
- * include/mimas/Application.h:132
+ * include/mimas/Application.h:130
  */
 static int Application_setStyleSheet(lua_State *L) {
   try {
@@ -211,7 +211,7 @@ static int Application_setStyleSheet(lua_State *L) {
 }
 
 /** LuaStackSize mimas::Application::styleSheet(lua_State *L)
- * include/mimas/Application.h:136
+ * include/mimas/Application.h:134
  */
 static int Application_styleSheet(lua_State *L) {
   try {
@@ -226,7 +226,7 @@ static int Application_styleSheet(lua_State *L) {
 }
 
 /** LuaStackSize mimas::Application::screenSize(lua_State *L)
- * include/mimas/Application.h:144
+ * include/mimas/Application.h:142
  */
 static int Application_screenSize(lua_State *L) {
   try {
@@ -241,7 +241,7 @@ static int Application_screenSize(lua_State *L) {
 }
 
 /** void mimas::Application::singleShot(int msec, QObject *receiver, const char *member)
- * include/mimas/Application.h:155
+ * include/mimas/Application.h:153
  */
 static int Application_singleShot(lua_State *L) {
   try {
@@ -260,7 +260,7 @@ static int Application_singleShot(lua_State *L) {
 }
 
 /** static LuaStackSize mimas::Application::MakeApplication(lua_State *L)
- * include/mimas/Application.h:69
+ * include/mimas/Application.h:68
  */
 static int Application_MakeApplication(lua_State *L) {
   try {
@@ -274,7 +274,7 @@ static int Application_MakeApplication(lua_State *L) {
 }
 
 /** static void mimas::Application::terminate(int sig)
- * include/mimas/Application.h:126
+ * include/mimas/Application.h:124
  */
 static int Application_terminate(lua_State *L) {
   try {
@@ -308,7 +308,7 @@ static const struct luaL_Reg Application_member_methods[] = {
   { "new"          , Application_Application },
   { "__gc"         , Application__Application },
   { "setQuitOnLastWindowClosed", Application_setQuitOnLastWindowClosed },
-  { "dub_destroy"  , Application_dub_destroy },
+  { "luaDestroy"   , Application_luaDestroy },
   { "exec"         , Application_exec     },
   { "processEvents", Application_processEvents },
   { "quit"         , Application_quit     },

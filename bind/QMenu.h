@@ -1,5 +1,3 @@
-namespace mimas {
-
 /** This is a dummy class to create bindings for objects inheriting from Qt's
  * QMenu.
  *
@@ -15,7 +13,4 @@ class QMenu {
    */
   void clear();
 };
-
-} // mimas
-
 

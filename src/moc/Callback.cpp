@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Callback.h'
 **
-** Created: Tue Mar 13 17:45:55 2012
+** Created: Fri Mar 16 16:29:37 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -62,8 +62,8 @@ void *mimas::Callback::qt_metacast(const char *_clname)
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_mimas__Callback))
         return static_cast<void*>(const_cast< Callback*>(this));
-    if (!strcmp(_clname, "lubyk::ThreadedLuaObject"))
-        return static_cast< lubyk::ThreadedLuaObject*>(const_cast< Callback*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< Callback*>(this));
     return QObject::qt_metacast(_clname);
 }
 

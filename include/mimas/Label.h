@@ -34,128 +34,33 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** Label widget.
  * @dub lib_name:'Label_core'
- *      destructor: 'luaDestroy'
+ *      push: pushobject
+ *      super: QWidget
  */
-class Label : public QLabel, public LuaObject
+class Label : public QLabel, public dub::Object
 {
   Q_OBJECT
-  Q_PROPERTY(QString class READ cssClass)
 public:
   Label(const char *title = NULL)
-   : QLabel(title),
-     hue_(-1) {
-    MIMAS_DEBUG_CC
+   : QLabel(title) {
   }
 
   Label(const char *title, QWidget *parent)
-   : QLabel(title, parent),
-     hue_(-1) {
-    MIMAS_DEBUG_CC
-  }
-
-  ~Label() {
-    MIMAS_DEBUG_GC
-  }
-
-  // ============================ common code to all mimas Widgets
-
-  // FIXME: should inherit from pseudo class QWidgetBase.
-  void show() {
-    QLabel::show();
-  }
-
-  void hide() {
-    QLabel::hide();
+   : QLabel(title, parent) {
   }
 
   QString cssClass() const {
-    return QString("label");
+    return QString("Label");
   }
 
-  QWidget *widget() {
-    return this;
-  }
-
-  QObject *object() {
-    return this;
-  }
-
-  /** Get the widget's name.
-   */
-  LuaStackSize name(lua_State *L) {
-    lua_pushstring(L, QObject::objectName().toUtf8().data());
-    return 1;
-  }
-
-  /** Set the widget's name.
-   */
-  void setName(const char *name) {
-    QObject::setObjectName(QString(name));
-  }
-
-  void move(int x, int y) {
-    QWidget::move(x, y);
-  }
-
-  void resize(int w, int h) {
-    QWidget::resize(w, h);
-  }
-
-  int x() {
-    return QWidget::x();
-  }
-
-  int y() {
-    return QWidget::y();
-  }
-
-  int width() {
-    return QWidget::width();
-  }
-
-  int height() {
-    return QWidget::height();
-  }
-
-  void setStyle(const char *text) {
-    QWidget::setStyleSheet(QString(".%1 { %2 }").arg(cssClass()).arg(text));
-  }
-
-  void setStyleSheet(const char *text) {
-    QWidget::setStyleSheet(text);
-  }
-
-  void setHue(float hue) {
-    hue_ = hue;
-    QWidget::update();
-  }
-
-  float hue() {
-    return hue_;
-  }
-
-  // =============================================================
-
-  void setText(const char *text) {
-    QLabel::setText(QString(text));
-    QWidget::update();
+  ~Label() {
   }
 
   void setAlignment(int align) {
     QLabel::setAlignment((Qt::Alignment)align);
   }
-
-private:
-  virtual void paintEvent(QPaintEvent *event);
-
-  /** The component's color.
-   */
-  float hue_;
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_LABEL_H_

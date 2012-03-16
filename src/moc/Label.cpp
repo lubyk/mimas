@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Label.h'
 **
-** Created: Tue Mar 13 17:45:55 2012
+** Created: Fri Mar 16 16:39:45 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -59,8 +59,8 @@ void *mimas::Label::qt_metacast(const char *_clname)
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_mimas__Label))
         return static_cast<void*>(const_cast< Label*>(this));
-    if (!strcmp(_clname, "LuaObject"))
-        return static_cast< LuaObject*>(const_cast< Label*>(this));
+    if (!strcmp(_clname, "dub::Object"))
+        return static_cast< dub::Object*>(const_cast< Label*>(this));
     return QLabel::qt_metacast(_clname);
 }
 

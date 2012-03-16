@@ -130,12 +130,12 @@ static int Widget_getExistingDirectory(lua_State *L) {
   return dub_error(L);
 }
 
-/** static bool mimas::Widget::mouse(ThreadedLuaObject *obj, QMouseEvent *event)
+/** static bool mimas::Widget::mouse(dub::Thread *obj, QMouseEvent *event)
  * include/mimas/Widget.h:83
  */
 static int Widget_mouse(lua_State *L) {
   try {
-    ThreadedLuaObject *obj = *((ThreadedLuaObject **)dub_checksdata(L, 1, "ThreadedLuaObject"));
+    dub::Thread *obj = *((dub::Thread **)dub_checksdata(L, 1, "dub::Thread"));
     QMouseEvent *event = *((QMouseEvent **)dub_checksdata(L, 2, "QMouseEvent"));
     lua_pushboolean(L, Widget::mouse(obj, event));
     return 1;
@@ -147,12 +147,12 @@ static int Widget_mouse(lua_State *L) {
   return dub_error(L);
 }
 
-/** static void mimas::Widget::showHide(ThreadedLuaObject *obj, bool shown)
+/** static void mimas::Widget::showHide(dub::Thread *obj, bool shown)
  * include/mimas/Widget.h:89
  */
 static int Widget_showHide(lua_State *L) {
   try {
-    ThreadedLuaObject *obj = *((ThreadedLuaObject **)dub_checksdata(L, 1, "ThreadedLuaObject"));
+    dub::Thread *obj = *((dub::Thread **)dub_checksdata(L, 1, "dub::Thread"));
     bool shown = dub_checkboolean(L, 2);
     Widget::showHide(obj, shown);
     return 0;

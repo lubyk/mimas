@@ -1,5 +1,3 @@
-namespace mimas {
-
 /** This is a dummy class to create bindings for objects inheriting from Qt's
  * QTabWidget.
  *
@@ -14,8 +12,4 @@ class QTabWidget {
    int count();
 
 };
-
-} // mimas
-
-
 

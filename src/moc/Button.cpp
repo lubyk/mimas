@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Button.h'
 **
-** Created: Tue Mar 13 17:45:55 2012
+** Created: Fri Mar 16 16:25:27 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -64,8 +64,8 @@ void *mimas::Button::qt_metacast(const char *_clname)
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_mimas__Button))
         return static_cast<void*>(const_cast< Button*>(this));
-    if (!strcmp(_clname, "ThreadedLuaObject"))
-        return static_cast< ThreadedLuaObject*>(const_cast< Button*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< Button*>(this));
     return QPushButton::qt_metacast(_clname);
 }
 

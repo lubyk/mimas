@@ -42,17 +42,14 @@ using namespace lubyk;
 namespace mimas {
 
 /** Label widget.
- * @dub lib_name:'LineEdit_core'
- *      destructor: 'luaDestroy'
+ * @dub register: LineEdit_core
+ *      push: pushobject
+ *      super: QWidget
  */
-class LineEdit : public QLineEdit, public ThreadedLuaObject
-{
+class LineEdit : public QLineEdit, public dub::Thread {
   Q_OBJECT
   Q_PROPERTY(QString class READ cssClass)
 
-  /** The component's color.
-   */
-  float hue_;
 public:
   LineEdit(const char *content = NULL, QWidget *parent = NULL)
      : QLineEdit(content, parent), hue_(-1) {
@@ -61,11 +58,9 @@ public:
 
     QObject::connect(this, SIGNAL(textEdited(QString)),
                      this, SLOT(textEditedSlot(QString)));
-    MIMAS_DEBUG_CC
   }
 
   ~LineEdit() {
-    MIMAS_DEBUG_GC
   }
 
   // ============================ common code to all mimas Widgets

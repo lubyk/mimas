@@ -35,8 +35,6 @@
 
 #include <iostream>
 
-namespace mimas {
-
 /** Brush used by Painter.
  *
  */
@@ -64,5 +62,4 @@ public:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_BRUSH_H_

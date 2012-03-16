@@ -1,5 +1,3 @@
-namespace mimas {
-
 /** This is a dummy class to create bindings for objects inheriting from Qt's
  * QCheckBox.
  *
@@ -14,7 +12,7 @@ class QCheckBox {
 
   bool isChecked();
   void setChecked(bool check);
-};
 
-} // mimas
+  void setText(QString &txt);
+};
 

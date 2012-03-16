@@ -13,7 +13,7 @@ static int   app_argc   = (int)(sizeof(app_argv) / sizeof(app_argv[0])) - 1;
 
 using namespace mimas;
 
-pthread_key_t Application::sAppKey = NULL;
+pthread_key_t Application::sAppKey = 0;
 
 Application::Application()
    : QApplication(app_argc, app_argv) {
@@ -23,7 +23,6 @@ Application::Application()
   // Avoid nasty number parsing bugs (0.5 not parsed)
   QLocale::setDefault(QLocale::c());
   setlocale(LC_NUMERIC, "C");
-  MIMAS_DEBUG_CC
 }
 
 

@@ -10,6 +10,7 @@
 #include "mimas/Application.h"
 #include "mimas/Widget.h"
 #include "mimas/constants.h"
+#include "mimas/mimas.h"
 
 using namespace mimas;
 using namespace lubyk;
@@ -20,7 +21,7 @@ int luaopen_mimas_Widget(lua_State *L);
 }
 
 /** QVariant mimas::variantFromLua(lua_State *L, int index)
- * include/mimas/mimas.h:45
+ * include/mimas/mimas.h:53
  */
 static int mimas_variantFromLua(lua_State *L) {
   try {
@@ -36,7 +37,7 @@ static int mimas_variantFromLua(lua_State *L) {
 }
 
 /** void mimas::pushVariantInLua(lua_State *L, const QVariant &value)
- * include/mimas/mimas.h:46
+ * include/mimas/mimas.h:54
  */
 static int mimas_pushVariantInLua(lua_State *L) {
   try {
@@ -117,9 +118,6 @@ static const struct dub_const_Reg mimas_const[] = {
   { "MiddleButton" , MiddleButton         },
   { "XButton1"     , XButton1             },
   { "XButton2"     , XButton2             },
-  { "MousePress"   , MousePress           },
-  { "MouseRelease" , MouseRelease         },
-  { "DoubleClick"  , DoubleClick          },
   { "NoModifier"   , NoModifier           },
   { "ShiftModifier", ShiftModifier        },
   { "ControlModifier", ControlModifier      },

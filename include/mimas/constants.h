@@ -36,8 +36,6 @@
 
 #include <string>
 
-namespace mimas {
-
 /** List of Brush styles.
  */
 enum BrushStyles {
@@ -631,7 +629,5 @@ enum ActionMenuRoleFlags {
   PreferencesRole         = QAction::PreferencesRole,
   QuitRole                = QAction::QuitRole,
 };
-
-} // mimas
 
 #endif // LUBYK_INCLUDE_MIMAS_CONSTANTS_H_
