@@ -32,9 +32,6 @@
 
 #include <QtGui/QFileDialog>
 
-namespace mimas {
-
-
 void MainWindow::testMenus(bool inplace, lua_State *L) {
   if (inplace) {
     // we do not have access to the "App" OS X menu: it is not in the menuBar.
@@ -50,7 +47,7 @@ void MainWindow::testMenus(bool inplace, lua_State *L) {
     QObjectList list = bar->children();
   } else {
     MenuBar *bar = new MenuBar(this);
-    bar->luaInit(L, bar, "mimas.MenuBar");
+    bar->pushobject(L, bar, "mimas.MenuBar");
     QAction *foobar = new QAction(QString("Foobar"), this);
     foobar->setShortcut(QKeySequence("Ctrl+W"));
     QObject::connect(foobar, SIGNAL(triggered()), this, SLOT(close()));
@@ -107,4 +104,3 @@ LuaStackSize MainWindow::getExistingDirectory(const char *caption,
   }
 }
 
-} // mimas

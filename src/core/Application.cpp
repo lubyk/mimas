@@ -11,8 +11,6 @@ static char arg2[] = "Plastique";
 static char *app_argv[] = {&arg0[0], &arg1[0], &arg2[0], NULL};
 static int   app_argc   = (int)(sizeof(app_argv) / sizeof(app_argv[0])) - 1;
 
-using namespace mimas;
-
 pthread_key_t Application::sAppKey = 0;
 
 Application::Application()

@@ -34,8 +34,8 @@ static int Widget__cast_(lua_State *L) {
   return 0;
 }
 
-/** MIMAS_COMMON Widget::Widget(int window_flags)
- * include/mimas/Widget.h:59
+/** Widget::Widget(int window_flags)
+ * include/mimas/Widget.h:57
  */
 static int Widget_Widget(lua_State *L) {
   try {
@@ -73,7 +73,7 @@ static int Widget_Widget(lua_State *L) {
 }
 
 /** Widget::~Widget()
- * include/mimas/Widget.h:68
+ * include/mimas/Widget.h:66
  */
 static int Widget__Widget(lua_State *L) {
   try {
@@ -93,7 +93,7 @@ static int Widget__Widget(lua_State *L) {
 }
 
 /** QString Widget::cssClass() const
- * include/mimas/Widget.h:70
+ * include/mimas/Widget.h:68
  */
 static int Widget_cssClass(lua_State *L) {
   try {
@@ -110,7 +110,7 @@ static int Widget_cssClass(lua_State *L) {
 }
 
 /** void Widget::setCssClass(const char *css_class)
- * include/mimas/Widget.h:74
+ * include/mimas/Widget.h:72
  */
 static int Widget_setCssClass(lua_State *L) {
   try {
@@ -127,7 +127,7 @@ static int Widget_setCssClass(lua_State *L) {
 }
 
 /** LuaStackSize Widget::getOpenFileName(const char *caption, const char *base_dir, const char *filter, int options, lua_State *L)
- * include/mimas/Widget.h:84
+ * include/mimas/Widget.h:82
  */
 static int Widget_getOpenFileName(lua_State *L) {
   try {
@@ -146,7 +146,7 @@ static int Widget_getOpenFileName(lua_State *L) {
 }
 
 /** LuaStackSize Widget::getExistingDirectory(const char *caption, const char *base_dir, int options, lua_State *L)
- * include/mimas/Widget.h:88
+ * include/mimas/Widget.h:86
  */
 static int Widget_getExistingDirectory(lua_State *L) {
   try {
@@ -164,7 +164,7 @@ static int Widget_getExistingDirectory(lua_State *L) {
 }
 
 /** static bool Widget::mouse(dub::Thread *obj, QMouseEvent *event)
- * include/mimas/Widget.h:93
+ * include/mimas/Widget.h:91
  */
 static int Widget_mouse(lua_State *L) {
   try {
@@ -181,7 +181,7 @@ static int Widget_mouse(lua_State *L) {
 }
 
 /** static void Widget::showHide(dub::Thread *obj, bool shown)
- * include/mimas/Widget.h:99
+ * include/mimas/Widget.h:97
  */
 static int Widget_showHide(lua_State *L) {
   try {

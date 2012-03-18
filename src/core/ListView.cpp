@@ -35,8 +35,6 @@
 #include <QtGui/QTextDocument>
 #include <QtGui/QScrollBar>
 
-namespace mimas {
-
 /** Simple delegate to draw html in list view. Enabled
  * by setting ListView:enableHtml(true, 'extra css').
  */
@@ -86,9 +84,9 @@ protected:
 
 
 bool ListView::click(QMouseEvent *event, int type) {
-  lua_State *L = lua_;
+  lua_State *L = dub_L;
 
-  if (pushLuaCallback("select")) {
+  if (dub_pushcallback("select")) {
     // ... <select> <self>
     if (type == MousePress) {
       // normal click processing
@@ -106,7 +104,7 @@ bool ListView::click(QMouseEvent *event, int type) {
 }
 
 bool ListView::select(const QModelIndex &idx, QEvent *event) {
-  lua_State *L = lua_;
+  lua_State *L = dub_L;
   // ... <select> <self>
   if (!idx.isValid()) {
     lua_pop(L, 2);
@@ -116,10 +114,9 @@ bool ListView::select(const QModelIndex &idx, QEvent *event) {
   lua_pushnumber(L, idx.row() + 1);
   lua_pushnumber(L, idx.column() + 1);
   // ... <select> <self> <row> <col>
-  int status = lua_pcall(L, 3, 1, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'select' callback: %s\n", lua_tostring(L, -1));
+  if (!dub_call(3, 1)) {
+    // Error in callback
+    return false;
   }
 
   if (lua_isfalse(L, -1)) {
@@ -190,12 +187,10 @@ ListView::ListView() : item_delegate_(NULL) {
       horizontalScrollBar(), SIGNAL(actionTriggered(int)),
       this,                  SLOT(sliderHActionTriggered(int)));
 
-  MIMAS_DEBUG_CC
 }
 
 ListView::~ListView() {
   if (item_delegate_) delete item_delegate_;
-  MIMAS_DEBUG_GC
 }
 
 void ItemPaintDelegate::paint(
@@ -213,14 +208,13 @@ bool ListView::paintItem(
     const QModelIndex &idx) {
   
   p->setRenderHints(QPainter::Antialiasing);
-  lua_State *L = lua_;
+  lua_State *L = dub_L;
 
   const QRect &rect = option.rect;
 
-  if (!pushLuaCallback("paintItem")) return false;
+  if (!dub_pushcallback("paintItem")) return false;
 
-  // Deletable out of Lua
-  lua_pushclass2<Painter>(L, p, "mimas.Painter");
+  dub_pushudata(L, p, "mimas.Painter");
   lua_pushnumber(L, rect.x());
   lua_pushnumber(L, rect.y());
   lua_pushnumber(L, rect.width());
@@ -228,27 +222,17 @@ bool ListView::paintItem(
   lua_pushnumber(L, idx.row() + 1);
   lua_pushnumber(L, idx.column() + 1);
   // <func> <self> <Painter> <x> <y> <width> <height> <col> <row>
-  int status = lua_pcall(L, 8, 0, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'paintItem' callback: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);
-  }
+  dub_call(8, 0);
   return true;
 }
 
 
 void ListView::slider(int orientation, int action) {
-  lua_State *L = lua_;
-  if (!pushLuaCallback("slider")) return;
+  if (!dub_pushcallback("slider")) return;
+  lua_State *L = dub_L;
   lua_pushnumber(L, orientation);
   lua_pushnumber(L, action);
   // <func> <self> <dir> <action>
-  int status = lua_pcall(L, 3, 0, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'slider' callback: %s\n", lua_tostring(L, -1));
-  }
+  dub_call(3, 0);
 }
 
-} // mimas

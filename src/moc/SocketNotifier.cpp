@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'SocketNotifier.h'
 **
-** Created: Tue Mar 13 17:45:56 2012
+** Created: Sun Mar 18 14:03:28 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__SocketNotifier[] = {
+static const uint qt_meta_data_SocketNotifier[] = {
 
  // content:
        5,       // revision
@@ -31,41 +31,40 @@ static const uint qt_meta_data_mimas__SocketNotifier[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      30,   23,   22,   22, 0x08,
+      23,   16,   15,   15, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__SocketNotifier[] = {
-    "mimas::SocketNotifier\0\0socket\0"
-    "activatedSlot(int)\0"
+static const char qt_meta_stringdata_SocketNotifier[] = {
+    "SocketNotifier\0\0socket\0activatedSlot(int)\0"
 };
 
-const QMetaObject mimas::SocketNotifier::staticMetaObject = {
-    { &QSocketNotifier::staticMetaObject, qt_meta_stringdata_mimas__SocketNotifier,
-      qt_meta_data_mimas__SocketNotifier, 0 }
+const QMetaObject SocketNotifier::staticMetaObject = {
+    { &QSocketNotifier::staticMetaObject, qt_meta_stringdata_SocketNotifier,
+      qt_meta_data_SocketNotifier, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::SocketNotifier::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &SocketNotifier::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::SocketNotifier::metaObject() const
+const QMetaObject *SocketNotifier::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::SocketNotifier::qt_metacast(const char *_clname)
+void *SocketNotifier::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__SocketNotifier))
+    if (!strcmp(_clname, qt_meta_stringdata_SocketNotifier))
         return static_cast<void*>(const_cast< SocketNotifier*>(this));
-    if (!strcmp(_clname, "ThreadedLuaObject"))
-        return static_cast< ThreadedLuaObject*>(const_cast< SocketNotifier*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< SocketNotifier*>(this));
     return QSocketNotifier::qt_metacast(_clname);
 }
 
-int mimas::SocketNotifier::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int SocketNotifier::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QSocketNotifier::qt_metacall(_c, _id, _a);
     if (_id < 0)

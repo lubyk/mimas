@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'FileObserver.h'
 **
-** Created: Tue Mar 13 17:45:55 2012
+** Created: Sun Mar 18 14:03:27 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__FileObserver[] = {
+static const uint qt_meta_data_FileObserver[] = {
 
  // content:
        5,       // revision
@@ -31,41 +31,40 @@ static const uint qt_meta_data_mimas__FileObserver[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      26,   21,   20,   20, 0x08,
+      19,   14,   13,   13, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__FileObserver[] = {
-    "mimas::FileObserver\0\0path\0"
-    "pathChangedSlot(QString)\0"
+static const char qt_meta_stringdata_FileObserver[] = {
+    "FileObserver\0\0path\0pathChangedSlot(QString)\0"
 };
 
-const QMetaObject mimas::FileObserver::staticMetaObject = {
-    { &QFileSystemWatcher::staticMetaObject, qt_meta_stringdata_mimas__FileObserver,
-      qt_meta_data_mimas__FileObserver, 0 }
+const QMetaObject FileObserver::staticMetaObject = {
+    { &QFileSystemWatcher::staticMetaObject, qt_meta_stringdata_FileObserver,
+      qt_meta_data_FileObserver, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::FileObserver::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &FileObserver::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::FileObserver::metaObject() const
+const QMetaObject *FileObserver::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::FileObserver::qt_metacast(const char *_clname)
+void *FileObserver::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__FileObserver))
+    if (!strcmp(_clname, qt_meta_stringdata_FileObserver))
         return static_cast<void*>(const_cast< FileObserver*>(this));
-    if (!strcmp(_clname, "ThreadedLuaObject"))
-        return static_cast< ThreadedLuaObject*>(const_cast< FileObserver*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< FileObserver*>(this));
     return QFileSystemWatcher::qt_metacast(_clname);
 }
 
-int mimas::FileObserver::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int FileObserver::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QFileSystemWatcher::qt_metacall(_c, _id, _a);
     if (_id < 0)

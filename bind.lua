@@ -21,6 +21,7 @@ local ins = dub.Inspector {
   },
   --doc_dir = base .. '/tmp',
   --html = true,
+  --keep_xml = true,
 }
 
 local binder = dub.LuaBinder()

@@ -29,9 +29,6 @@
 #ifndef LUBYK_INCLUDE_MIMAS_CHECK_BOX_H_
 #define LUBYK_INCLUDE_MIMAS_CHECK_BOX_H_
 
-#include "lubyk.h"
-using namespace lubyk;
-
 #include "mimas/mimas.h"
 
 #include <QtGui/QCheckBox>

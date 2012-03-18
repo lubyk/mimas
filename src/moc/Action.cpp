@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Action.h'
 **
-** Created: Fri Mar 16 16:24:33 2012
+** Created: Sun Mar 18 14:03:27 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__Action[] = {
+static const uint qt_meta_data_Action[] = {
 
  // content:
        5,       // revision
@@ -31,40 +31,40 @@ static const uint qt_meta_data_mimas__Action[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      15,   14,   14,   14, 0x08,
+       8,    7,    7,    7, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__Action[] = {
-    "mimas::Action\0\0triggeredSlot()\0"
+static const char qt_meta_stringdata_Action[] = {
+    "Action\0\0triggeredSlot()\0"
 };
 
-const QMetaObject mimas::Action::staticMetaObject = {
-    { &QAction::staticMetaObject, qt_meta_stringdata_mimas__Action,
-      qt_meta_data_mimas__Action, 0 }
+const QMetaObject Action::staticMetaObject = {
+    { &QAction::staticMetaObject, qt_meta_stringdata_Action,
+      qt_meta_data_Action, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::Action::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &Action::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::Action::metaObject() const
+const QMetaObject *Action::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::Action::qt_metacast(const char *_clname)
+void *Action::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__Action))
+    if (!strcmp(_clname, qt_meta_stringdata_Action))
         return static_cast<void*>(const_cast< Action*>(this));
     if (!strcmp(_clname, "dub::Thread"))
         return static_cast< dub::Thread*>(const_cast< Action*>(this));
     return QAction::qt_metacast(_clname);
 }
 
-int mimas::Action::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int Action::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QAction::qt_metacall(_c, _id, _a);
     if (_id < 0)

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Application.h'
 **
-** Created: Fri Mar 16 16:31:41 2012
+** Created: Sun Mar 18 14:03:27 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__Application[] = {
+static const uint qt_meta_data_Application[] = {
 
  // content:
        5,       // revision
@@ -33,35 +33,35 @@ static const uint qt_meta_data_mimas__Application[] = {
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__Application[] = {
-    "mimas::Application\0"
+static const char qt_meta_stringdata_Application[] = {
+    "Application\0"
 };
 
-const QMetaObject mimas::Application::staticMetaObject = {
-    { &QApplication::staticMetaObject, qt_meta_stringdata_mimas__Application,
-      qt_meta_data_mimas__Application, 0 }
+const QMetaObject Application::staticMetaObject = {
+    { &QApplication::staticMetaObject, qt_meta_stringdata_Application,
+      qt_meta_data_Application, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::Application::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &Application::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::Application::metaObject() const
+const QMetaObject *Application::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::Application::qt_metacast(const char *_clname)
+void *Application::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__Application))
+    if (!strcmp(_clname, qt_meta_stringdata_Application))
         return static_cast<void*>(const_cast< Application*>(this));
     if (!strcmp(_clname, "dub::Thread"))
         return static_cast< dub::Thread*>(const_cast< Application*>(this));
     return QApplication::qt_metacast(_clname);
 }
 
-int mimas::Application::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int Application::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QApplication::qt_metacall(_c, _id, _a);
     if (_id < 0)

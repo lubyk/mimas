@@ -49,11 +49,9 @@ class Painter;
 class Widget : public QWidget, public dub::Thread {
   Q_OBJECT
   Q_PROPERTY(QString class READ cssClass)
-
   QString css_class_;
-public:
-  MIMAS_COMMON
 
+public:
   Widget(int window_flags)
     : QWidget(NULL, (Qt::WindowFlags)window_flags)
     , css_class_("widget") {

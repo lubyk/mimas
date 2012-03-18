@@ -91,6 +91,4 @@ public slots:
   }
 };
 
-} // mimas
-
 #endif // LUBYK_INCLUDE_MIMAS_CALLBACK_H_

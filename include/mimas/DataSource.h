@@ -74,6 +74,7 @@ protected:
   }
 
   virtual int rowCount(const QModelIndex &parent = QModelIndex()) const {
+    lua_State *L = const_cast<lua_State*>(dub_L);
     if (!dub_pushcallback("rowCount")) {
       return 0;
     }
@@ -89,6 +90,7 @@ protected:
 
   virtual int columnCount(const QModelIndex &parent = QModelIndex()) const {
     if (!dub_pushcallback("columnCount")) return 0;
+    lua_State *L = const_cast<lua_State*>(dub_L);
     // <func> <self>
     if (!dub_call(1, 1)) {
       return 0;
@@ -101,17 +103,16 @@ protected:
 
   virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const {
     if (role != Qt::DisplayRole) return QVariant();
-    lua_State *L = dub_L;
 
     if (!dub_pushcallback("data")) return QVariant();
+    lua_State *L = const_cast<lua_State*>(dub_L);
     lua_pushnumber(L, index.row() + 1);
     lua_pushnumber(L, index.column() + 1);
     // <func> <self> <row> <column>
-    int status = lua_pcall(L, 3, 1, 0);
-
     if (!dub_call(3, 1)) {
+      // failed
       return QVariant();
-    }
+    } 
     QVariant res = variantFromLua(L, -1);
     lua_pop(L, 1);
     return res;
@@ -119,14 +120,12 @@ protected:
 
   virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const {
     if (role != Qt::DisplayRole) return QVariant();
-    lua_State *L = dub_L;
 
     if (!dub_pushcallback("data")) return QVariant();
-    lua_pushnumber(L, index.row() + 1);
-    lua_pushnumber(L, index.column() + 1);
-    // <func> <self> <row> <column>
-    int status = lua_pcall(L, 3, 1, 0);
-
+    lua_State *L = const_cast<lua_State*>(dub_L);
+    lua_pushnumber(L, section + 1);
+    lua_pushnumber(L, orientation);
+    // <func> <self> <section> <orientation>
     if (!dub_call(3, 1)) {
       return QVariant();
     }

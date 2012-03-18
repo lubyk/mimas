@@ -1,9 +1,6 @@
-#include "mimas/GLSLWidget.h"
+#include "mimas/GLWidget.h"
 
-using namespace mimas;
-
-const GLchar* FragmentShader =
-{
+const GLchar* FragmentShader = {
     "#version 150\n"\
  
     "in vec4 ex_Color;\n"\
@@ -14,8 +11,8 @@ const GLchar* FragmentShader =
     "   out_Color = ex_Color;\n"\
     "}\n"
 };
-const GLchar* VertexShader =
-{
+
+const GLchar* VertexShader = {
     "#version 150\n"\
  
     "layout(location=0) in vec4 in_Position;\n"\
@@ -50,7 +47,7 @@ static bool compileShader(GLuint shader_id, const char *source) {
   return true;
 }
 
-void GLSLWidget::createShaders(const char *vertex_shader, const char *fragment_shader) {
+void GLWidget::createShaders(const char *vertex_shader, const char *fragment_shader) {
   GLenum ErrorCheckValue = glGetError();
 
   VertexShaderId = glCreateShader(GL_VERTEX_SHADER);

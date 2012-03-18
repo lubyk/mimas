@@ -108,7 +108,7 @@ class ListView : public QListView, public dub::Thread {
     // <self> <'data_source'>
     // <self>
     DataSource *data = new DataSource();
-    data->luaInit(L, data, "mimas.DataSource");
+    data->pushobject(L, data, "mimas.DataSource");
     // <self> <'data_source'> <data>
     lua_settable(L, -3); // self.data_source = data
     // <self>
@@ -134,13 +134,29 @@ class ListView : public QListView, public dub::Thread {
   void enableHtml(bool enable, const char *css = NULL);
       
 protected:
-  //--=============================================== COMMON CALLBACKS
+
+  //--=============================================== COMMON CALLBACKS [
   virtual void closeEvent(QCloseEvent *event) {
     Widget::closed(this, event);
   }
 
   virtual void mouseMoveEvent(QMouseEvent *event) {
     Widget::mouse(this, event);
+  }
+
+  virtual void mousePressEvent(QMouseEvent *event) {
+    if (!click(event, MousePress))
+      QListView::mousePressEvent(event);
+  }
+
+  virtual void mouseDoubleClickEvent(QMouseEvent *event) {
+    if (!click(event, DoubleClick))
+      QListView::mouseDoubleClickEvent(event);
+  }
+
+  virtual void mouseReleaseEvent(QMouseEvent *event) {
+    if (!click(event, MouseRelease))
+      QListView::mouseReleaseEvent(event);
   }
 
   virtual void resizeEvent(QResizeEvent *event) {
@@ -171,26 +187,7 @@ protected:
       QListView::keyReleaseEvent(event);
   }
 
-  // --=============================================== COMMON CALLBACKS END
-
-  virtual void mousePressEvent(QMouseEvent *event) {
-    if (!click(event, MousePress))
-      QListView::mousePressEvent(event);
-  }
-
-  virtual void mouseDoubleClickEvent(QMouseEvent *event) {
-    if (!click(event, DoubleClick))
-      QListView::mouseDoubleClickEvent(event);
-  }
-
-  virtual void mouseReleaseEvent(QMouseEvent *event) {
-    if (!click(event, MouseRelease))
-      QListView::mouseReleaseEvent(event);
-  }
-
-  virtual QSize sizeHint() const {
-    return size_hint_;
-  }
+  //--=============================================== COMMON CALLBACKS ]
 
 private slots:
 

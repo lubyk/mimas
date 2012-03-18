@@ -18,6 +18,14 @@ static int Timer__cast_(lua_State *L) {
   Timer *self = *((Timer **)dub_checksdata_n(L, 1, "mimas.Timer"));
   const char *key = luaL_checkstring(L, 2);
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
+  int key_h = dub_hash(key, 2);
+  switch(key_h) {
+    case 1: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
+      return 1;
+    }
+  }
   return 0;
 }
 
@@ -114,6 +122,77 @@ static int Timer_setInterval(lua_State *L) {
   return dub_error(L);
 }
 
+/** QString QObject::objectName() const
+ * bind/QObject.h:7
+ */
+static int Timer_objectName(lua_State *L) {
+  try {
+    Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
+    QByteArray s_self->objectName()_(self->objectName().toUtf8());
+    lua_pushlstring(L, s_self->objectName()_.constData(), s_self->objectName()_.size());
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "objectName: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "objectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QObject::setObjectName(const QString &name)
+ * bind/QObject.h:8
+ */
+static int Timer_setObjectName(lua_State *L) {
+  try {
+    Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
+    size_t name_sz_;
+    const char *name = dub_checklstring(L, 2, &name_sz_);
+    
+    self->setObjectName(QString::fromUtf8(name, name_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setObjectName: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setObjectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QVariant QObject::property(const char *name)
+ * bind/QObject.h:9
+ */
+static int Timer_property(lua_State *L) {
+  try {
+    Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
+    const char *name = dub_checkstring(L, 2);
+    pushVariantInLua(L, self->property(name))
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "property: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "property: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** bool QObject::setProperty(const char *name, const QVariant &value)
+ * bind/QObject.h:10
+ */
+static int Timer_setProperty(lua_State *L) {
+  try {
+    Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
+    const char *name = dub_checkstring(L, 2);
+    QVariant value(variantFromLua(L, 3));
+    lua_pushboolean(L, self->setProperty(name, value));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setProperty: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setProperty: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 
 
 // --=============================================== __tostring
@@ -133,6 +212,10 @@ static const struct luaL_Reg Timer_member_methods[] = {
   { "start"        , Timer_start          },
   { "stop"         , Timer_stop           },
   { "setInterval"  , Timer_setInterval    },
+  { "objectName"   , Timer_objectName     },
+  { "setObjectName", Timer_setObjectName  },
+  { "property"     , Timer_property       },
+  { "setProperty"  , Timer_setProperty    },
   { "__tostring"   , Timer___tostring     },
   { NULL, NULL},
 };

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Widget.h'
 **
-** Created: Tue Mar 13 17:45:55 2012
+** Created: Sun Mar 18 14:04:38 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__Widget[] = {
+static const uint qt_meta_data_Widget[] = {
 
  // content:
        5,       // revision
@@ -31,40 +31,40 @@ static const uint qt_meta_data_mimas__Widget[] = {
        0,       // signalCount
 
  // properties: name, type, flags
-      22,   14, 0x0a095001,
+      15,    7, 0x0a095001,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__Widget[] = {
-    "mimas::Widget\0QString\0class\0"
+static const char qt_meta_stringdata_Widget[] = {
+    "Widget\0QString\0class\0"
 };
 
-const QMetaObject mimas::Widget::staticMetaObject = {
-    { &QWidget::staticMetaObject, qt_meta_stringdata_mimas__Widget,
-      qt_meta_data_mimas__Widget, 0 }
+const QMetaObject Widget::staticMetaObject = {
+    { &QWidget::staticMetaObject, qt_meta_stringdata_Widget,
+      qt_meta_data_Widget, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::Widget::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &Widget::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::Widget::metaObject() const
+const QMetaObject *Widget::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::Widget::qt_metacast(const char *_clname)
+void *Widget::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__Widget))
+    if (!strcmp(_clname, qt_meta_stringdata_Widget))
         return static_cast<void*>(const_cast< Widget*>(this));
     if (!strcmp(_clname, "dub::Thread"))
         return static_cast< dub::Thread*>(const_cast< Widget*>(this));
     return QWidget::qt_metacast(_clname);
 }
 
-int mimas::Widget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int Widget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)

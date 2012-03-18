@@ -52,5 +52,4 @@ public:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_MENU_BAR_H_

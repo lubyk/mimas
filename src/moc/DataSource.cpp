@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'DataSource.h'
 **
-** Created: Tue Mar 13 17:45:55 2012
+** Created: Sun Mar 18 14:39:26 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__DataSource[] = {
+static const uint qt_meta_data_DataSource[] = {
 
  // content:
        5,       // revision
@@ -33,35 +33,35 @@ static const uint qt_meta_data_mimas__DataSource[] = {
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__DataSource[] = {
-    "mimas::DataSource\0"
+static const char qt_meta_stringdata_DataSource[] = {
+    "DataSource\0"
 };
 
-const QMetaObject mimas::DataSource::staticMetaObject = {
-    { &QAbstractItemModel::staticMetaObject, qt_meta_stringdata_mimas__DataSource,
-      qt_meta_data_mimas__DataSource, 0 }
+const QMetaObject DataSource::staticMetaObject = {
+    { &QAbstractItemModel::staticMetaObject, qt_meta_stringdata_DataSource,
+      qt_meta_data_DataSource, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::DataSource::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &DataSource::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::DataSource::metaObject() const
+const QMetaObject *DataSource::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::DataSource::qt_metacast(const char *_clname)
+void *DataSource::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__DataSource))
+    if (!strcmp(_clname, qt_meta_stringdata_DataSource))
         return static_cast<void*>(const_cast< DataSource*>(this));
-    if (!strcmp(_clname, "ThreadedLuaObject"))
-        return static_cast< ThreadedLuaObject*>(const_cast< DataSource*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< DataSource*>(this));
     return QAbstractItemModel::qt_metacast(_clname);
 }
 
-int mimas::DataSource::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int DataSource::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QAbstractItemModel::qt_metacall(_c, _id, _a);
     if (_id < 0)

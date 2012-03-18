@@ -38,7 +38,6 @@
 #include "mimas/mimas.h"
 #include "mimas/constants.h"
 
-using namespace lubyk;
 
 extern "C" {
 int luaopen_mimas_Action(lua_State *L);

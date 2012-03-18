@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'MenuBar.h'
 **
-** Created: Tue Mar 13 17:45:55 2012
+** Created: Sun Mar 18 14:53:01 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__MenuBar[] = {
+static const uint qt_meta_data_MenuBar[] = {
 
  // content:
        5,       // revision
@@ -33,35 +33,35 @@ static const uint qt_meta_data_mimas__MenuBar[] = {
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__MenuBar[] = {
-    "mimas::MenuBar\0"
+static const char qt_meta_stringdata_MenuBar[] = {
+    "MenuBar\0"
 };
 
-const QMetaObject mimas::MenuBar::staticMetaObject = {
-    { &QMenuBar::staticMetaObject, qt_meta_stringdata_mimas__MenuBar,
-      qt_meta_data_mimas__MenuBar, 0 }
+const QMetaObject MenuBar::staticMetaObject = {
+    { &QMenuBar::staticMetaObject, qt_meta_stringdata_MenuBar,
+      qt_meta_data_MenuBar, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::MenuBar::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &MenuBar::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::MenuBar::metaObject() const
+const QMetaObject *MenuBar::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::MenuBar::qt_metacast(const char *_clname)
+void *MenuBar::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__MenuBar))
+    if (!strcmp(_clname, qt_meta_stringdata_MenuBar))
         return static_cast<void*>(const_cast< MenuBar*>(this));
-    if (!strcmp(_clname, "ThreadedLuaObject"))
-        return static_cast< ThreadedLuaObject*>(const_cast< MenuBar*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< MenuBar*>(this));
     return QMenuBar::qt_metacast(_clname);
 }
 
-int mimas::MenuBar::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MenuBar::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QMenuBar::qt_metacall(_c, _id, _a);
     if (_id < 0)

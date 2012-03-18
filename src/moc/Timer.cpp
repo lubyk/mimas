@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Timer.h'
 **
-** Created: Tue Mar 13 17:45:56 2012
+** Created: Sun Mar 18 14:03:28 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__Timer[] = {
+static const uint qt_meta_data_Timer[] = {
 
  // content:
        5,       // revision
@@ -31,40 +31,40 @@ static const uint qt_meta_data_mimas__Timer[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      14,   13,   13,   13, 0x08,
+       7,    6,    6,    6, 0x08,
 
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__Timer[] = {
-    "mimas::Timer\0\0timeoutSlot()\0"
+static const char qt_meta_stringdata_Timer[] = {
+    "Timer\0\0timeoutSlot()\0"
 };
 
-const QMetaObject mimas::Timer::staticMetaObject = {
-    { &QTimer::staticMetaObject, qt_meta_stringdata_mimas__Timer,
-      qt_meta_data_mimas__Timer, 0 }
+const QMetaObject Timer::staticMetaObject = {
+    { &QTimer::staticMetaObject, qt_meta_stringdata_Timer,
+      qt_meta_data_Timer, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::Timer::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &Timer::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::Timer::metaObject() const
+const QMetaObject *Timer::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::Timer::qt_metacast(const char *_clname)
+void *Timer::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__Timer))
+    if (!strcmp(_clname, qt_meta_stringdata_Timer))
         return static_cast<void*>(const_cast< Timer*>(this));
-    if (!strcmp(_clname, "ThreadedLuaObject"))
-        return static_cast< ThreadedLuaObject*>(const_cast< Timer*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< Timer*>(this));
     return QTimer::qt_metacast(_clname);
 }
 
-int mimas::Timer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int Timer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QTimer::qt_metacall(_c, _id, _a);
     if (_id < 0)

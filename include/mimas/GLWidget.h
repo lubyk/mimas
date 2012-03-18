@@ -351,6 +351,5 @@ private:
 
 };
 
-} // mimas
-#endif // LUBYK_INCLUDE_MIMAS_GLSLWIDGET_H_
+#endif // LUBYK_INCLUDE_MIMAS_GLWIDGET_H_
 

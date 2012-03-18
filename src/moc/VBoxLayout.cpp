@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'VBoxLayout.h'
 **
-** Created: Tue Mar 13 17:45:56 2012
+** Created: Sun Mar 18 14:03:28 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__VBoxLayout[] = {
+static const uint qt_meta_data_VBoxLayout[] = {
 
  // content:
        5,       // revision
@@ -33,35 +33,35 @@ static const uint qt_meta_data_mimas__VBoxLayout[] = {
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__VBoxLayout[] = {
-    "mimas::VBoxLayout\0"
+static const char qt_meta_stringdata_VBoxLayout[] = {
+    "VBoxLayout\0"
 };
 
-const QMetaObject mimas::VBoxLayout::staticMetaObject = {
-    { &QVBoxLayout::staticMetaObject, qt_meta_stringdata_mimas__VBoxLayout,
-      qt_meta_data_mimas__VBoxLayout, 0 }
+const QMetaObject VBoxLayout::staticMetaObject = {
+    { &QVBoxLayout::staticMetaObject, qt_meta_stringdata_VBoxLayout,
+      qt_meta_data_VBoxLayout, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::VBoxLayout::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &VBoxLayout::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::VBoxLayout::metaObject() const
+const QMetaObject *VBoxLayout::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::VBoxLayout::qt_metacast(const char *_clname)
+void *VBoxLayout::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__VBoxLayout))
+    if (!strcmp(_clname, qt_meta_stringdata_VBoxLayout))
         return static_cast<void*>(const_cast< VBoxLayout*>(this));
-    if (!strcmp(_clname, "LuaObject"))
-        return static_cast< LuaObject*>(const_cast< VBoxLayout*>(this));
+    if (!strcmp(_clname, "dub::Thread"))
+        return static_cast< dub::Thread*>(const_cast< VBoxLayout*>(this));
     return QVBoxLayout::qt_metacast(_clname);
 }
 
-int mimas::VBoxLayout::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int VBoxLayout::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QVBoxLayout::qt_metacall(_c, _id, _a);
     if (_id < 0)

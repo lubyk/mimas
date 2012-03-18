@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'HBoxLayout.h'
 **
-** Created: Tue Mar 13 17:45:55 2012
+** Created: Sun Mar 18 14:03:28 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_mimas__HBoxLayout[] = {
+static const uint qt_meta_data_HBoxLayout[] = {
 
  // content:
        5,       // revision
@@ -33,35 +33,35 @@ static const uint qt_meta_data_mimas__HBoxLayout[] = {
        0        // eod
 };
 
-static const char qt_meta_stringdata_mimas__HBoxLayout[] = {
-    "mimas::HBoxLayout\0"
+static const char qt_meta_stringdata_HBoxLayout[] = {
+    "HBoxLayout\0"
 };
 
-const QMetaObject mimas::HBoxLayout::staticMetaObject = {
-    { &QHBoxLayout::staticMetaObject, qt_meta_stringdata_mimas__HBoxLayout,
-      qt_meta_data_mimas__HBoxLayout, 0 }
+const QMetaObject HBoxLayout::staticMetaObject = {
+    { &QHBoxLayout::staticMetaObject, qt_meta_stringdata_HBoxLayout,
+      qt_meta_data_HBoxLayout, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &mimas::HBoxLayout::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &HBoxLayout::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *mimas::HBoxLayout::metaObject() const
+const QMetaObject *HBoxLayout::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *mimas::HBoxLayout::qt_metacast(const char *_clname)
+void *HBoxLayout::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_mimas__HBoxLayout))
+    if (!strcmp(_clname, qt_meta_stringdata_HBoxLayout))
         return static_cast<void*>(const_cast< HBoxLayout*>(this));
-    if (!strcmp(_clname, "LuaObject"))
-        return static_cast< LuaObject*>(const_cast< HBoxLayout*>(this));
+    if (!strcmp(_clname, "dub::Object"))
+        return static_cast< dub::Object*>(const_cast< HBoxLayout*>(this));
     return QHBoxLayout::qt_metacast(_clname);
 }
 
-int mimas::HBoxLayout::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int HBoxLayout::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QHBoxLayout::qt_metacall(_c, _id, _a);
     if (_id < 0)

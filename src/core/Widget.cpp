@@ -46,20 +46,15 @@ void Widget::paintEvent(QPaintEvent *event) {
 }
 
 void Widget::paint(ThreadedLuaObject *obj, Painter *p, int w, int h) {
-  lua_State *L = obj->lua_;
+  lua_State *L = obj->dub_L;
 
-  if (!obj->pushLuaCallback("paint")) return;
+  if (!obj->dub_pushcallback("paint")) return;
 
-  // Deletable out of Lua
-  lua_pushclass2<Painter>(L, p, "mimas.Painter");
+  dub_pushudata(L, p, "mimas.Painter");
   lua_pushnumber(L, w);
   lua_pushnumber(L, h);
   // <func> <self> <Painter> <width> <height>
-  int status = lua_pcall(L, 4, 0, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'paint' callback: %s\n", lua_tostring(L, -1));
-  }
+  obj->dub_call(4, 0);
 }
 
 void Widget::resized(ThreadedLuaObject *obj, double width, double height) {

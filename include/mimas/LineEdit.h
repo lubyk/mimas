@@ -46,7 +46,7 @@ class LineEdit : public QLineEdit, public dub::Thread {
   Q_OBJECT
 public:
   LineEdit(const char *content = NULL, QWidget *parent = NULL)
-     : QLineEdit(content, parent), hue_(-1) {
+     : QLineEdit(content, parent) {
     QObject::connect(this, SIGNAL(editingFinished()),
                      this, SLOT(editingFinishedSlot()));
 
@@ -69,14 +69,13 @@ public:
 
 protected:
 
-  virtual void keyPressEvent(QKeyEvent *event) {
-    if (!Widget::keyboard(this, event, true))
-      QLineEdit::keyPressEvent(event);
+  //--=============================================== COMMON CALLBACKS [
+  virtual void closeEvent(QCloseEvent *event) {
+    Widget::closed(this, event);
   }
 
-  virtual void keyReleaseEvent(QKeyEvent *event) {
-    if (!Widget::keyboard(this, event, false))
-      QLineEdit::keyReleaseEvent(event);
+  virtual void mouseMoveEvent(QMouseEvent *event) {
+    Widget::mouse(this, event);
   }
 
   virtual void mousePressEvent(QMouseEvent *event) {
@@ -94,22 +93,55 @@ protected:
       QLineEdit::mouseReleaseEvent(event);
   }
 
-  virtual void moveEvent(QMoveEvent * event);
-  virtual void resizeEvent(QResizeEvent *event);
+  virtual void resizeEvent(QResizeEvent *event) {
+    Widget::resized(this, width(), height());
+  }
 
-private:
-  virtual void paintEvent(QPaintEvent *event);
+  virtual void moveEvent(QMoveEvent * event) {
+    Widget::moved(this, event);
+  }
 
+  // Not sure this is useful
+
+  // virtual void showEvent(QShowEvent *event) {
+  //   Widget::showHide(this, true);
+  // }
+
+  // virtual void hideEvent(QHideEvent *event) {
+  //   Widget::showHide(this, false);
+  // }
+
+  virtual void keyPressEvent(QKeyEvent *event) {
+    if (!Widget::keyboard(this, event, true))
+      QLineEdit::keyPressEvent(event);
+  }
+
+  virtual void keyReleaseEvent(QKeyEvent *event) {
+    if (!Widget::keyboard(this, event, false))
+      QLineEdit::keyReleaseEvent(event);
+  }
+
+  //--=============================================== COMMON CALLBACKS ]
 private slots:
 
   // set function to call on text change
   // textChanged(const QString & text)
 
   // connected to the editingFinished signal
-	void editingFinishedSlot();
+  void editingFinishedSlot() {
+    if (!dub_pushcallback("editingFinished")) return;
+    lua_pushstring(dub_L, text());
+    // <func> <self> <text>
+    dub_call(2, 0);
+  }
 
   // connected to the textEdited signal
-	void textEditedSlot(const QString &text);
+  void textEditedSlot(const QString &text) {
+    if (!dub_pushcallback("textEdited")) return;
+    lua_pushstring(dub_L, text.toUtf8().data());
+    // <func> <self> <text>
+    dub_call(2, 0);
+  }
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_LINE_EDIT_H_

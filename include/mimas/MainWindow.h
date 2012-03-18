@@ -127,10 +127,6 @@ protected:
   }
 
   // --=============================================== COMMON CALLBACKS END
-
-  virtual QSize sizeHint() const {
-    return size_hint_;
-  }
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_MAIN_WINDOW_H_
