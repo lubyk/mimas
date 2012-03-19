@@ -20,7 +20,6 @@ else(QT_SRC_PATH STREQUAL "")
   set(MOC "${QT_SRC_PATH}/bin/moc")
 endif(QT_SRC_PATH STREQUAL "")
 
-add_custom_target("${MODULE_NAME}_moc" true)
 set(SUB_MODULE_HEADERS_MOC "")
 foreach(MOC_SRC ${SUB_MODULE_HEADERS})
   get_filename_component(MOC_SRC_NAME ${MOC_SRC} NAME_WE)
@@ -32,7 +31,6 @@ foreach(MOC_SRC ${SUB_MODULE_HEADERS})
   )
   list(APPEND SUB_MODULE_HEADERS_MOC ${OUT_FILE})
 endforeach(MOC_SRC SUB_MODULE_HEADERS)
-add_dependencies("${MODULE_NAME}_moc" ${SUB_MODULE_HEADERS_MOC})
 
 # --------------------------------------------------------------
 #  Qt
@@ -70,8 +68,8 @@ add_subdirectory(glew)
 # --------------------------------------------------------------
 #  core
 # --------------------------------------------------------------
-file(GLOB CORE_SOURCES core/bind/dub/*.cpp core/bind/*.cpp core/*.cpp core/${PLAT}/*.cpp core/${PLAT}/*.mm moc/*.cpp)
-add_library("${MODULE_NAME}_core" MODULE ${CORE_SOURCES})
+file(GLOB CORE_SOURCES core/bind/dub/*.cpp core/bind/*.cpp core/*.cpp core/${PLAT}/*.cpp core/${PLAT}/*.mm)
+add_library("${MODULE_NAME}_core" MODULE ${CORE_SOURCES} ${SUB_MODULE_HEADERS_MOC})
 set_target_properties("${MODULE_NAME}_core"
   PROPERTIES OUTPUT_NAME core
   LINK_FLAGS ${PLAT_OBJ_FLAGS}
@@ -85,6 +83,5 @@ target_link_libraries("${MODULE_NAME}_core"
   ${CMAKE_CURRENT_SOURCE_DIR}/glew/vendor/lib/libGLEW.a
 )
 add_dependencies("${MODULE_NAME}_core" glew_make)
-add_dependencies("${MODULE_NAME}_core" "${MODULE_NAME}_moc")
 
 add_dependencies(${MODULE_NAME} "${MODULE_NAME}_core")

@@ -209,8 +209,7 @@ static int ListView_property(lua_State *L) {
   try {
     ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {

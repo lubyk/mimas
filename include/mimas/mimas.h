@@ -49,6 +49,6 @@ enum ClickTypes {
   } \
 
 QVariant variantFromLua(lua_State *L, int index);
-void pushVariantInLua(lua_State *L, const QVariant &value);
+int pushVariantInLua(lua_State *L, const QVariant &value);
 
 #endif // LUBYK_INCLUDE_MIMAS_MIMAS_H_

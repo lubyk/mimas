@@ -126,8 +126,25 @@ static int Widget_setCssClass(lua_State *L) {
   return dub_error(L);
 }
 
+/** void Widget::setStyle(const char *text)
+ * include/mimas/Widget.h:79
+ */
+static int Widget_setStyle(lua_State *L) {
+  try {
+    Widget *self = *((Widget **)dub_checksdata(L, 1, "mimas.Widget"));
+    const char *text = dub_checkstring(L, 2);
+    self->setStyle(text);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setStyle: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setStyle: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 /** LuaStackSize Widget::getOpenFileName(const char *caption, const char *base_dir, const char *filter, int options, lua_State *L)
- * include/mimas/Widget.h:84
+ * include/mimas/Widget.h:88
  */
 static int Widget_getOpenFileName(lua_State *L) {
   try {
@@ -146,7 +163,7 @@ static int Widget_getOpenFileName(lua_State *L) {
 }
 
 /** LuaStackSize Widget::getExistingDirectory(const char *caption, const char *base_dir, int options, lua_State *L)
- * include/mimas/Widget.h:88
+ * include/mimas/Widget.h:92
  */
 static int Widget_getExistingDirectory(lua_State *L) {
   try {
@@ -163,25 +180,8 @@ static int Widget_getExistingDirectory(lua_State *L) {
   return dub_error(L);
 }
 
-/** static bool Widget::mouse(dub::Thread *obj, QMouseEvent *event)
- * include/mimas/Widget.h:93
- */
-static int Widget_mouse(lua_State *L) {
-  try {
-    dub::Thread *obj = *((dub::Thread **)dub_checksdata(L, 1, "dub::Thread"));
-    QMouseEvent *event = *((QMouseEvent **)dub_checksdata(L, 2, "QMouseEvent"));
-    lua_pushboolean(L, Widget::mouse(obj, event));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "mouse: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "mouse: Unknown exception");
-  }
-  return dub_error(L);
-}
-
 /** static void Widget::showHide(dub::Thread *obj, bool shown)
- * include/mimas/Widget.h:99
+ * include/mimas/Widget.h:103
  */
 static int Widget_showHide(lua_State *L) {
   try {
@@ -240,8 +240,7 @@ static int Widget_property(lua_State *L) {
   try {
     Widget *self = *((Widget **)dub_checksdata(L, 1, "mimas.Widget"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {
@@ -718,23 +717,6 @@ static int Widget_size(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:49
- */
-static int Widget_setStyle(lua_State *L) {
-  try {
-    Widget *self = *((Widget **)dub_checksdata(L, 1, "mimas.Widget"));
-    const char *text = dub_checkstring(L, 2);
-    self->setStyle(text);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setStyle: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setStyle: Unknown exception");
-  }
-  return dub_error(L);
-}
-
 /** void QWidget::setStyleSheet(const char *text)
  * bind/QWidget.h:50
  */
@@ -911,9 +893,9 @@ static const struct luaL_Reg Widget_member_methods[] = {
   { "__gc"         , Widget__Widget       },
   { "cssClass"     , Widget_cssClass      },
   { "setCssClass"  , Widget_setCssClass   },
+  { "setStyle"     , Widget_setStyle      },
   { "getOpenFileName", Widget_getOpenFileName },
   { "getExistingDirectory", Widget_getExistingDirectory },
-  { "mouse"        , Widget_mouse         },
   { "showHide"     , Widget_showHide      },
   { "objectName"   , Widget_objectName    },
   { "setObjectName", Widget_setObjectName },
@@ -946,7 +928,6 @@ static const struct luaL_Reg Widget_member_methods[] = {
   { "windowTitle"  , Widget_windowTitle   },
   { "addWidget"    , Widget_addWidget     },
   { "size"         , Widget_size          },
-  { "setStyle"     , Widget_setStyle      },
   { "setStyleSheet", Widget_setStyleSheet },
   { "textSize"     , Widget_textSize      },
   { "setSizePolicy", Widget_setSizePolicy },

@@ -6,8 +6,8 @@
   Portable GUI scripted in Lua and compatible with Lubyk.
 
 --]]------------------------------------------------------
-require 'mimas.core'
 mimas = Autoload('mimas', mimas)
+require 'mimas.core'
 
 --=============================================== app
 local singleApp = mimas.Application()
@@ -18,7 +18,7 @@ end
 --=============================================== scheduler
 -- First calls to Window creation in mimas should
 -- yield so that the mimas scheduler can start
-function mimas.bootstrap(class_name, func, ...)
+function mimas.bootstrap(base, func, ...)
   if sched.mimas then
     -- already running mimas
   else
@@ -29,16 +29,9 @@ function mimas.bootstrap(class_name, func, ...)
   end
   -- Replace bootstrapping constructor by original
   -- function for further calls.
-  mimas[class_name] = func
+  base.new = func
   return func(...)
 end
-
--- no need for a custom loader for these
-mimas.Brush   = mimas_core.Brush
-mimas.Color   = mimas_core.Color
-mimas.Pen     = mimas_core.Pen
-mimas.Painter = mimas_core.Painter
-mimas.Path    = mimas_core.Path
 
 mimas.WhitePen   = mimas.Pen(1, 0, 0, 1)
 mimas.WhiteBrush = mimas.Brush(0, 0, 1)
@@ -62,7 +55,4 @@ mimas.colors = {
   Pink      = mimas.Color(300 / 360),
   Purple    = mimas.Color(275 / 360),
 }
-
-mimas.ESC   = 16777216
-mimas.Space = 32
 

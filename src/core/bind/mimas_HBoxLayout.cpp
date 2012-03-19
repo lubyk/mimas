@@ -348,8 +348,7 @@ static int HBoxLayout_property(lua_State *L) {
   try {
     HBoxLayout *self = *((HBoxLayout **)dub_checksdata(L, 1, "mimas.HBoxLayout"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {

@@ -7,11 +7,10 @@
   or shortcut.
 
 --]]------------------------------------------------------
-local constr  = mimas_core.Action
-local mt      = mimas_core.Action_
-mimas.Action_ = mt
+local lib = mimas.Action_core
+mimas.Action = lib
 
-function mimas.Action(title, parent, func)
+function lib.new(title, parent, func)
   local self
   if not func then
     if type(parent) == 'function' then
@@ -20,7 +19,7 @@ function mimas.Action(title, parent, func)
     end
   end
   if parent then
-    self = constr(title, parent:object())
+    self = constr(title, parent)
   else
     self = constr(title)
   end

@@ -46,28 +46,8 @@ static int Painter_Painter(lua_State *L) {
   return dub_error(L);
 }
 
-/** Painter::~Painter()
- * include/mimas/Painter.h:54
- */
-static int Painter__Painter(lua_State *L) {
-  try {
-    DubUserdata *userdata = ((DubUserdata*)dub_checksdata_d(L, 1, "mimas.Painter"));
-    if (userdata->gc) {
-      Painter *self = (Painter *)userdata->ptr;
-      self->noDestroy();
-    }
-    userdata->gc = false;
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "~Painter: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "~Painter: Unknown exception");
-  }
-  return dub_error(L);
-}
-
 /** void Painter::setPen(float width, const Color &color)
- * include/mimas/Painter.h:62
+ * include/mimas/Painter.h:57
  */
 static int Painter_setPen(lua_State *L) {
   try {
@@ -117,7 +97,7 @@ static int Painter_setPen(lua_State *L) {
 }
 
 /** void Painter::setBrush(float h, float s=1.0, float v=1.0, float a=1.0)
- * include/mimas/Painter.h:72
+ * include/mimas/Painter.h:67
  */
 static int Painter_setBrush(lua_State *L) {
   try {
@@ -155,7 +135,7 @@ static int Painter_setBrush(lua_State *L) {
 }
 
 /** void Painter::drawRect(float x, float y, float w, float h)
- * include/mimas/Painter.h:85
+ * include/mimas/Painter.h:80
  */
 static int Painter_drawRect(lua_State *L) {
   try {
@@ -175,7 +155,7 @@ static int Painter_drawRect(lua_State *L) {
 }
 
 /** void Painter::drawRoundedRect(float x, float y, float w, float h, float xRadius, lua_State *L)
- * include/mimas/Painter.h:91
+ * include/mimas/Painter.h:86
  */
 static int Painter_drawRoundedRect(lua_State *L) {
   try {
@@ -196,7 +176,7 @@ static int Painter_drawRoundedRect(lua_State *L) {
 }
 
 /** void Painter::drawText(float x, float y, float w, float h, int flags, const char *text)
- * include/mimas/Painter.h:98
+ * include/mimas/Painter.h:93
  */
 static int Painter_drawText(lua_State *L) {
   try {
@@ -328,7 +308,6 @@ static int Painter___tostring(lua_State *L) {
 static const struct luaL_Reg Painter_member_methods[] = {
   { "_cast_"       , Painter__cast_       },
   { "new"          , Painter_Painter      },
-  { "__gc"         , Painter__Painter     },
   { "setPen"       , Painter_setPen       },
   { "setBrush"     , Painter_setBrush     },
   { "drawRect"     , Painter_drawRect     },

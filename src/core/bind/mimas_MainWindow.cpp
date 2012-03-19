@@ -172,8 +172,7 @@ static int MainWindow_property(lua_State *L) {
   try {
     MainWindow *self = *((MainWindow **)dub_checksdata(L, 1, "mimas.MainWindow"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {

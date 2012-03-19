@@ -46,7 +46,7 @@ class Painter;
  * @see QWidget
  * @dub push: pushobject
  *      register: Widget_core
- *      ignore: keyboard, click, paint, resized, moved, closed, paint
+ *      ignore: keyboard, mouse, click, paint, resized, moved, closed, paint
  */
 class Widget : public QWidget, public dub::Thread {
   Q_OBJECT
@@ -74,6 +74,10 @@ public:
   void setCssClass(const char *css_class) {
     css_class_ = css_class;
     update();
+  }
+
+  void setStyle(const char *text) {
+    setStyleSheet(QString(".%1 { %2 }").arg(css_class_).arg(text));
   }
 
   // ============================================================ Dialog

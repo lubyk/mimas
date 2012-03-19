@@ -36,13 +36,13 @@
 #include "mimas/Brush.h"
 
 #include <QtGui/QPainter>
-//#include <QtGui/QPainter>
+#include <QtGui/QWidget>
 
 #include <iostream>
 
 /** Painter.
  *
- * @dub destructor: 'noDestroy'
+ * @dub destructor: false
  */
 class Painter : public QPainter {
 public:
@@ -52,11 +52,6 @@ public:
   }
 
   ~Painter() {
-  }
-
-  // FIXME: temporary hack until we can use new dub with "NO DESTROY"
-  void noDestroy(lua_State *L) {
-    // noop
   }
 
   void setPen(float width, const Color &color) {

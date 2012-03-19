@@ -43,8 +43,8 @@ setmetatable(lib, {
 })
 
 local zmq_to_mimas_ev = {
-  [zmq.POLLIN]  = mimas.SocketNotifier_const.Read,
-  [zmq.POLLOUT] = mimas.SocketNotifier_const.Write,
+  [zmq.POLLIN]  = mimas.SocketNotifier.Read,
+  [zmq.POLLOUT] = mimas.SocketNotifier.Write,
 }
 
 function private.makeNotifier(self, fd, event)

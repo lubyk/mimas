@@ -45,7 +45,7 @@
  *      register: Application_core
  *      constructor: MakeApplication
  *      destrucor: luaDestroy
- *      ignore: event
+ *      ignore: event, sAppKey
  *      super: 'QObject'
  */
 class Application : public QApplication, public dub::Thread {
@@ -115,9 +115,8 @@ public:
   
 
   /** Key to retrieve 'this' value from a running thread.
-   * FIXME: is this used ?
    */
-  // static pthread_key_t sAppKey;
+  static pthread_key_t sAppKey;
 
   /** Thread should stop. */
   static void terminate(int sig);

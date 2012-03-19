@@ -38,7 +38,8 @@
  * callback on call (or shortcut).
  *
  * @see QAction
- * @dub push: pushobject
+ * @dub register: Action_core
+ *      push: pushobject
  */
 class Action : public QAction, public dub::Thread {
   Q_OBJECT

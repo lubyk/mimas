@@ -27,7 +27,7 @@ local function new(parent, flag)
 end
 
 function lib.new(...)
-  return mimas.bootstrap('Widget', new, ...)
+  return mimas.bootstrap(lib, new, ...)
 end
 
 

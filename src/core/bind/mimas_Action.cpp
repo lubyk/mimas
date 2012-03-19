@@ -35,7 +35,7 @@ static int Action__cast_(lua_State *L) {
 }
 
 /** Action::Action(const char *name, QObject *parent=0)
- * include/mimas/Action.h:47
+ * include/mimas/Action.h:48
  */
 static int Action_Action(lua_State *L) {
   try {
@@ -61,7 +61,7 @@ static int Action_Action(lua_State *L) {
 }
 
 /** void Action::setShortcut(const char *sequence)
- * include/mimas/Action.h:55
+ * include/mimas/Action.h:56
  */
 static int Action_setShortcut(lua_State *L) {
   try {
@@ -78,7 +78,7 @@ static int Action_setShortcut(lua_State *L) {
 }
 
 /** void Action::setMenuRole(int role)
- * include/mimas/Action.h:61
+ * include/mimas/Action.h:62
  */
 static int Action_setMenuRole(lua_State *L) {
   try {
@@ -95,7 +95,7 @@ static int Action_setMenuRole(lua_State *L) {
 }
 
 /** Action::~Action()
- * include/mimas/Action.h:65
+ * include/mimas/Action.h:66
  */
 static int Action__Action(lua_State *L) {
   try {
@@ -157,8 +157,7 @@ static int Action_property(lua_State *L) {
   try {
     Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {
@@ -361,7 +360,7 @@ extern "C" int luaopen_mimas_Action(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Action_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Action");
+  dub_register(L, "mimas", "Action_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

@@ -100,8 +100,8 @@ class ListView : public QListView, public dub::Thread {
         selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
   }
 
-  int pushobject(lua_State *L, ListView *obj, const char *class_name) {
-    dub::Thread::pushobject(L, obj, class_name);
+  int pushobject(lua_State *L, ListView *obj, const char *class_name, bool gc=true) {
+    dub::Thread::pushobject(L, obj, class_name, gc);
     // <self>
     lua_pushlstring(L, "data_source", 11);
     // <self> <'data_source'>

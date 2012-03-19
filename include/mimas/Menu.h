@@ -42,7 +42,8 @@
  *
  * @see MenuBar
  * @see QMenu
- * @dub push: pushobject
+ * @dub register: Menu_core
+ *      push: pushobject
  */
 class Menu : public QMenu, public dub::Thread {
   Q_OBJECT

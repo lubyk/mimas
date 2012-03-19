@@ -31,6 +31,7 @@
 #include "mimas/Callback.h"
 
 #include <QtCore/QVariant>
+#include <QtCore/QRectF>
 
 // create value for Callback::Event type here
 const QEvent::Type Callback::EventType = static_cast<QEvent::Type>(QEvent::registerEventType());
@@ -55,3 +56,25 @@ QVariant variantFromLua(lua_State *L, int index) {
   }
 }
 
+int pushVariantInLua(lua_State *L, const QVariant &value) {
+  int ret = 0;
+  if (value.canConvert(QVariant::String)) {
+    QByteArray str(value.toString().toUtf8());
+    lua_pushlstring(L, str.constData(), str.size());
+    ret = 1;
+  } else if (value.canConvert(QVariant::Double)) {
+    double d = value.toDouble();
+    lua_pushnumber(L, d);
+    ret = 1;
+  } else if (value.canConvert(QVariant::Rect)) {
+    QRectF r(value.toRectF());
+    lua_pushnumber(L, r.x());
+    lua_pushnumber(L, r.y());
+    ret = 2;
+  } else if (value.canConvert(QVariant::Bool)) {
+    bool b(value.toBool());
+    lua_pushboolean(L, b);
+    ret = 1;
+  }
+  return ret;
+}

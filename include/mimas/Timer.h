@@ -35,8 +35,9 @@
 
 /** The Timer class calls the "timeout" callback at regular intervals.
  *
- * @dub lib_name:'Timer_core'
- *      super: 'QObject'
+ * @dub register: Timer_core
+ *      push: pushobject
+ *      super: QObject
  */
 class Timer : public QTimer, public dub::Thread {
   Q_OBJECT

@@ -7,13 +7,10 @@
   within mimas event loop.
 
 --]]------------------------------------------------------
-local constr               = mimas_core.SocketNotifier
-local mt                   = mimas_core.SocketNotifier_
-mimas.SocketNotifier_      = mt
-mimas.SocketNotifier       = constr
-mimas.SocketNotifier_const = mimas_core.SocketNotifier_const
+local lib = mimas.SocketNotifier_core
+mimas.SocketNotifier = lib
 
-function mimas.SocketNotifier(...)
-  return mimas.bootstrap('SocketNotifier', constr, ...)
+function lib.new(...)
+  return mimas.bootstrap(lib, new, ...)
 end
 

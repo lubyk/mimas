@@ -132,7 +132,7 @@ static int Application_processEvents(lua_State *L) {
 }
 
 /** void Application::quit()
- * include/mimas/Application.h:125
+ * include/mimas/Application.h:124
  */
 static int Application_quit(lua_State *L) {
   try {
@@ -148,7 +148,7 @@ static int Application_quit(lua_State *L) {
 }
 
 /** void Application::setStyleSheet(const char *text)
- * include/mimas/Application.h:129
+ * include/mimas/Application.h:128
  */
 static int Application_setStyleSheet(lua_State *L) {
   try {
@@ -165,7 +165,7 @@ static int Application_setStyleSheet(lua_State *L) {
 }
 
 /** LuaStackSize Application::styleSheet(lua_State *L)
- * include/mimas/Application.h:133
+ * include/mimas/Application.h:132
  */
 static int Application_styleSheet(lua_State *L) {
   try {
@@ -180,7 +180,7 @@ static int Application_styleSheet(lua_State *L) {
 }
 
 /** LuaStackSize Application::screenSize(lua_State *L)
- * include/mimas/Application.h:141
+ * include/mimas/Application.h:140
  */
 static int Application_screenSize(lua_State *L) {
   try {
@@ -195,7 +195,7 @@ static int Application_screenSize(lua_State *L) {
 }
 
 /** void Application::singleShot(int msec, QObject *receiver, const char *member)
- * include/mimas/Application.h:152
+ * include/mimas/Application.h:151
  */
 static int Application_singleShot(lua_State *L) {
   try {
@@ -228,7 +228,7 @@ static int Application_MakeApplication(lua_State *L) {
 }
 
 /** static void Application::terminate(int sig)
- * include/mimas/Application.h:123
+ * include/mimas/Application.h:122
  */
 static int Application_terminate(lua_State *L) {
   try {
@@ -286,8 +286,7 @@ static int Application_property(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {

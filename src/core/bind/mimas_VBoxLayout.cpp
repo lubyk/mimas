@@ -364,8 +364,7 @@ static int VBoxLayout_property(lua_State *L) {
   try {
     VBoxLayout *self = *((VBoxLayout **)dub_checksdata(L, 1, "mimas.VBoxLayout"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {

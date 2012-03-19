@@ -30,13 +30,13 @@ static int Timer__cast_(lua_State *L) {
 }
 
 /** Timer::Timer(int timeout)
- * include/mimas/Timer.h:49
+ * include/mimas/Timer.h:50
  */
 static int Timer_Timer(lua_State *L) {
   try {
     int timeout = dub_checkint(L, 1);
     Timer *retval__ = new Timer(timeout);
-    dub_pushudata(L, retval__, "mimas.Timer", true);
+    retval__->pushobject(L, retval__, "mimas.Timer", true);
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "Timer: %s", e.what());
@@ -47,7 +47,7 @@ static int Timer_Timer(lua_State *L) {
 }
 
 /** virtual Timer::~Timer()
- * include/mimas/Timer.h:56
+ * include/mimas/Timer.h:57
  */
 static int Timer__Timer(lua_State *L) {
   try {
@@ -67,7 +67,7 @@ static int Timer__Timer(lua_State *L) {
 }
 
 /** void Timer::start(int timeout)
- * include/mimas/Timer.h:59
+ * include/mimas/Timer.h:60
  */
 static int Timer_start(lua_State *L) {
   try {
@@ -90,7 +90,7 @@ static int Timer_start(lua_State *L) {
 }
 
 /** void Timer::stop()
- * include/mimas/Timer.h:67
+ * include/mimas/Timer.h:68
  */
 static int Timer_stop(lua_State *L) {
   try {
@@ -106,7 +106,7 @@ static int Timer_stop(lua_State *L) {
 }
 
 /** void Timer::setInterval(int msec)
- * include/mimas/Timer.h:71
+ * include/mimas/Timer.h:72
  */
 static int Timer_setInterval(lua_State *L) {
   try {
@@ -165,8 +165,7 @@ static int Timer_property(lua_State *L) {
   try {
     Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {
@@ -230,7 +229,7 @@ extern "C" int luaopen_mimas_Timer(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Timer_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Timer");
+  dub_register(L, "mimas", "Timer_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

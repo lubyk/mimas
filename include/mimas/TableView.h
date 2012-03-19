@@ -29,8 +29,8 @@
 #ifndef LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
 #define LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
 
-#include "mimas/mimas.h"
 #include "mimas/DataSource.h"
+#include "mimas/Action.h"
 
 #include <QtGui/QTableView>
 #include <QtGui/QHeaderView>
@@ -99,8 +99,8 @@ public:
     QTableView::setModel(model);
   }
 
-  int pushobject(lua_State *L, TableView *obj, const char *class_name) {
-    dub::Thread::pushobject(L, obj, class_name);
+  int pushobject(lua_State *L, TableView *obj, const char *class_name, bool gc = true) {
+    dub::Thread::pushobject(L, obj, class_name, gc);
     // <self>
     lua_pushlstring(L, "data_source", 5);
     // <self> <'data_source'>

@@ -6,12 +6,12 @@
   ...
 
 --]]------------------------------------------------------
-local constr    = mimas_core.CheckBox
-local lib       = mimas_core.CheckBox_
-mimas.CheckBox_ = lib
+local lib      = mimas.CheckBox_core
+mimas.CheckBox = lib
 
 local MousePress = mimas.MousePress
-function mimas.CheckBox(title, parent, func)
+local constr = lib.new
+function lib.new(title, parent, func)
   local self
   if not func then
     if type(parent) == 'function' then
@@ -20,7 +20,7 @@ function mimas.CheckBox(title, parent, func)
     end
   end
   if parent then
-    self = constr(title, parent:widget())
+    self = constr(title, parent)
   else
     self = constr(title)
   end

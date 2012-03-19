@@ -40,9 +40,9 @@
 
 /** Calls a lua function back.
  *
- * @dub lib_name:'Callback_core'
- *      ignore: 'callback'
- *      super: 'QObject'
+ * @dub register: Callback_core
+ *      ignore: callback
+ *      super: QObject
  */
 class Callback : public QObject, public dub::Thread {
   Q_OBJECT

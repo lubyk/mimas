@@ -7,13 +7,10 @@
   be inserted in a MenuBar (with addMenu).
 
 --]]------------------------------------------------------
-local constr  = mimas_core.Menu
-local mt      = mimas_core.Menu_
-mimas.Menu_   = mt
-mimas.Menu    = constr
+local lib = mimas.Menu_core
 
-local addAction = mt.addAction
-function mt:addAction(title, shortcut, func)
+local addAction = lib.addAction
+function lib:addAction(title, shortcut, func)
   local action
   if type(title) == 'table' then
     -- we suppose that we have an action

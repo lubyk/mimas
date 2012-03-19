@@ -53,7 +53,7 @@ binder:addCustomTypes {
     end,
     -- Push value in Lua
     push   = function(name)
-      return format('pushVariantInLua(L, %s);', name)
+      return format('return pushVariantInLua(L, %s);', name)
     end,
   },
 }

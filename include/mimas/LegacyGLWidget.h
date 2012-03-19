@@ -110,41 +110,23 @@ protected:
   }
 
   virtual void initializeGL() {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("initializeGL")) return;
+    if (!dub_pushcallback("initializeGL")) return;
     // <func> <self>
-    int status = lua_pcall(L, 1, 0, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in 'initializeGL' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(1, 0);
   }
 
   virtual void resizeGL(int width, int height) {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("resizeGL")) return;
-    lua_pushnumber(L, width);
-    lua_pushnumber(L, height);
+    if (!dub_pushcallback("resizeGL")) return;
+    lua_pushnumber(dub_L, width);
+    lua_pushnumber(dub_L, height);
     // <func> <self> <width> <height>
-    int status = lua_pcall(L, 3, 0, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in 'resizeGL' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(3, 0);
   }
 
   virtual void paintGL() {
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("paintGL")) return;
+    if (!dub_pushcallback("paintGL")) return;
     // <func> <self>
-    int status = lua_pcall(L, 1, 0, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in 'paintGL' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(1, 0);
   }
 
   virtual void mousePressEvent(QMouseEvent *event) {

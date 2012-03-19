@@ -6,12 +6,11 @@
   GUI event callback (can be connected to widget signals).
 
 --]]------------------------------------------------------
-local constr    = mimas_core.Callback
-local mt        = mimas_core.Callback_
-mimas.Callback_ = mt
-local connect = mt.connect
+local lib    = mimas.Callback_core
+local constr = lib.new
+mimas.Callback = lib
 
-function mt.connect(self, other, target)
+function lib:connect(other, target)
   local callback = nil
   if string.match(target, '%(double%)') then
     callback = '1callback(double)'
@@ -28,11 +27,11 @@ function mt.connect(self, other, target)
   connect(self, other:object(), target, callback)
 end
 
-function mt:callback()
+function lib:callback()
   print('dummy callback')
 end
 
-function mimas.Callback(func)
+function lib.new(func)
   local self = constr()
   self.callback = func
   return self

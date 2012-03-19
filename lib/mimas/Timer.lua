@@ -6,13 +6,11 @@
   Simple timer.
 
 --]]------------------------------------------------------
-local constr               = mimas_core.Timer
-local mt                   = mimas_core.Timer_
-mimas.Timer_      = mt
-mimas.Timer       = constr
-mimas.Timer_const = mimas_core.Timer_const
+local lib = mimas.Timer_core
+mimas.Timer = lib
 
-local function Timer(msec, func)
+local constr = lib.new
+local function new(msec, func)
   local self = constr(msec)
   if func then
     self.timeout = func
@@ -20,7 +18,7 @@ local function Timer(msec, func)
   return self
 end
 
-function mimas.Timer(...)
-  return mimas.bootstrap('Timer', Timer, ...)
+function lib.new(...)
+  return mimas.bootstrap(lib, new, ...)
 end
 

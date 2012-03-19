@@ -76,8 +76,7 @@ int luaopen_mimas_Widget(lua_State *L);
 static int mimas_variantFromLua(lua_State *L) {
   try {
     int index = dub_checkint(L, 2);
-    pushVariantInLua(L, variantFromLua(L, index));
-    return 1;
+    return pushVariantInLua(L, variantFromLua(L, index));
   } catch (std::exception &e) {
     lua_pushfstring(L, "mimas.variantFromLua: %s", e.what());
   } catch (...) {
@@ -86,14 +85,14 @@ static int mimas_variantFromLua(lua_State *L) {
   return lua_error(L);
 }
 
-/** void pushVariantInLua(lua_State *L, const QVariant &value)
+/** int pushVariantInLua(lua_State *L, const QVariant &value)
  * include/mimas/mimas.h:52
  */
 static int mimas_pushVariantInLua(lua_State *L) {
   try {
     QVariant value(variantFromLua(L, 2));
-    pushVariantInLua(L, value);
-    return 0;
+    lua_pushnumber(L, pushVariantInLua(L, value));
+    return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "mimas.pushVariantInLua: %s", e.what());
   } catch (...) {

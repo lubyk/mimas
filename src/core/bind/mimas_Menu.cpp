@@ -40,7 +40,7 @@ static int Menu__cast_(lua_State *L) {
 }
 
 /** Menu::Menu(const char *name="")
- * include/mimas/Menu.h:51
+ * include/mimas/Menu.h:52
  */
 static int Menu_Menu(lua_State *L) {
   try {
@@ -64,7 +64,7 @@ static int Menu_Menu(lua_State *L) {
 }
 
 /** Menu::~Menu()
- * include/mimas/Menu.h:54
+ * include/mimas/Menu.h:55
  */
 static int Menu__Menu(lua_State *L) {
   try {
@@ -84,7 +84,7 @@ static int Menu__Menu(lua_State *L) {
 }
 
 /** void Menu::popup(int gx, int gy)
- * include/mimas/Menu.h:57
+ * include/mimas/Menu.h:58
  */
 static int Menu_popup(lua_State *L) {
   try {
@@ -144,8 +144,7 @@ static int Menu_property(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {
@@ -902,7 +901,7 @@ extern "C" int luaopen_mimas_Menu(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Menu_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Menu");
+  dub_register(L, "mimas", "Menu_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

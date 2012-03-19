@@ -132,8 +132,7 @@ static int CheckBox_property(lua_State *L) {
   try {
     CheckBox *self = *((CheckBox **)dub_checksdata(L, 1, "mimas.CheckBox"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {

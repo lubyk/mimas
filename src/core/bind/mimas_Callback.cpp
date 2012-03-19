@@ -127,8 +127,7 @@ static int Callback_property(lua_State *L) {
   try {
     Callback *self = *((Callback **)dub_checksdata(L, 1, "mimas.Callback"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name));
-    return 1;
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {
@@ -190,7 +189,7 @@ extern "C" int luaopen_mimas_Callback(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Callback_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Callback");
+  dub_register(L, "mimas", "Callback_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

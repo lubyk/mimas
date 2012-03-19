@@ -6,12 +6,12 @@
   ...
 
 --]]------------------------------------------------------
-local constr  = mimas_core.Button
-local mt      = mimas_core.Button_
-mimas.Button_ = mt
+local lib = mimas.Button_core
+mimas.Button = lib
 
 local MousePress = mimas.MousePress
-function mimas.Button(title, parent, func)
+local constr = lib.new
+function lib.new(title, parent, func)
   local self
   if not func then
     if type(parent) == 'function' then
@@ -20,7 +20,7 @@ function mimas.Button(title, parent, func)
     end
   end
   if parent then
-    self = constr(title, parent:widget())
+    self = constr(title, parent)
   else
     self = constr(title)
   end

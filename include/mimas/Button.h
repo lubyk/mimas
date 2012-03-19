@@ -39,7 +39,7 @@
 
 /** Button widget.
  *
- * @dub lib_name:'Button_core'
+ * @dub register: Button_core
  *      push: pushobject
  *      super: QPushButton
  */
