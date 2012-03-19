@@ -30,6 +30,8 @@
 #define LUBYK_INCLUDE_MIMAS_WIDGET_H_
 
 #include "mimas/mimas.h"
+// Used for addAction.
+#include "mimas/Action.h"
 
 #include <QtGui/QWidget>
 #include <QtGui/QMouseEvent>
@@ -99,7 +101,7 @@ protected:
 
   virtual void paintEvent(QPaintEvent *event);
 
-  //--=============================================== COMMON CALLBACKS
+  //--=============================================== COMMON CALLBACKS [
   virtual void closeEvent(QCloseEvent *event) {
     Widget::closed(this, event);
   }
@@ -150,6 +152,8 @@ protected:
     if (!Widget::keyboard(this, event, false))
       QWidget::keyReleaseEvent(event);
   }
+
+  //--=============================================== COMMON CALLBACKS ]
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_WIDGET_H_

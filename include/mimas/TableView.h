@@ -100,21 +100,21 @@ public:
   }
 
   int pushobject(lua_State *L, TableView *obj, const char *class_name) {
-    ThreadedLuaObject::luaInit(L, obj, class_name);
+    dub::Thread::pushobject(L, obj, class_name);
     // <self>
     lua_pushlstring(L, "data_source", 5);
     // <self> <'data_source'>
     // <self>
     DataSource *data = new DataSource();
-    data->luaInit(L, data, "mimas.DataSource");
+    data->pushobject(L, data, "mimas.DataSource");
     // <self> <'data_source'> <data>
     lua_settable(L, -3); // self.data_source = data
     // <self>
     // make DataSource look in <self> for callbacks
     lua_pushvalue(L, -1);
     // <self> <self>
-    lua_pop(data->lua_, 1);
-    lua_xmove(L, data->lua_, 1);
+    lua_pop(data->dub_L, 1);
+    lua_xmove(L, data->dub_L, 1);
     // data: <self>
     // <self>
     setModel(data);

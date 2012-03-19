@@ -115,8 +115,9 @@ public:
   
 
   /** Key to retrieve 'this' value from a running thread.
+   * FIXME: is this used ?
    */
-  static pthread_key_t sAppKey;
+  // static pthread_key_t sAppKey;
 
   /** Thread should stop. */
   static void terminate(int sig);

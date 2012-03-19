@@ -123,5 +123,4 @@ public:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_V_BOX_LAYOUT_H_

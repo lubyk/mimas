@@ -1,40 +1,8 @@
-/*
-  ==============================================================================
-
-   This file is part of the LUBYK project (http://lubyk.org)
-   Copyright (c) 2007-2011 by Gaspard Bucher (http://teti.ch).
-
-  ------------------------------------------------------------------------------
-
-   Permission is hereby granted, free of charge, to any person obtaining a copy
-   of this software and associated documentation files (the "Software"), to deal
-   in the Software without restriction, including without limitation the rights
-   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-   copies of the Software, and to permit persons to whom the Software is
-   furnished to do so, subject to the following conditions:
-
-   The above copyright notice and this permission notice shall be included in
-   all copies or substantial portions of the Software.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-   THE SOFTWARE.
-
-  ==============================================================================
-*/
 #ifndef LUBYK_INCLUDE_MIMAS_CONSTANTS_H_
 #define LUBYK_INCLUDE_MIMAS_CONSTANTS_H_
 
-#include "mimas/mimas.h"
-#include "mimas/Action.h"
 #include <QtGui/QFileDialog>
 #include <QtGui/QAbstractSlider>
-
-#include <string>
 
 /** List of Brush styles.
  */
@@ -124,6 +92,26 @@ enum WidgetAttribute {
   WA_MacShowFocusRect        = Qt::WA_MacShowFocusRect,
 };
 
+enum FileDialogFlags {
+  ShowDirsOnly          = QFileDialog::ShowDirsOnly,
+  DontResolveSymlinks   = QFileDialog::DontResolveSymlinks,
+  DontConfirmOverwrite  = QFileDialog::DontConfirmOverwrite,
+  DontUseNativeDialog   = QFileDialog::DontUseNativeDialog,
+  ReadOnly              = QFileDialog::ReadOnly,
+  HideNameFilterDetails = QFileDialog::HideNameFilterDetails,
+  DontUseSheet          = QFileDialog::DontUseSheet,
+};
+
+enum ActionMenuRoleFlags {
+  NoRole                  = QAction::NoRole,
+  TextHeuristicRole       = QAction::TextHeuristicRole,
+  ApplicationSpecificRole = QAction::ApplicationSpecificRole,
+  AboutQtRole             = QAction::AboutQtRole,
+  AboutRole               = QAction::AboutRole,
+  PreferencesRole         = QAction::PreferencesRole,
+  QuitRole                = QAction::QuitRole,
+};
+
 enum SizePolicy {
   Fixed            = QSizePolicy::Fixed,
   Minimum          = QSizePolicy::Minimum,
@@ -132,6 +120,17 @@ enum SizePolicy {
   Expanding        = QSizePolicy::Expanding,
   MinimumExpanding = QSizePolicy::MinimumExpanding,
   Ignored          = QSizePolicy::Ignored,
+};
+
+enum SliderAction {
+  SliderNoAction      = QAbstractSlider::SliderNoAction,
+  SliderSingleStepAdd = QAbstractSlider::SliderSingleStepAdd,
+  SliderSingleStepSub = QAbstractSlider::SliderSingleStepSub,
+  SliderPageStepAdd   = QAbstractSlider::SliderPageStepAdd,
+  SliderPageStepSub   = QAbstractSlider::SliderPageStepSub,
+  SliderToMinimum     = QAbstractSlider::SliderToMinimum,
+  SliderToMaximum     = QAbstractSlider::SliderToMaximum,
+  SliderMove          = QAbstractSlider::SliderMove,
 };
 
 // mouse
@@ -158,17 +157,6 @@ enum KeyboardModifiers {
 enum Orientation {
   Horizontal = Qt::Horizontal,
   Vertical   = Qt::Vertical,
-};
-
-enum SliderAction {
-  SliderNoAction      = QAbstractSlider::SliderNoAction,
-  SliderSingleStepAdd = QAbstractSlider::SliderSingleStepAdd,
-  SliderSingleStepSub = QAbstractSlider::SliderSingleStepSub,
-  SliderPageStepAdd   = QAbstractSlider::SliderPageStepAdd,
-  SliderPageStepSub   = QAbstractSlider::SliderPageStepSub,
-  SliderToMinimum     = QAbstractSlider::SliderToMinimum,
-  SliderToMaximum     = QAbstractSlider::SliderToMaximum,
-  SliderMove          = QAbstractSlider::SliderMove,
 };
 
 enum Key {
@@ -608,26 +596,6 @@ enum WindowFlags {
   SplashScreenFlag = Qt::SplashScreen,
   DesktopFlag      = Qt::Desktop,
   SubWindowFlag    = Qt::SubWindow,
-};
-
-enum FileDialogFlags {
-  ShowDirsOnly          = QFileDialog::ShowDirsOnly,
-  DontResolveSymlinks   = QFileDialog::DontResolveSymlinks,
-  DontConfirmOverwrite  = QFileDialog::DontConfirmOverwrite,
-  DontUseNativeDialog   = QFileDialog::DontUseNativeDialog,
-  ReadOnly              = QFileDialog::ReadOnly,
-  HideNameFilterDetails = QFileDialog::HideNameFilterDetails,
-  DontUseSheet          = QFileDialog::DontUseSheet,
-};
-
-enum ActionMenuRoleFlags {
-  NoRole                  = QAction::NoRole,
-  TextHeuristicRole       = QAction::TextHeuristicRole,
-  ApplicationSpecificRole = QAction::ApplicationSpecificRole,
-  AboutQtRole             = QAction::AboutQtRole,
-  AboutRole               = QAction::AboutRole,
-  PreferencesRole         = QAction::PreferencesRole,
-  QuitRole                = QAction::QuitRole,
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_CONSTANTS_H_

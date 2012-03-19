@@ -30,6 +30,7 @@
 #define LUBYK_INCLUDE_MIMAS_LABEL_H_
 
 #include "mimas/mimas.h"
+#include "mimas/Action.h"
 #include <QtGui/QLabel>
 
 #include <iostream>

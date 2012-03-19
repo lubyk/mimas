@@ -10,59 +10,6 @@
 #include "mimas/Callback.h"
 
 
-/** Set attributes (key, value)
- * 
- */
-static int Callback__set_(lua_State *L) {
-
-  Callback *self = *((Callback **)dub_checksdata_n(L, 1, "mimas.Callback"));
-  const char *key = luaL_checkstring(L, 2);
-  int key_h = dub_hash(key, 2);
-  switch(key_h) {
-    case 0: {
-      if (DUB_ASSERT_KEY(key, "EventType")) break;
-      Callback::EventType = **((const QEvent::Type *)dub_checksdata_n(L, 3, "QEvent::Type"));
-      return 0;
-    }
-  }
-  if (lua_istable(L, 1)) {
-    lua_rawset(L, 1);
-  } else {
-    luaL_error(L, KEY_EXCEPTION_MSG, key);
-  }
-  return 0;
-}
-
-/** Get attributes (key)
- * 
- */
-static int Callback__get_(lua_State *L) {
-
-  Callback *self = *((Callback **)dub_checksdata_n(L, 1, "mimas.Callback", true));
-  const char *key = luaL_checkstring(L, 2);
-  // <self> "key" <mt>
-  // rawget(mt, key)
-  lua_pushvalue(L, 2);
-  // <self> "key" <mt> "key"
-  lua_rawget(L, -2);
-  if (!lua_isnil(L, -1)) {
-    // Found method.
-    return 1;
-  } else {
-    // Not in mt = attribute access.
-    lua_pop(L, 2);
-  }
-  int key_h = dub_hash(key, 2);
-  switch(key_h) {
-    case 0: {
-      if (DUB_ASSERT_KEY(key, "EventType")) break;
-      dub_pushudata(L, const_cast<QEvent::Type*>(&Callback::EventType), "QEvent::Type", false);
-      return 1;
-    }
-  }
-  return 0;
-}
-
 /** Cast (class_name)
  * 
  */
@@ -143,8 +90,8 @@ static int Callback_connect(lua_State *L) {
 static int Callback_objectName(lua_State *L) {
   try {
     Callback *self = *((Callback **)dub_checksdata(L, 1, "mimas.Callback"));
-    QByteArray s_self->objectName()_(self->objectName().toUtf8());
-    lua_pushlstring(L, s_self->objectName()_.constData(), s_self->objectName()_.size());
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "objectName: %s", e.what());
@@ -180,7 +127,7 @@ static int Callback_property(lua_State *L) {
   try {
     Callback *self = *((Callback **)dub_checksdata(L, 1, "mimas.Callback"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name))
+    pushVariantInLua(L, self->property(name));
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
@@ -221,8 +168,6 @@ static int Callback___tostring(lua_State *L) {
 // --=============================================== METHODS
 
 static const struct luaL_Reg Callback_member_methods[] = {
-  { "__newindex"   , Callback__set_       },
-  { "__index"      , Callback__get_       },
   { "_cast_"       , Callback__cast_      },
   { "new"          , Callback_Callback    },
   { "__gc"         , Callback__Callback   },

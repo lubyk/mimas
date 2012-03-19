@@ -1,0 +1,4 @@
+lua:
+  methods:
+    setStyle: |
+      self->setStyle(text);

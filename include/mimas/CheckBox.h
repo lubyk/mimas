@@ -30,6 +30,7 @@
 #define LUBYK_INCLUDE_MIMAS_CHECK_BOX_H_
 
 #include "mimas/mimas.h"
+#include "mimas/Widget.h"
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QMouseEvent>
@@ -57,12 +58,11 @@ public:
 private slots:
   void clickedSlot(bool checked) {
     if (!dub_pushcallback("click")) return;
-    lua_pushboolean(L, checked);
+    lua_pushboolean(dub_L, checked);
     // <func> <self> <checked>
     dub_call(2, 0);
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_CHECK_BOX_H_
 

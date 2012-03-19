@@ -120,8 +120,8 @@ static int Action__Action(lua_State *L) {
 static int Action_objectName(lua_State *L) {
   try {
     Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
-    QByteArray s_self->objectName()_(self->objectName().toUtf8());
-    lua_pushlstring(L, s_self->objectName()_.constData(), s_self->objectName()_.size());
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "objectName: %s", e.what());
@@ -157,7 +157,7 @@ static int Action_property(lua_State *L) {
   try {
     Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name))
+    pushVariantInLua(L, self->property(name));
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());

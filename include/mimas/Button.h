@@ -30,7 +30,6 @@
 #define LUBYK_INCLUDE_MIMAS_BUTTON_H_
 
 #include "mimas/mimas.h"
-#include "mimas/constants.h"
 #include "mimas/Widget.h"
 
 #include <QtGui/QPushButton>

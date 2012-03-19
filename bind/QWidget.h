@@ -3,7 +3,7 @@
  *
  * @see Widget
  * @see QObject
- * @dub bind: 'QWidget.yml'
+ * @dub bind: false
  */
 class QWidget : public QObject {
  public:
@@ -52,8 +52,8 @@ class QWidget : public QObject {
    */
   void textSize(const char *text);
   
-  void setCssClass(const char *css_class);
-  void setSizeHit(int w, int h);
+  // void setCssClass(const char *css_class);
+  // void setSizeHint(int w, int h);
 
   /** Control how the widget behaves in a layout related to it's sizeHint().
    */

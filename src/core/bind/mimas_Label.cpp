@@ -35,22 +35,12 @@ static int Label__cast_(lua_State *L) {
       *retval__ = static_cast<QLabel *>(self);
       return 1;
     }
-    case 5: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
-      return 1;
-    }
-    case 4: {
-      if (DUB_ASSERT_KEY(key, "mimas.QWidget")) break;
-      *retval__ = static_cast<QWidget *>(self);
-      return 1;
-    }
   }
   return 0;
 }
 
 /** Label::Label(const char *title=NULL)
- * include/mimas/Label.h:46
+ * include/mimas/Label.h:47
  */
 static int Label_Label(lua_State *L) {
   try {
@@ -80,7 +70,7 @@ static int Label_Label(lua_State *L) {
 }
 
 /** Label::~Label()
- * include/mimas/Label.h:53
+ * include/mimas/Label.h:54
  */
 static int Label__Label(lua_State *L) {
   try {
@@ -100,7 +90,7 @@ static int Label__Label(lua_State *L) {
 }
 
 /** void Label::setAlignment(int align)
- * include/mimas/Label.h:56
+ * include/mimas/Label.h:57
  */
 static int Label_setAlignment(lua_State *L) {
   try {
@@ -122,8 +112,8 @@ static int Label_setAlignment(lua_State *L) {
 static int Label_objectName(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    QByteArray s_self->objectName()_(self->objectName().toUtf8());
-    lua_pushlstring(L, s_self->objectName()_.constData(), s_self->objectName()_.size());
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "objectName: %s", e.what());
@@ -159,7 +149,7 @@ static int Label_property(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name))
+    pushVariantInLua(L, self->property(name));
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
@@ -342,7 +332,7 @@ static int Label_adjustSize(lua_State *L) {
 static int Label_setFocus(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    self->setFocus();
+    self->setFocus(Qt::OtherFocusReason);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setFocus: %s", e.what());
@@ -359,7 +349,7 @@ static int Label_setFocusPolicy(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
     int policy = dub_checkint(L, 2);
-    self->setFocusPolicy(policy);
+    self->setFocusPolicy((Qt::FocusPolicy)policy);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setFocusPolicy: %s", e.what());
@@ -377,7 +367,7 @@ static int Label_setAttribute(lua_State *L) {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
     int attr = dub_checkint(L, 2);
     bool enabled = dub_checkboolean(L, 3);
-    self->setAttribute(attr, enabled);
+    self->setAttribute((Qt::WidgetAttribute)attr, enabled);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setAttribute: %s", e.what());
@@ -592,8 +582,7 @@ static int Label_setWindowTitle(lua_State *L) {
 static int Label_windowTitle(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    QByteArray s_self->windowTitle()_(self->windowTitle().toUtf8());
-    lua_pushlstring(L, s_self->windowTitle()_.constData(), s_self->windowTitle()_.size());
+    lua_pushstring(L, self->windowTitle().toUtf8());
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "windowTitle: %s", e.what());
@@ -610,7 +599,7 @@ static int Label_addWidget(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
     QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
-    self->addWidget(widget);
+    widget->setParent(self);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "addWidget: %s", e.what());
@@ -626,7 +615,10 @@ static int Label_addWidget(lua_State *L) {
 static int Label_size(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    return self->size();
+    QRect rect = self->geometry();
+    lua_pushnumber(L, rect.width());
+    lua_pushnumber(L, rect.height());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "size: %s", e.what());
   } catch (...) {
@@ -642,7 +634,7 @@ static int Label_setStyle(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
     const char *text = dub_checkstring(L, 2);
-    self->setStyle(text);
+    self->setStyleSheet(QString("%1 { %2 }").arg(self->metaObject()->className()).arg(text));
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setStyle: %s", e.what());
@@ -676,47 +668,13 @@ static int Label_textSize(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
     const char *text = dub_checkstring(L, 2);
-    self->textSize(text);
-    return 0;
+    lua_pushnumber(L, self->fontMetrics().width(text));
+    lua_pushnumber(L, self->fontMetrics().height());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "textSize: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "textSize: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QWidget::setCssClass(const char *css_class)
- * bind/QWidget.h:55
- */
-static int Label_setCssClass(lua_State *L) {
-  try {
-    Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    const char *css_class = dub_checkstring(L, 2);
-    self->setCssClass(css_class);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setCssClass: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setCssClass: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QWidget::setSizeHit(int w, int h)
- * bind/QWidget.h:56
- */
-static int Label_setSizeHit(lua_State *L) {
-  try {
-    Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    int w = dub_checkint(L, 2);
-    int h = dub_checkint(L, 3);
-    self->setSizeHit(w, h);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setSizeHit: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setSizeHit: Unknown exception");
   }
   return dub_error(L);
 }
@@ -729,7 +687,8 @@ static int Label_setSizePolicy(lua_State *L) {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
     int horizontal = dub_checkint(L, 2);
     int vertical = dub_checkint(L, 3);
-    self->setSizePolicy(horizontal, vertical);
+    self->setSizePolicy((QSizePolicy::Policy)horizontal, (QSizePolicy::Policy)vertical);
+    self->updateGeometry();
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setSizePolicy: %s", e.what());
@@ -748,7 +707,11 @@ static int Label_showFullScreen(lua_State *L) {
     int top__ = lua_gettop(L);
     if (top__ >= 2) {
       bool enable = dub_checkboolean(L, 2);
-      self->showFullScreen(enable);
+      if (enable) {
+        self->showFullScreen();
+      } else {
+        self->showNormal();
+      }
       return 0;
     } else {
       self->showFullScreen();
@@ -768,7 +731,11 @@ static int Label_showFullScreen(lua_State *L) {
 static int Label_swapFullScreen(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    self->swapFullScreen();
+    if (!self->isFullScreen()) {
+      self->showFullScreen();
+    } else {
+      self->showNormal();
+    }
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "swapFullScreen: %s", e.what());
@@ -784,7 +751,10 @@ static int Label_swapFullScreen(lua_State *L) {
 static int Label_globalPosition(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    return self->globalPosition();
+    QPoint pt = self->mapToGlobal(QPoint(0, 0));
+    lua_pushnumber(L, pt.x());
+    lua_pushnumber(L, pt.y());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "globalPosition: %s", e.what());
   } catch (...) {
@@ -799,7 +769,9 @@ static int Label_globalPosition(lua_State *L) {
 static int Label_position(lua_State *L) {
   try {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
-    return self->position();
+    lua_pushnumber(L, self->x());
+    lua_pushnumber(L, self->y());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "position: %s", e.what());
   } catch (...) {
@@ -816,7 +788,11 @@ static int Label_globalMove(lua_State *L) {
     Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
     float x = dub_checknumber(L, 2);
     float y = dub_checknumber(L, 3);
-    self->globalMove(x, y);
+    self->move(
+      self->mapToParent(
+        self->mapFromGlobal(QPoint(x, y))
+      )
+    );
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "globalMove: %s", e.what());
@@ -896,8 +872,6 @@ static const struct luaL_Reg Label_member_methods[] = {
   { "setStyle"     , Label_setStyle       },
   { "setStyleSheet", Label_setStyleSheet  },
   { "textSize"     , Label_textSize       },
-  { "setCssClass"  , Label_setCssClass    },
-  { "setSizeHit"   , Label_setSizeHit     },
   { "setSizePolicy", Label_setSizePolicy  },
   { "showFullScreen", Label_showFullScreen },
   { "swapFullScreen", Label_swapFullScreen },

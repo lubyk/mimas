@@ -81,6 +81,5 @@ private slots:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_TIMER_H_
 

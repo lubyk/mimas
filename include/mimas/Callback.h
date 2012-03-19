@@ -46,9 +46,9 @@
  */
 class Callback : public QObject, public dub::Thread {
   Q_OBJECT
-public:
   // Our own custom event id
   static const QEvent::Type EventType;
+public:
 
   Callback() {
   }

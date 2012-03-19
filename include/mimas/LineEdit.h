@@ -30,7 +30,6 @@
 #define LUBYK_INCLUDE_MIMAS_LINE_EDIT_H_
 
 #include "mimas/mimas.h"
-#include "mimas/constants.h"
 #include "mimas/Widget.h"
 
 #include <QtGui/QWidget>
@@ -58,15 +57,6 @@ public:
   }
 
   // =============================================================
-
-  void setFocus() { // Qt::FocusReason reason
-    QWidget::setFocus(Qt::OtherFocusReason);
-  }
-
-  void setFocusPolicy(int policy) {
-    QLineEdit::setFocusPolicy((Qt::FocusPolicy)policy);
-  }
-
 protected:
 
   //--=============================================== COMMON CALLBACKS [
@@ -130,7 +120,7 @@ private slots:
   // connected to the editingFinished signal
   void editingFinishedSlot() {
     if (!dub_pushcallback("editingFinished")) return;
-    lua_pushstring(dub_L, text());
+    lua_pushstring(dub_L, text().toUtf8().data());
     // <func> <self> <text>
     dub_call(2, 0);
   }

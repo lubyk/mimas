@@ -107,8 +107,8 @@ static int Menu_popup(lua_State *L) {
 static int Menu_objectName(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    QByteArray s_self->objectName()_(self->objectName().toUtf8());
-    lua_pushlstring(L, s_self->objectName()_.constData(), s_self->objectName()_.size());
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "objectName: %s", e.what());
@@ -144,7 +144,7 @@ static int Menu_property(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name))
+    pushVariantInLua(L, self->property(name));
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
@@ -327,7 +327,7 @@ static int Menu_adjustSize(lua_State *L) {
 static int Menu_setFocus(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    self->setFocus();
+    self->setFocus(Qt::OtherFocusReason);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setFocus: %s", e.what());
@@ -344,7 +344,7 @@ static int Menu_setFocusPolicy(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     int policy = dub_checkint(L, 2);
-    self->setFocusPolicy(policy);
+    self->setFocusPolicy((Qt::FocusPolicy)policy);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setFocusPolicy: %s", e.what());
@@ -362,7 +362,7 @@ static int Menu_setAttribute(lua_State *L) {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     int attr = dub_checkint(L, 2);
     bool enabled = dub_checkboolean(L, 3);
-    self->setAttribute(attr, enabled);
+    self->setAttribute((Qt::WidgetAttribute)attr, enabled);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setAttribute: %s", e.what());
@@ -577,8 +577,7 @@ static int Menu_setWindowTitle(lua_State *L) {
 static int Menu_windowTitle(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    QByteArray s_self->windowTitle()_(self->windowTitle().toUtf8());
-    lua_pushlstring(L, s_self->windowTitle()_.constData(), s_self->windowTitle()_.size());
+    lua_pushstring(L, self->windowTitle().toUtf8());
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "windowTitle: %s", e.what());
@@ -595,7 +594,7 @@ static int Menu_addWidget(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
-    self->addWidget(widget);
+    widget->setParent(self);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "addWidget: %s", e.what());
@@ -611,7 +610,10 @@ static int Menu_addWidget(lua_State *L) {
 static int Menu_size(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    return self->size();
+    QRect rect = self->geometry();
+    lua_pushnumber(L, rect.width());
+    lua_pushnumber(L, rect.height());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "size: %s", e.what());
   } catch (...) {
@@ -627,7 +629,7 @@ static int Menu_setStyle(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     const char *text = dub_checkstring(L, 2);
-    self->setStyle(text);
+    self->setStyleSheet(QString("%1 { %2 }").arg(self->metaObject()->className()).arg(text));
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setStyle: %s", e.what());
@@ -661,47 +663,13 @@ static int Menu_textSize(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     const char *text = dub_checkstring(L, 2);
-    self->textSize(text);
-    return 0;
+    lua_pushnumber(L, self->fontMetrics().width(text));
+    lua_pushnumber(L, self->fontMetrics().height());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "textSize: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "textSize: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QWidget::setCssClass(const char *css_class)
- * bind/QWidget.h:55
- */
-static int Menu_setCssClass(lua_State *L) {
-  try {
-    Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    const char *css_class = dub_checkstring(L, 2);
-    self->setCssClass(css_class);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setCssClass: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setCssClass: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QWidget::setSizeHit(int w, int h)
- * bind/QWidget.h:56
- */
-static int Menu_setSizeHit(lua_State *L) {
-  try {
-    Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    int w = dub_checkint(L, 2);
-    int h = dub_checkint(L, 3);
-    self->setSizeHit(w, h);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setSizeHit: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setSizeHit: Unknown exception");
   }
   return dub_error(L);
 }
@@ -714,7 +682,8 @@ static int Menu_setSizePolicy(lua_State *L) {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     int horizontal = dub_checkint(L, 2);
     int vertical = dub_checkint(L, 3);
-    self->setSizePolicy(horizontal, vertical);
+    self->setSizePolicy((QSizePolicy::Policy)horizontal, (QSizePolicy::Policy)vertical);
+    self->updateGeometry();
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setSizePolicy: %s", e.what());
@@ -733,7 +702,11 @@ static int Menu_showFullScreen(lua_State *L) {
     int top__ = lua_gettop(L);
     if (top__ >= 2) {
       bool enable = dub_checkboolean(L, 2);
-      self->showFullScreen(enable);
+      if (enable) {
+        self->showFullScreen();
+      } else {
+        self->showNormal();
+      }
       return 0;
     } else {
       self->showFullScreen();
@@ -753,7 +726,11 @@ static int Menu_showFullScreen(lua_State *L) {
 static int Menu_swapFullScreen(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    self->swapFullScreen();
+    if (!self->isFullScreen()) {
+      self->showFullScreen();
+    } else {
+      self->showNormal();
+    }
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "swapFullScreen: %s", e.what());
@@ -769,7 +746,10 @@ static int Menu_swapFullScreen(lua_State *L) {
 static int Menu_globalPosition(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    return self->globalPosition();
+    QPoint pt = self->mapToGlobal(QPoint(0, 0));
+    lua_pushnumber(L, pt.x());
+    lua_pushnumber(L, pt.y());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "globalPosition: %s", e.what());
   } catch (...) {
@@ -784,7 +764,9 @@ static int Menu_globalPosition(lua_State *L) {
 static int Menu_position(lua_State *L) {
   try {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
-    return self->position();
+    lua_pushnumber(L, self->x());
+    lua_pushnumber(L, self->y());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "position: %s", e.what());
   } catch (...) {
@@ -801,7 +783,11 @@ static int Menu_globalMove(lua_State *L) {
     Menu *self = *((Menu **)dub_checksdata(L, 1, "mimas.Menu"));
     float x = dub_checknumber(L, 2);
     float y = dub_checknumber(L, 3);
-    self->globalMove(x, y);
+    self->move(
+      self->mapToParent(
+        self->mapFromGlobal(QPoint(x, y))
+      )
+    );
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "globalMove: %s", e.what());
@@ -894,8 +880,6 @@ static const struct luaL_Reg Menu_member_methods[] = {
   { "setStyle"     , Menu_setStyle        },
   { "setStyleSheet", Menu_setStyleSheet   },
   { "textSize"     , Menu_textSize        },
-  { "setCssClass"  , Menu_setCssClass     },
-  { "setSizeHit"   , Menu_setSizeHit      },
   { "setSizePolicy", Menu_setSizePolicy   },
   { "showFullScreen", Menu_showFullScreen  },
   { "swapFullScreen", Menu_swapFullScreen  },

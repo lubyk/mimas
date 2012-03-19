@@ -31,20 +31,13 @@
 #include "mimas/Painter.h"
 #include "mimas/Widget.h"
 
-namespace mimas {
-
 void TableView::mouseMoveEvent(QMouseEvent *event) {
-  lua_State *L = lua_;
-
-  if (!pushLuaCallback("mouse")) return;
+  if (!dub_pushcallback("mouse")) return;
+  lua_State *L = dub_L;
   lua_pushnumber(L, event->x());
   lua_pushnumber(L, event->y());
   // <func> <self> <x> <y>
-  int status = lua_pcall(L, 3, 1, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'mouse' callback: %s\n", lua_tostring(L, -1));
-  }
+  if (!dub_call(3, 1)) return;
 
   if (lua_isfalse(L, -1)) {
     // Pass to QTableView
@@ -54,7 +47,7 @@ void TableView::mouseMoveEvent(QMouseEvent *event) {
 }
 
 bool TableView::click(QMouseEvent *event, int type) {
-  if (pushLuaCallback("select")) {
+  if (dub_pushcallback("select")) {
     // ... <select> <self>
     return select(event, type);
   } else {
@@ -63,7 +56,7 @@ bool TableView::click(QMouseEvent *event, int type) {
 }
 
 bool TableView::select(QMouseEvent *event, int type) {
-  lua_State *L = lua_;
+  lua_State *L = dub_L;
   // ... <select> <self>
   if (type != MousePress) {
     lua_pop(L, 2);
@@ -79,14 +72,14 @@ bool TableView::select(QMouseEvent *event, int type) {
   lua_pushnumber(L, idx.row() + 1);
   lua_pushnumber(L, idx.column() + 1);
   // ... <select> <self> <row> <col>
-  int status = lua_pcall(L, 3, 1, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'select' callback: %s\n", lua_tostring(L, -1));
+  if (!dub_call(3, 1)) {
+    // error
+    return false;
   }
 
   // FIXME: find another way to remove the dotted lines around text after click.
   clearFocus();
+
   if (lua_isfalse(L, -1)) {
     // Pass to TableView
     lua_pop(L, 1);
@@ -96,6 +89,4 @@ bool TableView::select(QMouseEvent *event, int type) {
   lua_pop(L, 1);
   return true;
 }
-
-} // mimas
 

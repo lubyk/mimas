@@ -39,7 +39,7 @@ binder:addCustomTypes {
     end,
     -- Push value in Lua
     push   = function(name)
-      return format('QByteArray s_%s_(%s.toUtf8());\nlua_pushlstring(L, s_%s_.constData(), s_%s_.size());', name, name, name, name)
+      return format('QByteArray str_(%s.toUtf8());\nlua_pushlstring(L, str_.constData(), str_.size());', name)
     end,
     -- Cast value
     cast   = function(name)
@@ -53,7 +53,7 @@ binder:addCustomTypes {
     end,
     -- Push value in Lua
     push   = function(name)
-      return format('pushVariantInLua(L, %s)', name)
+      return format('pushVariantInLua(L, %s);', name)
     end,
   },
 }
@@ -79,6 +79,7 @@ binder:bind(ins, {
   single_lib = 'mimas',
   -- Open the library with require 'mimas.core' (not 'mimas')
   luaopen    = 'mimas_core',
+  custom_bindings = base .. '/bind',
   only = only,
 })
 

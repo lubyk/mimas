@@ -1,89 +1,81 @@
 lua:
+  methods:
 # void addWidget(QWidget *widget)
-  addWidget: |
-    widget->setParent(self);
+    addWidget: |
+      widget->setParent(self);
 
-  windowTitle: |
-    lua_pushstring(L, self->windowTitle().toUtf8());
-    return 1;
+    windowTitle: |
+      lua_pushstring(L, self->windowTitle().toUtf8());
+      return 1;
 
-  size: |
-    QRect rect = self->geometry();
-    lua_pushnumber(L, rect.width());
-    lua_pushnumber(L, rect.height());
-    return 2;
+    size: |
+      QRect rect = self->geometry();
+      lua_pushnumber(L, rect.width());
+      lua_pushnumber(L, rect.height());
+      return 2;
 
-  setFocus: |
-    self->setFocus(Qt::OtherFocusReason);
-    return 0;
+    setFocus: |
+      self->setFocus(Qt::OtherFocusReason);
 
-  setFocusPolicy: |
-    self->setFocusPolicy((Qt::FocusPolicy)policy);
-    return 0;
+    setFocusPolicy: |
+      self->setFocusPolicy((Qt::FocusPolicy)policy);
 
-  setAttribute: |
-    self->setAttribute((Qt::WidgetAttribute)attr, enabled);
-    return 0;
+    setAttribute: |
+      self->setAttribute((Qt::WidgetAttribute)attr, enabled);
 
-  setStyle: |
-    self->setStyleSheet(QString(".%1 { %2 }").arg(self->cssClass()).arg(text));
+    # Widget has another version.
+    setStyle: |
+      self->setStyleSheet(QString("%1 { %2 }").arg(self->metaObject()->className()).arg(text));
 
-  setStyleSheet: |
-    self->setStyleSheet(text);
+    setStyleSheet: |
+      self->setStyleSheet(text);
 
-  textSize: |
-    lua_pushnumber(L, self->fontMetrics().width(text));
-    lua_pushnumber(L, self->fontMetrics().height());
-    return 2;
-                              
-  setCssClass: |
-    self->css_class_ = css_class;
-    self->update();
+    textSize: |
+      lua_pushnumber(L, self->fontMetrics().width(text));
+      lua_pushnumber(L, self->fontMetrics().height());
+      return 2;
+                                
+#   setSizeHint: |
+#     self->size_hint_ = QSize(w, h);
+#     self->updateGeometry();
 
-  setSizeHint: |
-    self->size_hint_ = QSize(w, h);
-    self->updateGeometry();
+    setSizePolicy: |
+      self->setSizePolicy((QSizePolicy::Policy)horizontal, (QSizePolicy::Policy)vertical);
+      self->updateGeometry();
 
-  setSizePolicy: |
-    self->setSizePolicy((QSizePolicy::Policy)horizontal, (QSizePolicy::Policy)vertical);
-    self->updateGeometry();
+    showFullScreen:
+      # Varying custom binding on arg count.
+      arg0: |
+        self->showFullScreen();
+      arg1: |
+        if (enable) {
+          self->showFullScreen();
+        } else {
+          self->showNormal();
+        }
 
-  showFullScreen: |
-    int top__ = lua_gettop(L);
-    bool enable;
-    if (top__ >= 2) {
-      enable = lua_toboolean(L, 2);
-    } else {
-      enable = true;
-    }
-    if (enable) {
-      self->showFullScreen();
-    } else {
-      self->showNormal();
-    }
+    swapFullScreen: |
+      if (!self->isFullScreen()) {
+        self->showFullScreen();
+      } else {
+        self->showNormal();
+      }
 
-  swapFullScreen: |
-    if (!self->isFullScreen()) {
-      self->showFullScreen();
-    } else {
-      self->showNormal();
-    }
+    position: |
+      lua_pushnumber(L, self->x());
+      lua_pushnumber(L, self->y());
+      return 2;
 
-  position: |
-    lua_pushnumber(L, self->x());
-    lua_pushnumber(L, self->y());
-    return 2;
+    globalPosition: |
+      QPoint pt = self->mapToGlobal(QPoint(0, 0));
+      lua_pushnumber(L, pt.x());
+      lua_pushnumber(L, pt.y());
+      return 2;
 
-  globalPosition: |
-    QPoint pt = self->mapToGlobal(QPoint(0, 0));
-    lua_pushnumber(L, pt.x());
-    lua_pushnumber(L, pt.y());
-    return 2;
-
-  globalMove: |
-    self->move(
-      self->mapToParent(
-        self->mapFromGlobal(QPoint(x, y))
-      )
-    );
+    globalMove: |
+      self->move(
+        self->mapToParent(
+          self->mapFromGlobal(QPoint(x, y))
+        )
+      );
 

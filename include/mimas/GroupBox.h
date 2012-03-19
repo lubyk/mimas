@@ -53,6 +53,5 @@ public:
   }
 };
 
-} // mimas
 #endif // LUBYK_INCLUDE_MIMAS_GROUP_BOX_H_
 

@@ -32,8 +32,6 @@
 
 #include <QtGui/QFileDialog>
 
-namespace mimas {
-
 void Widget::paintEvent(QPaintEvent *event) {
   Painter *p = new Painter(this);
   if (!parent()) {
@@ -45,7 +43,7 @@ void Widget::paintEvent(QPaintEvent *event) {
   QWidget::paintEvent(event);
 }
 
-void Widget::paint(ThreadedLuaObject *obj, Painter *p, int w, int h) {
+void Widget::paint(dub::Thread *obj, Painter *p, int w, int h) {
   lua_State *L = obj->dub_L;
 
   if (!obj->dub_pushcallback("paint")) return;
@@ -57,41 +55,31 @@ void Widget::paint(ThreadedLuaObject *obj, Painter *p, int w, int h) {
   obj->dub_call(4, 0);
 }
 
-void Widget::resized(ThreadedLuaObject *obj, double width, double height) {
-  lua_State *L = obj->lua_;
+void Widget::resized(dub::Thread *obj, double width, double height) {
+  lua_State *L = obj->dub_L;
 
-  if (!obj->pushLuaCallback("resized")) return;
+  if (!obj->dub_pushcallback("resized")) return;
   lua_pushnumber(L, width);
   lua_pushnumber(L, height);
   // <func> <self> <width> <height>
-  int status = lua_pcall(L, 3, 0, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'resized' callback: %s\n", lua_tostring(L, -1));
-  }
+  obj->dub_call(3, 0);
 }
 
-void Widget::moved(ThreadedLuaObject *obj, QMoveEvent *event) {
-  lua_State *L = obj->lua_;
-
-  if (!obj->pushLuaCallback("moved")) return;
+void Widget::moved(dub::Thread *obj, QMoveEvent *event) {
+  if (!obj->dub_pushcallback("moved")) return;
+  lua_State *L = obj->dub_L;
   lua_pushnumber(L, event->pos().x());
   lua_pushnumber(L, event->pos().y());
   // <func> <self> <x> <y>
-  int status = lua_pcall(L, 3, 0, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'moved' callback: %s\n", lua_tostring(L, -1));
-  }
+  obj->dub_call(3, 0);
 }
 
-void Widget::closed(ThreadedLuaObject *obj, QCloseEvent *event) {
-  lua_State *L = obj->lua_;
-  if (!obj->pushLuaCallback("closed")) return;
+void Widget::closed(dub::Thread *obj, QCloseEvent *event) {
+  lua_State *L = obj->dub_L;
+  if (!obj->dub_pushcallback("closed")) return;
   // <func> <self>
-  int status = lua_pcall(L, 1, 1, 0);
-  if (status) {
-    fprintf(stderr, "Error in 'closed' callback: %s\n", lua_tostring(L, -1));
+  if (!obj->dub_call(1, 1)) {
+    return;
   }
   if (lua_isfalse(L, -1)) {
     // Do not close
@@ -100,35 +88,24 @@ void Widget::closed(ThreadedLuaObject *obj, QCloseEvent *event) {
   lua_pop(L, 1);
 }
 
-void Widget::showHide(ThreadedLuaObject *obj, bool shown) {
-  lua_State *L = obj->lua_;
+void Widget::showHide(dub::Thread *obj, bool shown) {
   if (shown) {
-    if (!obj->pushLuaCallback("shown")) return;
+    if (!obj->dub_pushcallback("shown")) return;
   } else {
-    if (!obj->pushLuaCallback("hidden")) return;
+    if (!obj->dub_pushcallback("hidden")) return;
   }
   // <func> <self>
-  int status = lua_pcall(L, 1, 0, 0);
-  if (status) {
-    if (shown) {
-      fprintf(stderr, "Error in 'shown' callback: %s\n", lua_tostring(L, -1));
-    } else {
-      fprintf(stderr, "Error in 'hidden' callback: %s\n", lua_tostring(L, -1));
-    }
-  }
+  obj->dub_call(1, 0);
 }
 
-bool Widget::mouse(ThreadedLuaObject *obj, QMouseEvent *event) {
-  lua_State *L = obj->lua_;
-
-  if (!obj->pushLuaCallback("mouse")) return false;
+bool Widget::mouse(dub::Thread *obj, QMouseEvent *event) {
+  if (!obj->dub_pushcallback("mouse")) return false;
+  lua_State *L = obj->dub_L;
   lua_pushnumber(L, event->x());
   lua_pushnumber(L, event->y());
   // <func> <self> <x> <y>
-  int status = lua_pcall(L, 3, 1, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'mouse' callback: %s\n", lua_tostring(L, -1));
+  if (!obj->dub_call(3, 1)) {
+    return true;
   }
 
   if (lua_isfalse(L, -1)) {
@@ -144,10 +121,10 @@ bool Widget::mouse(ThreadedLuaObject *obj, QMouseEvent *event) {
   return true;
 }
 
-bool Widget::click(ThreadedLuaObject *obj, QMouseEvent *event, int type) {
-  lua_State *L = obj->lua_;
+bool Widget::click(dub::Thread *obj, QMouseEvent *event, int type) {
+  if (!obj->dub_pushcallback("click")) return false;
+  lua_State *L = obj->dub_L;
 
-  if (!obj->pushLuaCallback("click")) return false;
   lua_pushnumber(L, event->x());
   lua_pushnumber(L, event->y());
   lua_pushnumber(L, type);
@@ -173,19 +150,16 @@ bool Widget::click(ThreadedLuaObject *obj, QMouseEvent *event, int type) {
   return true;
 }
 
-bool Widget::keyboard(ThreadedLuaObject *obj, QKeyEvent *event, bool isPressed) {
-  lua_State *L = obj->lua_;
-
-  if (!obj->pushLuaCallback("keyboard")) return false;
+bool Widget::keyboard(dub::Thread *obj, QKeyEvent *event, bool isPressed) {
+  if (!obj->dub_pushcallback("keyboard")) return false;
+  lua_State *L = obj->dub_L;
   lua_pushnumber(L, event->key());
   lua_pushboolean(L, isPressed);
   lua_pushstring(L, event->text().toUtf8());
   lua_pushnumber(L, event->modifiers());
   // <fun> <self> <key> <state> <utf8> <modifiers>
-  int status = lua_pcall(L, 5, 1, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in keyboard callback: %s\n", lua_tostring(L, -1));
+  if (!obj->dub_call(5, 1)) {
+    return true;
   }
 
   if (lua_isfalse(L, -1)) {
@@ -237,4 +211,3 @@ LuaStackSize Widget::getExistingDirectory(const char *caption,
   }
 }
 
-} // mimas

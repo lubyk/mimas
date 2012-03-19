@@ -30,7 +30,6 @@
 #define LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
 
 #include "mimas/mimas.h"
-#include "mimas/constants.h"
 #include "mimas/DataSource.h"
 #include "mimas/Widget.h"
 

@@ -10,59 +10,6 @@
 #include "mimas/Application.h"
 
 
-/** Set attributes (key, value)
- * 
- */
-static int Application__set_(lua_State *L) {
-
-  Application *self = *((Application **)dub_checksdata_n(L, 1, "mimas.Application"));
-  const char *key = luaL_checkstring(L, 2);
-  int key_h = dub_hash(key, 2);
-  switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "sAppKey")) break;
-      Application::sAppKey = **((pthread_key_t *)dub_checksdata_n(L, 3, "pthread_key_t"));
-      return 0;
-    }
-  }
-  if (lua_istable(L, 1)) {
-    lua_rawset(L, 1);
-  } else {
-    luaL_error(L, KEY_EXCEPTION_MSG, key);
-  }
-  return 0;
-}
-
-/** Get attributes (key)
- * 
- */
-static int Application__get_(lua_State *L) {
-
-  Application *self = *((Application **)dub_checksdata_n(L, 1, "mimas.Application", true));
-  const char *key = luaL_checkstring(L, 2);
-  // <self> "key" <mt>
-  // rawget(mt, key)
-  lua_pushvalue(L, 2);
-  // <self> "key" <mt> "key"
-  lua_rawget(L, -2);
-  if (!lua_isnil(L, -1)) {
-    // Found method.
-    return 1;
-  } else {
-    // Not in mt = attribute access.
-    lua_pop(L, 2);
-  }
-  int key_h = dub_hash(key, 2);
-  switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "sAppKey")) break;
-      dub_pushudata(L, &Application::sAppKey, "pthread_key_t", false);
-      return 1;
-    }
-  }
-  return 0;
-}
-
 /** Cast (class_name)
  * 
  */
@@ -185,7 +132,7 @@ static int Application_processEvents(lua_State *L) {
 }
 
 /** void Application::quit()
- * include/mimas/Application.h:124
+ * include/mimas/Application.h:125
  */
 static int Application_quit(lua_State *L) {
   try {
@@ -201,7 +148,7 @@ static int Application_quit(lua_State *L) {
 }
 
 /** void Application::setStyleSheet(const char *text)
- * include/mimas/Application.h:128
+ * include/mimas/Application.h:129
  */
 static int Application_setStyleSheet(lua_State *L) {
   try {
@@ -218,7 +165,7 @@ static int Application_setStyleSheet(lua_State *L) {
 }
 
 /** LuaStackSize Application::styleSheet(lua_State *L)
- * include/mimas/Application.h:132
+ * include/mimas/Application.h:133
  */
 static int Application_styleSheet(lua_State *L) {
   try {
@@ -233,7 +180,7 @@ static int Application_styleSheet(lua_State *L) {
 }
 
 /** LuaStackSize Application::screenSize(lua_State *L)
- * include/mimas/Application.h:140
+ * include/mimas/Application.h:141
  */
 static int Application_screenSize(lua_State *L) {
   try {
@@ -248,7 +195,7 @@ static int Application_screenSize(lua_State *L) {
 }
 
 /** void Application::singleShot(int msec, QObject *receiver, const char *member)
- * include/mimas/Application.h:151
+ * include/mimas/Application.h:152
  */
 static int Application_singleShot(lua_State *L) {
   try {
@@ -281,7 +228,7 @@ static int Application_MakeApplication(lua_State *L) {
 }
 
 /** static void Application::terminate(int sig)
- * include/mimas/Application.h:122
+ * include/mimas/Application.h:123
  */
 static int Application_terminate(lua_State *L) {
   try {
@@ -302,8 +249,8 @@ static int Application_terminate(lua_State *L) {
 static int Application_objectName(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    QByteArray s_self->objectName()_(self->objectName().toUtf8());
-    lua_pushlstring(L, s_self->objectName()_.constData(), s_self->objectName()_.size());
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "objectName: %s", e.what());
@@ -339,7 +286,7 @@ static int Application_property(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
     const char *name = dub_checkstring(L, 2);
-    pushVariantInLua(L, self->property(name))
+    pushVariantInLua(L, self->property(name));
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "property: %s", e.what());
@@ -380,8 +327,6 @@ static int Application___tostring(lua_State *L) {
 // --=============================================== METHODS
 
 static const struct luaL_Reg Application_member_methods[] = {
-  { "__newindex"   , Application__set_    },
-  { "__index"      , Application__get_    },
   { "_cast_"       , Application__cast_   },
   { "new"          , Application_Application },
   { "__gc"         , Application__Application },

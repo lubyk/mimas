@@ -70,17 +70,6 @@ public:
 
 private slots:
   void activatedSlot(int socket) {
-    //printf("[%p] activatedSlot %i (%s)\n", this, socket, isEnabled() ? "ON" : "OFF");
-    // Callback
-    // FIXME: ThreadedLuaObject stores L as lua_ (no need for a new thread)
-    lua_State *L = lua_;
-    // FIXME: We might need less lua threads and faster access to callbacks.
-    // We could use:
-    // 1. ref for global weak value table set on create (func_list_idx_)
-    // lua_rawgeti(L, LUA_REGISTRYINDEX, func_list_idx_)
-    // 2. ref for callback set in weak on create (luaL_ref)
-    // lua_rawgeti(L, -1, clbk_idx_)
-    //
     if (dub_pushcallback("activated")) {
       // <func> <self>
       dub_call(1, 0);
