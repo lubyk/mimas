@@ -49,20 +49,16 @@ bool Application::event(QEvent *event) {
     // macosx file open event
     QFileOpenEvent *fop = static_cast<QFileOpenEvent*>(event);
     QString file = fop->file();
-    lua_State *L = lua_;
+    lua_State *L = dub_L;
 
-    if (!pushLuaCallback("openFile")) {
+    if (!dub_pushcallback("openFile")) {
       // printf("Called 'openFile' for '%s' but Lua method is not defined for 'app'.\n", file.toUtf8().data());
       return false;
     }
 
     lua_pushstring(L, file.toUtf8().data());
     // <func> <self> <'file'>
-    int status = lua_pcall(L, 2, 0, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in 'openFile' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(2, 0);
     return true;
   }
 #endif

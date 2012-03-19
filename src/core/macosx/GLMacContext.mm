@@ -1,4 +1,4 @@
-#include "mimas/GLSLWidget.h"
+#include "mimas/GLWidget.h"
  
 void* mimasSelectModernOpenGLMac(GDHandle handle) {
     static const int Max = 40;
