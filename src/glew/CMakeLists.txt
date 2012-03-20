@@ -12,5 +12,5 @@ add_custom_target("glew_clean"
   COMMAND make clean
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor
 )
-add_custom_target("glew_make" ALL DEPENDS ${GLEW_OUTPUT})
+add_custom_target("glew_lib" ALL DEPENDS ${GLEW_OUTPUT})
 

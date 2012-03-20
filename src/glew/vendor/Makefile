@@ -36,6 +36,7 @@ SYSTEM.SUPPORTED = $(shell test -f config/Makefile.$(SYSTEM) && echo 1)
 
 ifeq ($(SYSTEM.SUPPORTED), 1)
 include config/Makefile.$(SYSTEM)
+$(warning "Building GLEW for platform '$(SYSTEM)' ($(SHARED_OBJ_EXT)).")
 else
 $(error "Platform '$(SYSTEM)' not supported")
 endif

@@ -82,6 +82,6 @@ target_link_libraries("${MODULE_NAME}_core"
   ${OPENGL_LIBRARIES}
   ${CMAKE_BINARY_DIR}/glew/libGLEW.a
 )
-add_dependencies("${MODULE_NAME}_core" glew_make)
+add_dependencies("${MODULE_NAME}_core" glew_lib)
 
 add_dependencies(${MODULE_NAME} "${MODULE_NAME}_core")
