@@ -1,5 +1,7 @@
 #include "mimas/Application.h"
 
+#include <QtCore/QRect>
+
 static char *app_argv[] = {&arg0[0], &arg1[0], &arg2[0], NULL};
 static int   app_argc   = (int)(sizeof(app_argv) / sizeof(app_argv[0])) - 1;
 
@@ -26,6 +28,13 @@ int Application::exec() {
 void Application::terminate(int sig) {
   Application *app = (Application*)pthread_getspecific(sAppKey);
   app->quit();
+}
+
+LuaStackSize Application::screenSize(lua_State *L) {
+  QRect rect = desktop()->geometry();
+  lua_pushnumber(L, rect.width());
+  lua_pushnumber(L, rect.height());
+  return 2;
 }
 
 bool Application::event(QEvent *event) {

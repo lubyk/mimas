@@ -3,6 +3,7 @@
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QAbstractSlider>
+#include <QtGui/QAction>
 
 /** List of Brush styles.
  */

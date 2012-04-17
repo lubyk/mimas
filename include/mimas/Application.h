@@ -30,9 +30,9 @@
 #define LUBYK_INCLUDE_MIMAS_APPLICATION_H_
 
 #include "dub/dub.h"
+#include "mimas/mimas.h" // pushVariantInLua
 
 #include <QtGui/QApplication>
-#include <QtCore/QTimer>
 
 #include <iostream>
 
@@ -41,7 +41,7 @@
  * @dub push: pushobject
  *      register: Application_core
  */
-class Application : public QApplication, dub::Thread {
+class Application : public QApplication, public dub::Thread {
   Q_OBJECT
 public:
 
@@ -62,6 +62,15 @@ public:
   // void postEvent(QObject *receiver, QEvent *event) {
   //   QApplication::postEvent(receiver, event);
 
+  /** Return the size of the desktop as a pair (width, height).
+   */
+  LuaStackSize screenSize(lua_State *L);
+
+protected:
+  /** Application event handler.
+   */
+  virtual bool event(QEvent *event);
+
   /** Key to retrieve 'this' value from a running thread.
    */
   static pthread_key_t sAppKey;
@@ -69,21 +78,6 @@ public:
   /** Termination signal handler.
    */
   static void terminate(int sig);
-
-  /** Return the size of the desktop as a pair (width, height).
-   */
-  LuaStackSize screenSize(lua_State *L) {
-    QRect rect = desktop()->geometry();
-    lua_pushnumber(L, rect.width());
-    lua_pushnumber(L, rect.height());
-    return 2;
-  }
-
-protected:
-  /** Application event handler.
-   */
-  virtual bool event(QEvent *event);
- }
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_APPLICATION_H_
