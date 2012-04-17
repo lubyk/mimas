@@ -19,74 +19,73 @@ function lib.new(type)
   local self = constr(type)
   self:setQuitOnLastWindowClosed(mimas.Settings.quit_on_close)
   self:setStyleSheet [[
-    .window, .main_window, .widget, .table, .list, .menu, .tab_widget::pane, .label, .control, .checkbox {
+    QWidget {
       background:#151515;
       color:#B4B4B4;
     }
-    .table {
+    TableView {
       alternate-background-color:#333;
       border:0;
     }
-    .list, .menu {
+    ListView, Menu {
       border:0;
       padding:0;
     }
-    .list {
+    ListView {
       alternate-background-color:#333;
       border:0;
       min-height:90px;
     }
-    .menu {
+    ListView::item {
+      padding:2px;
+    }
+    ListView::item:selected {
+      border: 0;
+      color: #B4B4B4;
+      background:#6E4E24;
+      padding:0px;
+    }
+    Menu {
       border:1px solid #777;
       font-size:13px;
       background:#222;
     }
-    .menu::separator {
+    Menu::separator {
       height: 2px;
       background: #444;
     }
-    .menu::item {
+    Menu::item {
       padding:2px 5px;
       border-top:1px solid #444;
     }
-    .menu::item:first {
+    Menu::item:first {
       border-top:0;
     }
-    .menu::item:selected {
+    Menu::item:selected {
       background: rgb(55,55,55);
     }
-    .list::item {
-      padding:2px;
-    }
-    .group_box {
+    GroupBox {
       background: #222;
     }
-    .list::item:selected {
-        border: 0;
-        color: #B4B4B4;
-        background:#6E4E24;
-        padding:0px;
-     }
-    .line_edit {
+    LineEdit {
       background:rgb(55,55,55);
       color:white;
       selection-color:white;
       selection-background-color: rgb(40,85,140);
     }
-    .glwindow { border-style: none;}
-    .glwidget { border-style: none;}
-    .label { background: transparent; }
+    GLWidget { border-style: none;}
+    Label { background: transparent; }
 
     /* TabWidget */
-    .tab_widget { 
+    TabWidget { 
       background:#444;
     }
-    .tab_widget::pane {
+    TabWidget::pane {
       position:absolute;
       top: -1px;
       border-top:1px solid #999;
     }
-    .tab_widget::tab-bar {
+    TabWidget::tab-bar {
       left:15px;
     }
     QTabBar::tab {
@@ -144,7 +143,6 @@ function lib.new(type)
     QCheckBox::indicator:checked {
       background:#888;
     }
-
 
     #test_name { color: hsva(20, 255, 255, 80%); }
     #test_name.slider { color:hsv(30,200,200); }

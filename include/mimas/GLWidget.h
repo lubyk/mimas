@@ -56,7 +56,8 @@ if (ErrorCheckValue != GL_NO_ERROR) { \
  * This class lets you draw OpenGL elements with Widgets on top.
  * http://doc.trolltech.com/qq/qq26-openglcanvas.html
  *
- * @dub push: pushobject
+ * @dub register: GLWidget_core
+ *      push: pushobject
  *      super: QWidget
  */
 class GLWidget : public QGLWidget, public dub::Thread {

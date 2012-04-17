@@ -37,8 +37,8 @@
 
 /** HBoxLayout (arrange widgets horizontally).
  *
- * @dub push: pushobject
- *      register: HBoxLayout_core
+ * @dub register: HBoxLayout_core
+ *      push: pushobject
  *      super: QLayout
  */
 class HBoxLayout : public QHBoxLayout, public dub::Object {

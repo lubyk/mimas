@@ -6,12 +6,11 @@
   ...
 
 --]]------------------------------------------------------
-local constr        = mimas_core.FileObserver
-local mt            = mimas_core.FileObserver_
-mimas.FileObserver_ = mt
+local lib          = mimas.FileObserver_core
+mimas.FileObserver = lib
 
-local addPath = mt.addPath
-function mt:addPath(path)
+local addPath = lib.addPath
+function lib:addPath(path)
   path = lk.absolutizePath(path)
   if not self.paths[path] then
     addPath(self, path)
@@ -19,16 +18,17 @@ function mt:addPath(path)
   end
 end
 
-local removePath = mt.removePath
-function mt:removePath(path)
+local removePath = lib.removePath
+function lib:removePath(path)
   path = lk.absolutizePath(path)
   if self.paths[path] then
-    removePath(self, lk.absolutizePath(path))
+    removePath(self, path)
     self.paths[path] = nil
   end
 end
 
-function mimas.FileObserver(file_or_files)
+local constr = lib.new
+function lib.new(file_or_files)
   local self = constr()
   self.paths = {}
   if file_or_files then

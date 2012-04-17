@@ -41,15 +41,11 @@
 
 typedef int LuaStackSize;
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 // We need C linkage because lua lib is compiled as C code
 #include "dub/lua.h"
 #include "dub/lauxlib.h"
-#ifdef __cplusplus
 }
-#endif
 
 #include <string>    // std::string for Exception
 #include <exception> // std::exception

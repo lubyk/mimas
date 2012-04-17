@@ -62,7 +62,6 @@ binder:addCustomTypes {
 -- bind
 ----------------------------------------------------------------
 
-local dir = lk.Dir(base .. '/include/mimas')
 local only = {}
 for file in lfs.dir(base .. '/include/mimas') do
   local name = file:match('^([A-Z][a-zA-Z]+)%.h$')
@@ -70,6 +69,8 @@ for file in lfs.dir(base .. '/include/mimas') do
     table.insert(only, name)
   end
 end
+
+only = {'Application'}
 
 binder:bind(ins, {
   output_directory = base .. '/src/core/bind',

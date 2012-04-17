@@ -11,7 +11,7 @@
 
 
 /** FileObserver::FileObserver()
- * include/mimas/FileObserver.h:50
+ * include/mimas/FileObserver.h:51
  */
 static int FileObserver_FileObserver(lua_State *L) {
   try {
@@ -27,7 +27,7 @@ static int FileObserver_FileObserver(lua_State *L) {
 }
 
 /** FileObserver::~FileObserver()
- * include/mimas/FileObserver.h:58
+ * include/mimas/FileObserver.h:59
  */
 static int FileObserver__FileObserver(lua_State *L) {
   try {
@@ -47,7 +47,7 @@ static int FileObserver__FileObserver(lua_State *L) {
 }
 
 /** void FileObserver::addPath(const char *path)
- * include/mimas/FileObserver.h:61
+ * include/mimas/FileObserver.h:62
  */
 static int FileObserver_addPath(lua_State *L) {
   try {
@@ -64,7 +64,7 @@ static int FileObserver_addPath(lua_State *L) {
 }
 
 /** void FileObserver::removePath(const char *path)
- * include/mimas/FileObserver.h:65
+ * include/mimas/FileObserver.h:66
  */
 static int FileObserver_removePath(lua_State *L) {
   try {
@@ -111,7 +111,7 @@ extern "C" int luaopen_mimas_FileObserver(lua_State *L)
   // register member methods
   luaL_register(L, NULL, FileObserver_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "FileObserver");
+  dub_register(L, "mimas", "FileObserver_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

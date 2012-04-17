@@ -41,7 +41,8 @@
 /** The DataSource is used to provide data to Views such as TableView, ListView or
  * TreeView.
  *
- * @dub push: pushobject
+ * @dub register: DataSource_core
+ *      push: pushobject
  *      ignore: 'index'
  */
 class DataSource : public QAbstractItemModel, public dub::Thread {
@@ -82,7 +83,7 @@ protected:
     if (!dub_call(1, 1)) {
       return 0;
     }
-
+    
     int count = lua_tonumber(L, -1);
     lua_pop(L, 1);
     return count < 0 ? 0 : count;

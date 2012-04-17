@@ -3,16 +3,16 @@ include_directories(core/bind)
 # --------------------------------------------------------------
 #  moc
 # --------------------------------------------------------------
-file(GLOB SUB_MODULE_HEADERS ../include/mimas/*.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Brush.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Color.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/constants.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/mimas.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Pen.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Painter.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Path.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/qt_config.h)
-list(REMOVE_ITEM SUB_MODULE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/range_widget.h)
+file(GLOB MODULE_headers ../include/mimas/*.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Brush.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Color.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/constants.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/mimas.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Pen.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Painter.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Path.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/qt_config.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/range_widget.h)
 
 if(QT_SRC_PATH STREQUAL "")
   set(MOC "moc")
@@ -20,8 +20,8 @@ else(QT_SRC_PATH STREQUAL "")
   set(MOC "${QT_SRC_PATH}/bin/moc")
 endif(QT_SRC_PATH STREQUAL "")
 
-set(SUB_MODULE_HEADERS_MOC "")
-foreach(MOC_SRC ${SUB_MODULE_HEADERS})
+set(MODULE_headers_MOC "")
+foreach(MOC_SRC ${MODULE_headers})
   get_filename_component(MOC_SRC_NAME ${MOC_SRC} NAME_WE)
   set(OUT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/moc/${PLAT}/${MOC_SRC_NAME}.cpp)
   add_custom_command(PRE_BUILD
@@ -29,8 +29,8 @@ foreach(MOC_SRC ${SUB_MODULE_HEADERS})
     COMMAND ${MOC} ${MOC_SRC} -o ${OUT_FILE}
     DEPENDS ${MOC_SRC}
   )
-  list(APPEND SUB_MODULE_HEADERS_MOC ${OUT_FILE})
-endforeach(MOC_SRC SUB_MODULE_HEADERS)
+  list(APPEND MODULE_headers_MOC ${OUT_FILE})
+endforeach(MOC_SRC MODULE_headers)
 
 # --------------------------------------------------------------
 #  Qt
@@ -66,10 +66,38 @@ find_package(OpenGL)
 add_subdirectory(glew)
 
 # --------------------------------------------------------------
-#  core
+#  MODULE_src
 # --------------------------------------------------------------
-file(GLOB CORE_SOURCES core/bind/dub/*.cpp core/bind/*.cpp core/*.cpp core/${PLAT}/*.cpp core/${PLAT}/*.mm)
-add_library("${MODULE_NAME}_core" MODULE ${CORE_SOURCES} ${SUB_MODULE_HEADERS_MOC})
+file(GLOB MODULE_src core/bind/dub/*.cpp core/bind/*.cpp core/*.cpp core/${PLAT}/*.cpp core/${PLAT}/*.mm)
+
+# --------------------------------------------------------------
+#  MODULE_headers
+# --------------------------------------------------------------
+file(GLOB MODULE_headers ../include/mimas/*.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Brush.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Color.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/constants.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/mimas.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Pen.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Painter.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/Path.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/qt_config.h)
+list(REMOVE_ITEM MODULE_headers ${CMAKE_CURRENT_SOURCE_DIR}/../include/mimas/range_widget.h)
+
+# --------------------------------------------------------------
+#  Qt moc and settings
+# --------------------------------------------------------------
+qt4_wrap_cpp(MODULE_moc ${MODULE_headers})
+
+set(QT_USE_QTGUI TRUE)
+set(QT_USE_QTOPENGL TRUE)
+include(${QT_USE_FILE})
+add_definitions(${QT_DEFINITIONS})
+
+# --------------------------------------------------------------
+#  mimas/core.so
+# --------------------------------------------------------------
+add_library("${MODULE_NAME}_core" MODULE ${MODULE_src} ${MODULE_moc})
 set_target_properties("${MODULE_NAME}_core"
   PROPERTIES OUTPUT_NAME core
   LINK_FLAGS ${PLAT_OBJ_FLAGS}

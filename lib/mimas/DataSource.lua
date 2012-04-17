@@ -7,30 +7,25 @@
   ListView, TableView and friends.
 
 --]]------------------------------------------------------
-local constr      = mimas_core.DataSource
-local mt          = mimas_core.DataSource_
-mimas.DataSource_ = mt
+local lib        = mimas.DataSource_core
+mimas.DataSource = lib
 
-function mimas.DataSource(data)
+local constr = lib.new
+function lib.new(data)
   local self = constr()
-  function self.columnCount()
-    -- default useful for ListView
-    return 1
-  end
-  if data then
-    function self:rowCount()
-      return #data
-    end
-    function self:data(row)
-      return data[row]
-    end
-  end
-
+  self.data = data
   return self
 end
 
-local mt = mimas_core.DataSource_
+function lib:columnCount()
+  -- default useful for ListView
+  return 1
+end
 
-function mt:__index(key)
-  return rawget(mt, key) or mt.getCallback(self, key)
+function self:rowCount()
+  return self.data and #self.data
+end
+
+function self:data(row)
+  return self.data and self.data[row]
 end

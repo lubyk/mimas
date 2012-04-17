@@ -41,7 +41,8 @@
 /** The DataSource is used to provide data to Views such as TableView, ListView or
  * TreeView.
  *
- * @dub push: pushobject
+ * @dub register: FileObserver_core
+ *      push: pushobject
  *
  */
 class FileObserver : public QFileSystemWatcher, public dub::Thread {

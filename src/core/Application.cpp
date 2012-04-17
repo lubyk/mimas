@@ -1,17 +1,7 @@
 #include "mimas/Application.h"
-#include <csignal>
 
-#include <QtGui/QFileDialog>
-#include <QtCore/QTextCodec>
-#include <QtCore/QLocale>
-
-static char arg0[] = "Lubyk";
-static char arg1[] = "-style";
-static char arg2[] = "Plastique";
 static char *app_argv[] = {&arg0[0], &arg1[0], &arg2[0], NULL};
 static int   app_argc   = (int)(sizeof(app_argv) / sizeof(app_argv[0])) - 1;
-
-pthread_key_t Application::sAppKey = 0;
 
 Application::Application()
    : QApplication(app_argc, app_argv) {
@@ -23,6 +13,8 @@ Application::Application()
   setlocale(LC_NUMERIC, "C");
 }
 
+Application::~Application() {
+}
 
 int Application::exec() {
   // register interrupt signal
@@ -31,16 +23,9 @@ int Application::exec() {
   return QApplication::exec();
 }
 
-void Application::processEvents(int maxtime) {
-  QCoreApplication::sendPostedEvents();
-  QCoreApplication::processEvents(QEventLoop::AllEvents, maxtime);
-}
-
-/** OS Signal catch.
- */
 void Application::terminate(int sig) {
-  void *app = pthread_getspecific(sAppKey);
-  ((Application*)app)->quit();
+  Application *app = (Application*)pthread_getspecific(sAppKey);
+  app->quit();
 }
 
 bool Application::event(QEvent *event) {
@@ -52,7 +37,7 @@ bool Application::event(QEvent *event) {
     lua_State *L = dub_L;
 
     if (!dub_pushcallback("openFile")) {
-      // printf("Called 'openFile' for '%s' but Lua method is not defined for 'app'.\n", file.toUtf8().data());
+      // printf("Called 'openFile' for '%s' but Lua method is not defined for 'app'.\n
       return false;
     }
 
@@ -64,3 +49,4 @@ bool Application::event(QEvent *event) {
 #endif
   return QApplication::event(event);
 }
+

@@ -6,50 +6,29 @@
   Horizontal layout of GUI widgets.
 
 --]]------------------------------------------------------
-local constr      = mimas_core.HBoxLayout
-local mt          = mimas_core.HBoxLayout_
-mimas.HBoxLayout_ = mt
+local lib = mimas.HBoxLayout_core
+lib.is_layout    = true
+mimas.HBoxLayout = lib
 
-function mimas.HBoxLayout(parent)
-  if parent then
-    return constr(parent:widget())
+local addWidget = lib.addWidget
+local addLayout = lib.addLayout
+function lib:addWidget(other, ...)
+  if other.is_layout then
+    -- this is a layout
+    self:addLayout(other, ...)
   else
-    return constr()
+    addWidget(self, other, ...)
   end
 end
 
-local addWidget = mt.addWidget
-local addLayout = mt.addLayout
-function mt:addWidget(other, ...)
-  if other.layout then
+
+local insertWidget = lib.insertWidget
+function lib:insertWidget(pos, other, ...)
+  if other.is_layout then
     -- sub layout
-    addLayout(self, other:layout(), ...)
+    self:insertLayout(pos, other, ...)
   else
-    addWidget(self, other:widget(), ...)
+    insertWidget(self, pos, other, ...)
   end
 end
 
-function mt:addLayout(other, ...)
-  -- sub layout
-  addLayout(self, other:layout(), ...)
-end
-
-local insertWidget = mt.insertWidget
-local insertLayout = mt.insertLayout
-function mt:insertWidget(pos, other, ...)
-  if other.layout then
-    -- sub layout
-    insertLayout(self, pos, other:layout(), ...)
-  else
-    insertWidget(self, pos, other:widget(), ...)
-  end
-end
-
-function mt:insertLayout(pos, other, ...)
-  insertLayout(self, pos, other:layout(), ...)
-end
-
-local setAlignment = mt.setAlignment
-function mt:setAlignment(widget, ...)
-  return setAlignment(self, widget:widget(), ...)
-end

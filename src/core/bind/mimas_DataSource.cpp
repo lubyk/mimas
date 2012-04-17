@@ -11,7 +11,7 @@
 
 
 /** DataSource::DataSource()
- * include/mimas/DataSource.h:50
+ * include/mimas/DataSource.h:51
  */
 static int DataSource_DataSource(lua_State *L) {
   try {
@@ -27,7 +27,7 @@ static int DataSource_DataSource(lua_State *L) {
 }
 
 /** DataSource::~DataSource()
- * include/mimas/DataSource.h:53
+ * include/mimas/DataSource.h:54
  */
 static int DataSource__DataSource(lua_State *L) {
   try {
@@ -47,7 +47,7 @@ static int DataSource__DataSource(lua_State *L) {
 }
 
 /** void DataSource::reset()
- * include/mimas/DataSource.h:56
+ * include/mimas/DataSource.h:57
  */
 static int DataSource_reset(lua_State *L) {
   try {
@@ -63,7 +63,7 @@ static int DataSource_reset(lua_State *L) {
 }
 
 /** void DataSource::emitLayoutChanged()
- * include/mimas/DataSource.h:62
+ * include/mimas/DataSource.h:63
  */
 static int DataSource_emitLayoutChanged(lua_State *L) {
   try {
@@ -109,7 +109,7 @@ extern "C" int luaopen_mimas_DataSource(lua_State *L)
   // register member methods
   luaL_register(L, NULL, DataSource_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "DataSource");
+  dub_register(L, "mimas", "DataSource_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

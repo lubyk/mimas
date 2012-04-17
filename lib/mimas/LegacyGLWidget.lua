@@ -1,22 +1,22 @@
 --[[------------------------------------------------------
 
-  mimas.GLSLWidget
+  mimas.GLWidget
   --------------
 
-  A context to draw modern OpenGL content.
+  A context to draw OpenGL content.
 
 --]]------------------------------------------------------
-local mt         = mimas_core.GLSLWidget_
-mimas.GLSLWidget_ = mt
+local mt        = mimas_core.GLWidget_
+mimas.GLWidget_ = mt
 local close  = mt.close
 
-local constr  = mimas_core.GLSLWidget
-function mimas.GLSLWidget(...)
-  return mimas.bootstrap('GLSLWidget', constr, ...)
+local constr  = mimas_core.GLWidget
+function mimas.GLWidget(...)
+  return mimas.bootstrap('GLWidget', constr, ...)
 end
 
 --=============================================== COPY CODE FROM Widget
-local addWidget = mt.addWidget
+local addWidget = mt.addWidgetToScene
 function mt:addWidget(other, ...)
   addWidget(self, other:widget(), ...)
 end
@@ -97,4 +97,3 @@ function mt:resizeGL(w, h)
   100               -- zFar
   )
 end
-

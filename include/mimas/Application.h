@@ -29,111 +29,46 @@
 #ifndef LUBYK_INCLUDE_MIMAS_APPLICATION_H_
 #define LUBYK_INCLUDE_MIMAS_APPLICATION_H_
 
-#include "mimas/mimas.h"
-#include "mimas/Callback.h"
+#include "dub/dub.h"
 
 #include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
 #include <QtCore/QTimer>
 
 #include <iostream>
 
-/** Application (starts the GUI and manages the event loop). We do not
- * really need to use DeletableOutOfLua here but we never know.
+/** Application (starts the GUI and manages the event loop).
  *
  * @dub push: pushobject
  *      register: Application_core
- *      constructor: MakeApplication
- *      destrucor: luaDestroy
- *      ignore: event, sAppKey
- *      super: 'QObject'
  */
-class Application : public QApplication, public dub::Thread {
+class Application : public QApplication, dub::Thread {
   Q_OBJECT
 public:
-  /** Private constructor. Use MakeApplication instead.
-   */
-  Application();
 
   enum ApplicationType {
     Desktop,
     Plugin,
   };
 
-  /** Custom constructor so that we can define some constants needed before
-   * the application object is built (type of application).
-   */
-  static LuaStackSize MakeApplication(lua_State *L) {
-    // <'type'>
-    ApplicationType type = Desktop;
-    if (lua_isstring(L, 1)) {
-      std::string str(lua_tostring(L, 1));
-      if (str == "plugin") {
-        type = Plugin;
-      }
-    }
+  Application();
 
-    if (type == Plugin) {
-      // avoid qt_menu.nib loading
-      QApplication::setAttribute(Qt::AA_MacPluginApplication, true);
-    }
-
-    Application *app = new Application();
-    app->pushobject(L, app, "mimas.Application");
-    // <app>
-    return 1;
-  }
-
-  ~Application() {
-  }
-
-  /** If this is true (default), mimas quits when the last window is closed.
-   */
-  void setQuitOnLastWindowClosed(bool quit) {
-    QApplication::setQuitOnLastWindowClosed(quit);
-  }
-
-  // Destructor method called when the object goes out of Lua scope
-  virtual void luaDestroy() {
-    deleteLater();
-  }
+  ~Application();
 
   /** Start event loop.
    */
   int exec();
 
-  /** Process events from an external event loop
-   * FIXME: check deffered delete....
-   * FIXME: Is this used ????
-   */
-  void processEvents(int maxtime);
-
   // Maybe this could be used for automated testing.
   // void postEvent(QObject *receiver, QEvent *event) {
   //   QApplication::postEvent(receiver, event);
-  // }
-  
 
   /** Key to retrieve 'this' value from a running thread.
    */
   static pthread_key_t sAppKey;
 
-  /** Thread should stop. */
+  /** Termination signal handler.
+   */
   static void terminate(int sig);
-
-  void quit() {
-    QApplication::quit();
-  }
-
-  void setStyleSheet(const char *text) {
-    QApplication::setStyleSheet(QString(text));
-  }
-
-  LuaStackSize styleSheet(lua_State *L) {
-    QString style(QApplication::styleSheet());
-    lua_pushstring(L, style.toUtf8().data());
-    return 1;
-  }
 
   /** Return the size of the desktop as a pair (width, height).
    */
@@ -144,13 +79,11 @@ public:
     return 2;
   }
 
-  virtual bool event(QEvent *event);
-  
-  /** Calls a slot in msec milliseconds. Used by poller to handle scheduling.
+protected:
+  /** Application event handler.
    */
-  void singleShot(int msec, QObject *receiver, const char *member) {
-    QTimer::singleShot(msec, receiver, member);
-  }
+  virtual bool event(QEvent *event);
+ }
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_APPLICATION_H_

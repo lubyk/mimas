@@ -10,32 +10,13 @@
 #include "mimas/Application.h"
 
 
-/** Cast (class_name)
- * 
- */
-static int Application__cast_(lua_State *L) {
-
-  Application *self = *((Application **)dub_checksdata_n(L, 1, "mimas.Application"));
-  const char *key = luaL_checkstring(L, 2);
-  void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
-  int key_h = dub_hash(key, 2);
-  switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
-      return 1;
-    }
-  }
-  return 0;
-}
-
 /** Application::Application()
- * include/mimas/Application.h:56
+ * include/mimas/Application.h:52
  */
 static int Application_Application(lua_State *L) {
   try {
     Application *retval__ = new Application();
-    retval__->pushobject(L, retval__, "mimas.Application", true);
+    dub_pushudata(L, retval__, "mimas.Application", true);
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "Application: %s", e.what());
@@ -46,7 +27,7 @@ static int Application_Application(lua_State *L) {
 }
 
 /** Application::~Application()
- * include/mimas/Application.h:87
+ * include/mimas/Application.h:59
  */
 static int Application__Application(lua_State *L) {
   try {
@@ -65,41 +46,8 @@ static int Application__Application(lua_State *L) {
   return dub_error(L);
 }
 
-/** void Application::setQuitOnLastWindowClosed(bool quit)
- * include/mimas/Application.h:92
- */
-static int Application_setQuitOnLastWindowClosed(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    bool quit = dub_checkboolean(L, 2);
-    self->setQuitOnLastWindowClosed(quit);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setQuitOnLastWindowClosed: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setQuitOnLastWindowClosed: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** virtual void Application::luaDestroy()
- * include/mimas/Application.h:97
- */
-static int Application_luaDestroy(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    self->luaDestroy();
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "luaDestroy: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "luaDestroy: Unknown exception");
-  }
-  return dub_error(L);
-}
-
 /** int Application::exec()
- * include/mimas/Application.h:103
+ * include/mimas/Application.h:63
  */
 static int Application_exec(lua_State *L) {
   try {
@@ -114,25 +62,8 @@ static int Application_exec(lua_State *L) {
   return dub_error(L);
 }
 
-/** void Application::processEvents(int maxtime)
- * include/mimas/Application.h:109
- */
-static int Application_processEvents(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    int maxtime = dub_checkint(L, 2);
-    self->processEvents(maxtime);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "processEvents: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "processEvents: Unknown exception");
-  }
-  return dub_error(L);
-}
-
 /** void Application::quit()
- * include/mimas/Application.h:124
+ * include/mimas/Application.h:70
  */
 static int Application_quit(lua_State *L) {
   try {
@@ -147,30 +78,14 @@ static int Application_quit(lua_State *L) {
   return dub_error(L);
 }
 
-/** void Application::setStyleSheet(const char *text)
- * include/mimas/Application.h:128
- */
-static int Application_setStyleSheet(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    const char *text = dub_checkstring(L, 2);
-    self->setStyleSheet(text);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setStyleSheet: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setStyleSheet: Unknown exception");
-  }
-  return dub_error(L);
-}
 
 /** LuaStackSize Application::styleSheet(lua_State *L)
- * include/mimas/Application.h:132
+ * include/mimas/Application.h:78
  */
 static int Application_styleSheet(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    return self->styleSheet(L);
+    return self->getStyleSheet(L);
   } catch (std::exception &e) {
     lua_pushfstring(L, "styleSheet: %s", e.what());
   } catch (...) {
@@ -179,172 +94,15 @@ static int Application_styleSheet(lua_State *L) {
   return dub_error(L);
 }
 
-/** LuaStackSize Application::screenSize(lua_State *L)
- * include/mimas/Application.h:140
- */
-static int Application_screenSize(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    return self->screenSize(L);
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "screenSize: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "screenSize: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void Application::singleShot(int msec, QObject *receiver, const char *member)
- * include/mimas/Application.h:151
- */
-static int Application_singleShot(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    int msec = dub_checkint(L, 2);
-    QObject *receiver = *((QObject **)dub_checksdata(L, 3, "mimas.QObject"));
-    const char *member = dub_checkstring(L, 4);
-    self->singleShot(msec, receiver, member);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "singleShot: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "singleShot: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** static LuaStackSize Application::MakeApplication(lua_State *L)
- * include/mimas/Application.h:66
- */
-static int Application_MakeApplication(lua_State *L) {
-  try {
-    return Application::MakeApplication(L);
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "MakeApplication: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "MakeApplication: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** static void Application::terminate(int sig)
- * include/mimas/Application.h:122
- */
-static int Application_terminate(lua_State *L) {
-  try {
-    int sig = dub_checkint(L, 1);
-    Application::terminate(sig);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "terminate: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "terminate: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QString QObject::objectName() const
- * bind/QObject.h:7
- */
-static int Application_objectName(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    QByteArray str_(self->objectName().toUtf8());
-    lua_pushlstring(L, str_.constData(), str_.size());
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "objectName: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "objectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QObject::setObjectName(const QString &name)
- * bind/QObject.h:8
- */
-static int Application_setObjectName(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    size_t name_sz_;
-    const char *name = dub_checklstring(L, 2, &name_sz_);
-    
-    self->setObjectName(QString::fromUtf8(name, name_sz_));
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setObjectName: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setObjectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QVariant QObject::property(const char *name)
- * bind/QObject.h:9
- */
-static int Application_property(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    const char *name = dub_checkstring(L, 2);
-    return pushVariantInLua(L, self->property(name));
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "property: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "property: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** bool QObject::setProperty(const char *name, const QVariant &value)
- * bind/QObject.h:10
- */
-static int Application_setProperty(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    const char *name = dub_checkstring(L, 2);
-    QVariant value(variantFromLua(L, 3));
-    lua_pushboolean(L, self->setProperty(name, value));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setProperty: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setProperty: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-
-
-// --=============================================== __tostring
-static int Application___tostring(lua_State *L) {
-  Application *self = *((Application **)dub_checksdata_n(L, 1, "mimas.Application"));
-  lua_pushfstring(L, "mimas.Application: %p", self);
-  
-  return 1;
-}
 
 // --=============================================== METHODS
 
 static const struct luaL_Reg Application_member_methods[] = {
-  { "_cast_"       , Application__cast_   },
   { "new"          , Application_Application },
   { "__gc"         , Application__Application },
-  { "setQuitOnLastWindowClosed", Application_setQuitOnLastWindowClosed },
-  { "luaDestroy"   , Application_luaDestroy },
   { "exec"         , Application_exec     },
-  { "processEvents", Application_processEvents },
   { "quit"         , Application_quit     },
-  { "setStyleSheet", Application_setStyleSheet },
   { "styleSheet"   , Application_styleSheet },
-  { "screenSize"   , Application_screenSize },
-  { "singleShot"   , Application_singleShot },
-  { "MakeApplication", Application_MakeApplication },
-  { "terminate"    , Application_terminate },
-  { "objectName"   , Application_objectName },
-  { "setObjectName", Application_setObjectName },
-  { "property"     , Application_property },
-  { "setProperty"  , Application_setProperty },
-  { "__tostring"   , Application___tostring },
   { NULL, NULL},
 };
 

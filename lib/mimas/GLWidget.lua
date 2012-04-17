@@ -3,49 +3,19 @@
   mimas.GLWidget
   --------------
 
-  A context to draw OpenGL content.
+  A context to draw modern OpenGL content.
 
 --]]------------------------------------------------------
-local mt        = mimas_core.GLWidget_
-mimas.GLWidget_ = mt
-local close  = mt.close
+local lib = mimas.GLWidget_core
+mimas.GLWidget = lib
 
-local constr  = mimas_core.GLWidget
-function mimas.GLWidget(...)
-  return mimas.bootstrap('GLWidget', constr, ...)
+local new = lib.new
+function lib.new(...)
+  return mimas.bootstrap(lib, new, ...)
 end
 
---=============================================== COPY CODE FROM Widget
-local addWidget = mt.addWidgetToScene
-function mt:addWidget(other, ...)
-  addWidget(self, other:widget(), ...)
-end
-
-local setParent = mt.setParent
-function mt:setParent(other, ...)
-  setParent(self, other:widget(), ...)
-end
-
-local addLayout = mt.addLayout
-function mt:addLayout(other)
-  addLayout(self, other:layout())
-end
-
--- default keyboard action
--- TODO: add CMD+W
-function mt:keyboard(key, on)
-  if on then
-    if key == mimas.ESC then
-      -- ESC
-      self:close()
-    elseif key == mimas.Space then
-      self:swapFullScreen()
-    end
-  end
-end
-
-local close  = mt.close
-function mt:close()
+local close  = lib.close
+function lib:close()
   if self:deleted() then
     return false
   else
@@ -54,14 +24,14 @@ function mt:close()
   end
 end
 
-function mt:center()
+function lib:center()
   local w, h = app:screenSize()
   local sw, sh = self:size()
   self:move((w - sw) / 2, (h - sh) / 2)
 end
 
 --=============================================== DEFAULT METHODS
-function mt:initializeGL()
+function lib:initializeGL()
   gl.Enable("POINT_SMOOTH")
   gl.Enable("SMOOTH")
   gl.Enable("BLEND")                                -- Enable alpha blending
@@ -77,7 +47,7 @@ function mt:initializeGL()
   gl.ClearColor(0.2,0.2,0.2,0.5)
 end
 
-function mt:resizeGL(w, h)
+function lib:resizeGL(w, h)
   self.w = w
   self.h = h
   gl.Enable("BLEND")
@@ -97,3 +67,4 @@ function mt:resizeGL(w, h)
   100               -- zFar
   )
 end
+

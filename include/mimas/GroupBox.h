@@ -38,9 +38,9 @@
 
 /** GroupBox (arrange widgets vertically).
  *
- * @dub register:'GroupBox_core'
+ * @dub register: GroupBox_core
  *      push: pushobject
- *      super: 'QWidget'
+ *      super: QWidget
  */
 class GroupBox : public QGroupBox, public dub::Object {
   Q_OBJECT
