@@ -8,7 +8,7 @@
 /** List of Brush styles.
  */
 enum BrushStyles {
-  NoBrush                 = Qt::NoBrush,
+  NoBrushStyle            = Qt::NoBrush,
   SolidPattern            = Qt::SolidPattern,
   //Dense1Pattern           = Qt::Dense1Pattern
   //Dense2Pattern           = Qt::Dense2Pattern
@@ -32,7 +32,7 @@ enum BrushStyles {
 /** Pen styles.
  */
 enum PenStyles {
-  NoPen          = Qt::NoPen,
+  NoPenStyle     = Qt::NoPen,
   SolidLine      = Qt::SolidLine,
   DashLine       = Qt::DashLine,
   DotLine        = Qt::DotLine,

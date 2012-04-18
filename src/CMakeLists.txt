@@ -1,3 +1,8 @@
+# --------------------------------------------------------------
+#  mimas_core                                  mimas/core.so
+# --------------------------------------------------------------
+set(target "${MODULE_NAME}_core")
+
 include_directories(core/bind)
 
 # --------------------------------------------------------------
@@ -97,19 +102,26 @@ add_definitions(${QT_DEFINITIONS})
 # --------------------------------------------------------------
 #  mimas/core.so
 # --------------------------------------------------------------
-add_library("${MODULE_NAME}_core" MODULE ${MODULE_src} ${MODULE_moc})
-set_target_properties("${MODULE_NAME}_core"
+add_library(${target} MODULE ${MODULE_src} ${MODULE_moc})
+set_target_properties(${target}
   PROPERTIES OUTPUT_NAME core
   LINK_FLAGS ${PLAT_OBJ_FLAGS}
-  LIBRARY_OUTPUT_DIRECTORY ${LUBYK_LIB}/${MODULE_NAME}
   PREFIX ""
   SUFFIX ".so"
 )  
-target_link_libraries("${MODULE_NAME}_core"
+target_link_libraries(${target}
   ${QT_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${CMAKE_BINARY_DIR}/glew/libGLEW.a
 )
-add_dependencies("${MODULE_NAME}_core" glew_lib)
+add_dependencies(${target} glew_lib)
 
-add_dependencies(${MODULE_NAME} "${MODULE_NAME}_core")
+add_dependencies(${MODULE_NAME} ${target})
+
+# --------------------------------------------------------------
+#  install                                     
+# --------------------------------------------------------------
+install(TARGETS ${target}
+  DESTINATION lib/lubyk/${MODULE_NAME}
+)
+

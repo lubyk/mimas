@@ -46,7 +46,7 @@ class Painter;
  * @see QWidget
  * @dub push: pushobject
  *      register: Widget_core
- *      ignore: keyboard, mouse, click, paint, resized, moved, closed, paint
+ *      ignore: keyboard, mouse, click, paint, resized, moved, closed, showHide
  */
 class Widget : public QWidget, public dub::Thread {
   Q_OBJECT

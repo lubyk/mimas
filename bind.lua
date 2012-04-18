@@ -70,8 +70,6 @@ for file in lfs.dir(base .. '/include/mimas') do
   end
 end
 
-only = {'Application'}
-
 binder:bind(ins, {
   output_directory = base .. '/src/core/bind',
   -- Remove this part in included headers

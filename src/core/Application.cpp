@@ -1,9 +1,19 @@
 #include "mimas/Application.h"
 
 #include <QtCore/QRect>
+#include <QtCore/QTextCodec>
+#include <QtCore/QLocale>
+#include <QtGui/QDesktopWidget>
 
+#include <signal.h>
+
+static char arg0[] = "Lubyk";
+static char arg1[] = "-style";
+static char arg2[] = "Plastique";
 static char *app_argv[] = {&arg0[0], &arg1[0], &arg2[0], NULL};
 static int   app_argc   = (int)(sizeof(app_argv) / sizeof(app_argv[0])) - 1;
+                    
+pthread_key_t Application::sAppKey = 0;
 
 Application::Application()
    : QApplication(app_argc, app_argv) {

@@ -15,6 +15,7 @@ app = singleApp
 function mimas.Application()
   return singleApp
 end
+
 --=============================================== scheduler
 -- First calls to Window creation in mimas should
 -- yield so that the mimas scheduler can start
@@ -38,8 +39,8 @@ mimas.WhiteBrush = mimas.Brush(0, 0, 1)
 mimas.BlackPen   = mimas.Pen(1, 0, 0, 0)
 mimas.BlackBrush = mimas.Brush(0, 0, 0)
 
-mimas.EmptyPen   = mimas.Pen()
-mimas.EmptyBrush = mimas.Brush()
+mimas.NoPen   = mimas.Pen()
+mimas.NoBrush = mimas.Brush()
 
 mimas.colors = {
   Black     = mimas.Color(0, 0, 0),
