@@ -4,8 +4,8 @@ set(target "glew")
 set(GLEW_OUTPUT ${CMAKE_BINARY_DIR}/glew/libGLEW.a)
 add_custom_command(
   OUTPUT ${GLEW_OUTPUT}
-  COMMAND make
-  COMMAND rm -r ${CMAKE_BINARY_DIR}/glew
+  COMMAND make clean && make
+  COMMAND test ! -e ${CMAKE_BINARY_DIR}/glew || rm -r ${CMAKE_BINARY_DIR}/glew
   COMMAND mv ${CMAKE_CURRENT_SOURCE_DIR}/vendor/lib ${CMAKE_BINARY_DIR}/glew
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor
 )

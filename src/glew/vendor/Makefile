@@ -36,7 +36,7 @@ SYSTEM.SUPPORTED = $(shell test -f config/Makefile.$(SYSTEM) && echo 1)
 
 ifeq ($(SYSTEM.SUPPORTED), 1)
 include config/Makefile.$(SYSTEM)
-$(warning "Building GLEW for platform '$(SYSTEM)' ($(SHARED_OBJ_EXT)).")
+#$(warning "Building GLEW for platform '$(SYSTEM)' ($(SHARED_OBJ_EXT)).")
 else
 $(error "Platform '$(SYSTEM)' not supported")
 endif
@@ -97,7 +97,9 @@ glew.lib: lib lib/$(LIB.SHARED) lib/$(LIB.STATIC) glew.pc
 lib:
 	mkdir lib
 
-lib/$(LIB.STATIC): $(LIB.OBJS)
+# If we link with LIB.OBJS, we cannot create a relocatable shared library that
+# uses libGLEW.a
+lib/$(LIB.STATIC): $(LIB.SOBJS)
 	$(AR) cr $@ $^
 
 lib/$(LIB.SHARED): $(LIB.SOBJS)
