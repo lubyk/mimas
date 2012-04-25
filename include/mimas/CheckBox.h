@@ -41,7 +41,7 @@
  *
  * @dub register: CheckBox_core
  *      push: pushobject
- *      super: 'QCheckBox'
+ *      super: QCheckBox
  */
 class CheckBox: public QCheckBox, public dub::Thread {
   Q_OBJECT

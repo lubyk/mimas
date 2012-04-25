@@ -41,6 +41,7 @@
 /** Calls a lua function back.
  *
  * @dub register: Callback_core
+ *      push: pushobject
  *      ignore: callback
  *      super: QObject
  */

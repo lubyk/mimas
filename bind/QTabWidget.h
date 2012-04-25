@@ -3,7 +3,7 @@
  *
  * @see TabWidget
  * @see QTabWidget
- * @dub super: 'QWidget'
+ * @dub super: QWidget
  */
 class QTabWidget {
  public:

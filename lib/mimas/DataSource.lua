@@ -10,9 +10,9 @@
 local lib        = mimas.DataSource_core
 mimas.DataSource = lib
 
-local constr = lib.new
+local new = lib.new
 function lib.new(data)
-  local self = constr()
+  local self = new()
   self.data = data
   return self
 end
@@ -22,10 +22,10 @@ function lib:columnCount()
   return 1
 end
 
-function self:rowCount()
+function lib:rowCount()
   return self.data and #self.data
 end
 
-function self:data(row)
+function lib:data(row)
   return self.data and self.data[row]
 end

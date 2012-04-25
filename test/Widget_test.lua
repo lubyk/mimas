@@ -17,7 +17,7 @@ local withUser = should:testWithUser()
 --==================== Widget sub-class example =======
 
 -- This is how you create a sub-class of mimas.Widget
-local lib = lk.SubClass(mimas, 'Widget')
+local lib = lk.SubClass(mimas.Widget)
 lib.type  = 'test.MyWidget'
 MyWidget  = lib
 
@@ -116,19 +116,12 @@ local function modName(mod)
   end
 end
 
-function withUser.should.respondToClick(t)
+test.only = 'respondToClick'
+function should.respondToClick(t)
   -- we use the test env to protect from gc
   t.win = mimas.Window()
   function t.win:click(x, y, op, btn, mod)
-    t.label:setText(
-      string.format('x:%i y:%i op:%s btn:%i mod:%s',
-        x,
-        y,
-        opName(op),
-        btn,
-        modName(mod)
-      )
-    )
+    t.continue = true
   end
 
   t.lay = mimas.VBoxLayout(t.win)
@@ -137,15 +130,17 @@ function withUser.should.respondToClick(t)
   t.win:move(100, 300)
   t.win:resize(400, 400)
   t.win:show()
-  t:timeout(2000, function()
-    return false
+  -- Simulate user click at local pos 10, 10
+  app:click(t.win, 10, 10)
+  t:timeout(function()
+    return t.continue
   end)
   t.win:close()
 end
 
 --[[
 function withUser.should.openFileDialog(t)
-  local path = lk.file()
+  local path = lk.scriptPath()
   local basedir, filename = lk.directory(path)
   t.win = mimas.Window()
   t.win:show()
@@ -154,7 +149,7 @@ function withUser.should.openFileDialog(t)
 end
 
 function withUser.should.getExistingDirectory(t)
-  local path = lk.directory(lk.file())
+  local path = lk.directory(lk.scriptPath())
   local basedir, dirname = lk.directory(path)
   t.win = mimas.Window()
   t.win:show()

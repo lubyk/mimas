@@ -56,7 +56,7 @@ function withUser.should.displayGlWindow(t)
   t.y = 0
   t.z = 0
   t.dt = (math.pi / 100)
-  t.last = worker:now()
+  t.last = elapsed()
 
   t.fps  = 0
   local AVG = 100
@@ -77,7 +77,7 @@ function withUser.should.displayGlWindow(t)
   end
 
   function t.win:paintGL()
-    animate(worker:now())
+    animate(elapsed())
     gl.Clear( "COLOR_BUFFER_BIT, DEPTH_BUFFER_BIT")
     gl.MatrixMode("MODELVIEW")
     gl.LoadIdentity()

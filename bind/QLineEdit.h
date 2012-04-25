@@ -3,7 +3,7 @@
  *
  * @see LineEdit
  * @see QWidget
- * @dub super: 'QWidget'
+ * @dub super: QWidget
  */
 class QLineEdit {
  public:

@@ -9,20 +9,6 @@ class QPainter {
 
   void drawPath(const Path &path);
 
-  void setPen(const Pen &pen);
-
-  void setBrush(const Brush &brush);
-
-  void setBrush(const Color &color) {
-    // if we do not wrap, it seems that the brush is changed
-    // BUG:
-    // p:setBrush(mimas.NoBrush)
-    // p:setBrush(mimas.colors.Red)
-    // ...
-    // p:setBrush(mimas.NoBrush) --- creates red surfaces
-    QPainter::setBrush(QBrush(color));
-  }
-
   /** Draw a single point with the current pen.
    */
   void drawPoint(int x, int y);

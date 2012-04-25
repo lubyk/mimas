@@ -9,39 +9,33 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.Button')
-local withUser = should:testWithUser()
 
-function withUser.should.connectToCallback(t)
+function should.connectToCallback(t)
   t.win = mimas.Window()
   t.win:move(100, 100)
   t.win:resize(200,200)
 
   t.btn = mimas.Button("click me", t.win)
-  t.callback = mimas.Callback(function()
-    t.continue = true
+  t.btn:move(40, 10)
+  local callback = mimas.Callback(function()
+    t.clicked = true
   end)
-
+  callback:connect(t.btn, 'clicked')
+  callback = nil
+  collectgarbage('collect')
+  collectgarbage('collect')
+  -- should not remove the callback because it is saved with
+  -- the button's env
   t.btn2 = mimas.Button('ignore me')
   t.win:addWidget(t.btn2)
   t.btn2:move(40,40)
-  t.callback:connect(t.btn, 'clicked')
   t.win:show()
-  -- t:test {
-  --   -- This is the action that is triggered when the test is run in batch
-  --   -- (not just this file). This is also what we want the user to do for
-  --   -- testing.
-  --   action   = mimas.AutoPilot:click(t.btn),
-  --   -- What exactly are we expecting
-  --   expected = function() return t.continue end
-  -- }
-  t:timeout(function()
-    return t.continue
-  end)
-  t.win:close()
-  assertTrue(t.continue)
+  -- Simulate user click on t.win at pos 45, 15
+  app:click(t.btn)
+  assertTrue(t.clicked)
 end
 
-function withUser.should.createWithFunction(t)
+function should.createWithFunction(t)
   t.win = mimas.Window()
   t.win:move(200, 200)
   t.win:resize(200,200)
@@ -49,16 +43,11 @@ function withUser.should.createWithFunction(t)
   local btn = mimas.Button("click me too", function()
     t.continue = true
   end)
-  collectgarbage('collect')
-  -- should not remove the callback because it is saved with
-  -- the button's env
   t.lay:addWidget(btn)
   t.win:show()
-  t:timeout(function()
-    return t.continue
-  end)
-  t.win:close()
+  app:click(btn)
   assertTrue(t.continue)
+  t.win:close()
 end
 
 function should.styleButtons(t)

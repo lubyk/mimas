@@ -53,6 +53,10 @@ public:
 
   ~Painter() {
   }
+   
+  void setPen(const Pen &pen) {
+    QPainter::setPen(pen);
+  }
 
   void setPen(float width, const Color &color) {
     QPainter::setPen(Pen(width, color));
@@ -66,6 +70,20 @@ public:
    */
   void setBrush(float h, float s=1.0, float v=1.0, float a=1.0) {
     QPainter::setBrush(Brush(h, s, v, a));
+  }
+
+  void setBrush(const Brush &brush) {
+    QPainter::setBrush(brush);
+  }
+
+  void setBrush(const Color &color) {
+    // if we do not wrap, it seems that the brush is changed
+    // BUG:
+    // p:setBrush(mimas.NoBrush)
+    // p:setBrush(mimas.colors.Red)
+    // ...
+    // p:setBrush(mimas.NoBrush) --- creates red surfaces
+    QPainter::setBrush(QBrush(color));
   }
 
   /** Draw a chord (filled arc). TODO: How the rectangle is used is not clear...

@@ -3,7 +3,7 @@
  *
  * @see Menu
  * @see QWidget
- * @dub super: 'QWidget'
+ * @dub super: QWidget
  */
 class QMenuBar {
  public:

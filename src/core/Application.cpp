@@ -4,6 +4,7 @@
 #include <QtCore/QTextCodec>
 #include <QtCore/QLocale>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QFileOpenEvent>
 
 #include <signal.h>
 

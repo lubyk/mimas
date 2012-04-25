@@ -3,7 +3,7 @@
  *
  * @see Label
  * @see QWidget
- * @dub super: 'QWidget'
+ * @dub super: QWidget
  */
 class QLabel {
  public:

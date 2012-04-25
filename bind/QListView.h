@@ -3,7 +3,7 @@
  *
  * @see ListView
  * @see QWidget
- * @dub super: 'QWidget'
+ * @dub super: QWidget
  */
 class QListView {
  public:

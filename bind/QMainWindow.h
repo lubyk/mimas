@@ -2,7 +2,7 @@
  * QMenu.
  *
  * @see QWidget
- * @dub super: 'QWidget'
+ * @dub super: QWidget
  *
  */
 class QMainWindow {

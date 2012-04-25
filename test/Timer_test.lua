@@ -24,11 +24,11 @@ function should.loopTimerInExternalThread()
   end)
   timer:start()
   -- first trigger now
-  now = worker:now()
+  now = elapsed()
   sleep(4 * SLEEP + 10)
   -- 00, 20, 40, 60, 80
   assertEqual(4, counter)
-  now = worker:now()
+  now = elapsed()
   sleep(5 * SLEEP)
   --                   , 100, 120, 140, 160, 180
   assertEqual(9, counter)

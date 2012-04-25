@@ -9,7 +9,6 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.Color')
-local withUser = should:testWithUser()
 
 function makeColors()
   collectgarbage('collect')
@@ -23,7 +22,7 @@ function makeColors()
   end
 end
 
-function should.create_many_colors_and_gc(t)
+function should.createManyColorsAndGc(t)
   t.win = mimas.Window()
   -- warmup
   makeColors()
@@ -55,7 +54,7 @@ function should.createNewColor()
   assertNotEqual(color, other)
 end
 
-local Col = lk.SubClass(mimas, 'Widget')
+local Col = lk.SubClass(mimas.Widget)
 function Col:init(name, color)
   self.name  = name
   self.color = color
@@ -64,7 +63,7 @@ end
 function Col:paint(p, w, h)
   p:fillRect(0, 0, w, h, self.color)
   if self.name == 'white' then
-    p:setPen(mimas.blackPen)
+    p:setPen(mimas.BlackPen)
   else
     p:setPen(mimas.WhitePen)
   end
@@ -76,7 +75,7 @@ function Col:click()
   return false
 end
 
-function withUser.should.createConstantColors(t)
+function should.createConstantColors(t)
   t.win = mimas.Window()
   t.win:move(10,10)
   t.win:resize(200,340)
@@ -90,8 +89,12 @@ function withUser.should.createConstantColors(t)
   function t.win:click()
     t.continue = true
   end
-  t:timeout(function(done)
-    return done or t.continue
+  local now = elapsed()
+  t:timeout(function()
+    if elapsed() > now + 1500 then
+      app:click(t.win)
+    end
+    return t.continue
   end)
   assertTrue(t.continue)
   t.win:close()

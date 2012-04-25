@@ -30,12 +30,12 @@ static int Callback__cast_(lua_State *L) {
 }
 
 /** Callback::Callback()
- * include/mimas/Callback.h:53
+ * include/mimas/Callback.h:54
  */
 static int Callback_Callback(lua_State *L) {
   try {
     Callback *retval__ = new Callback();
-    dub_pushudata(L, retval__, "mimas.Callback", true);
+    retval__->pushobject(L, retval__, "mimas.Callback", true);
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "Callback: %s", e.what());
@@ -46,7 +46,7 @@ static int Callback_Callback(lua_State *L) {
 }
 
 /** virtual Callback::~Callback()
- * include/mimas/Callback.h:56
+ * include/mimas/Callback.h:57
  */
 static int Callback__Callback(lua_State *L) {
   try {
@@ -66,7 +66,7 @@ static int Callback__Callback(lua_State *L) {
 }
 
 /** void Callback::connect(QObject *obj, const char *method, const char *callback)
- * include/mimas/Callback.h:59
+ * include/mimas/Callback.h:60
  */
 static int Callback_connect(lua_State *L) {
   try {

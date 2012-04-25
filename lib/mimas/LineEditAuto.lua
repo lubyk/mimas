@@ -6,7 +6,7 @@
   LineEdit with auto-complete
 
 --]]------------------------------------------------------
-local lib = lk.SubClass(mimas, 'LineEdit')
+local lib = lk.SubClass(mimas.LineEdit)
 mimas.LineEditAuto = lib
 
 -- contants

@@ -32,15 +32,15 @@ end
 
 
 --=============================================== COPY CODE TO GLWidget
-local close  = lib.close
-function lib:close()
-  if self:deleted() then
-    return false
-  else
-    close(self)
-    return true
-  end
-end
+--local close  = lib.close
+--function lib:close()
+--  if self:deleted() then
+--    return false
+--  else
+--    close(self)
+--    return true
+--  end
+--end
 
 function lib:center()
   local w, h = app:screenSize()

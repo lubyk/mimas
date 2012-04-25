@@ -5,7 +5,7 @@
  * @see HBoxLayout
  * @see VBoxLayout
  * @see QObject
- * @dub super: 'QObject'
+ * @dub super: QObject
  */
 class QLayout {
  public:

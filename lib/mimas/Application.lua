@@ -19,10 +19,12 @@ function lib.new(type)
   local self = constr(type)
   self:setQuitOnLastWindowClosed(mimas.Settings.quit_on_close)
   self:setStyleSheet [[
+    /* FIXME: QWidget is too broad... 
     QWidget {
       background:#151515;
       color:#B4B4B4;
     }
+    */
     TableView {
       alternate-background-color:#333;
       border:0;

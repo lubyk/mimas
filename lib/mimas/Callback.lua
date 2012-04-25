@@ -7,9 +7,9 @@
 
 --]]------------------------------------------------------
 local lib    = mimas.Callback_core
-local constr = lib.new
 mimas.Callback = lib
 
+local connect = lib.connect
 function lib:connect(other, target)
   local callback = nil
   if string.match(target, '%(double%)') then
@@ -24,15 +24,18 @@ function lib:connect(other, target)
   else
     target = string.format("2%s", target)
   end
-  connect(self, other:object(), target, callback)
+  -- Make sure the callback lives as long as the target
+  other[target] = self
+  connect(self, other, target, callback)
 end
 
 function lib:callback()
   print('dummy callback')
 end
 
+local new = lib.new
 function lib.new(func)
-  local self = constr()
+  local self = new()
   self.callback = func
   return self
 end

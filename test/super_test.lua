@@ -18,7 +18,7 @@ local should = test.Suite('mimas.Window')
 --        or use ___call in metatable ?
 --
 -- mock a subclass of mimas.Window
-local LogWindow = lk.SubClass(mimas, 'Window')
+local LogWindow = lk.SubClass(mimas.Window)
 
 function LogWindow:init(hue)
   self.hue = hue

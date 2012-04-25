@@ -9,8 +9,7 @@
 local lib      = mimas.CheckBox_core
 mimas.CheckBox = lib
 
-local MousePress = mimas.MousePress
-local constr = lib.new
+local new = lib.new
 function lib.new(title, parent, func)
   local self
   if not func then
@@ -20,9 +19,9 @@ function lib.new(title, parent, func)
     end
   end
   if parent then
-    self = constr(title, parent)
+    self = new(title, parent)
   else
-    self = constr(title)
+    self = new(title)
   end
   if func then
     self.click = func

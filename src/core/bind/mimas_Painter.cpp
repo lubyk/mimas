@@ -46,7 +46,7 @@ static int Painter_Painter(lua_State *L) {
   return dub_error(L);
 }
 
-/** void Painter::setPen(float width, const Color &color)
+/** void Painter::setPen(const Pen &pen)
  * include/mimas/Painter.h:57
  */
 static int Painter_setPen(lua_State *L) {
@@ -74,7 +74,7 @@ static int Painter_setPen(lua_State *L) {
       float s = dub_checknumber(L, 4);
       self->setPen(width, h, s);
       return 0;
-    } else {
+    } else if (top__ >= 3) {
       int type__ = lua_type(L, 3);
       if (type__ == LUA_TNUMBER) {
         float width = dub_checknumber(L, 2);
@@ -87,6 +87,10 @@ static int Painter_setPen(lua_State *L) {
         self->setPen(width, *color);
         return 0;
       }
+    } else {
+      Pen *pen = *((Pen **)dub_checksdata(L, 2, "mimas.Pen"));
+      self->setPen(*pen);
+      return 0;
     }
   } catch (std::exception &e) {
     lua_pushfstring(L, "setPen: %s", e.what());
@@ -97,7 +101,7 @@ static int Painter_setPen(lua_State *L) {
 }
 
 /** void Painter::setBrush(float h, float s=1.0, float v=1.0, float a=1.0)
- * include/mimas/Painter.h:67
+ * include/mimas/Painter.h:71
  */
 static int Painter_setBrush(lua_State *L) {
   try {
@@ -122,9 +126,20 @@ static int Painter_setBrush(lua_State *L) {
       self->setBrush(h, s);
       return 0;
     } else {
-      float h = dub_checknumber(L, 2);
-      self->setBrush(h);
-      return 0;
+      int type__ = lua_type(L, 2);
+      if (type__ == LUA_TNUMBER) {
+        float h = dub_checknumber(L, 2);
+        self->setBrush(h);
+        return 0;
+      } else if (dub_issdata(L, 2, "Brush", type__)) {
+        Brush *brush = *((Brush **)dub_checksdata(L, 2, "mimas.Brush"));
+        self->setBrush(*brush);
+        return 0;
+      } else {
+        Color *color = *((Color **)dub_checksdata(L, 2, "mimas.Color"));
+        self->setBrush(*color);
+        return 0;
+      }
     }
   } catch (std::exception &e) {
     lua_pushfstring(L, "setBrush: %s", e.what());
@@ -135,7 +150,7 @@ static int Painter_setBrush(lua_State *L) {
 }
 
 /** void Painter::drawRect(float x, float y, float w, float h)
- * include/mimas/Painter.h:80
+ * include/mimas/Painter.h:98
  */
 static int Painter_drawRect(lua_State *L) {
   try {
@@ -155,7 +170,7 @@ static int Painter_drawRect(lua_State *L) {
 }
 
 /** void Painter::drawRoundedRect(float x, float y, float w, float h, float xRadius, lua_State *L)
- * include/mimas/Painter.h:86
+ * include/mimas/Painter.h:104
  */
 static int Painter_drawRoundedRect(lua_State *L) {
   try {
@@ -176,7 +191,7 @@ static int Painter_drawRoundedRect(lua_State *L) {
 }
 
 /** void Painter::drawText(float x, float y, float w, float h, int flags, const char *text)
- * include/mimas/Painter.h:93
+ * include/mimas/Painter.h:111
  */
 static int Painter_drawText(lua_State *L) {
   try {
@@ -236,7 +251,7 @@ static int Painter_drawPath(lua_State *L) {
 }
 
 /** void QPainter::drawPoint(int x, int y)
- * bind/QPainter.h:28
+ * bind/QPainter.h:14
  */
 static int Painter_drawPoint(lua_State *L) {
   try {
@@ -254,7 +269,7 @@ static int Painter_drawPoint(lua_State *L) {
 }
 
 /** void QPainter::drawLine(int x1, int y1, int x2, int y2)
- * bind/QPainter.h:32
+ * bind/QPainter.h:18
  */
 static int Painter_drawLine(lua_State *L) {
   try {
@@ -274,7 +289,7 @@ static int Painter_drawLine(lua_State *L) {
 }
 
 /** void QPainter::drawEllipse(int x, int y, int width, int height)
- * bind/QPainter.h:36
+ * bind/QPainter.h:22
  */
 static int Painter_drawEllipse(lua_State *L) {
   try {

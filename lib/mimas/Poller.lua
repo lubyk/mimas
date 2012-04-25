@@ -102,7 +102,7 @@ function private:resume(idx)
 end
 
 function lib:resumeAt(at)
-  local timeout = worker:now() - at
+  local timeout = elapsed() - at
   if timeout < 0 or at == 0 then
     timeout = 0
   end

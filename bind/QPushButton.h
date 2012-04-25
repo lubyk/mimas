@@ -3,7 +3,7 @@
  *
  * @see Button
  * @see QWidget
- * @dub super: 'QWidget'
+ * @dub super: QWidget
  */
 class QPushButton {
  public:

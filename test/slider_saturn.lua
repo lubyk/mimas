@@ -11,15 +11,15 @@ require 'lubyk'
 continue = false
 value = 0
 counter = 0
-now = worker:now()
+now = elapsed()
 function setValue(message)
   counter = counter + 1
   if counter == 20 then
-    if worker:now() - now > 0 then
-      --print('', '', 'packets/s', 20*1000 / (worker:now() - now))
+    if elapsed() - now > 0 then
+      --print('', '', 'packets/s', 20*1000 / (elapsed() - now))
     end
     counter = 0
-    now = worker:now()
+    now = elapsed()
   end
 
   if message == 1.0 then
