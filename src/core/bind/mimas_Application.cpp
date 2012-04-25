@@ -18,14 +18,14 @@ static int Application__cast_(lua_State *L) {
   Application *self = *((Application **)dub_checksdata_n(L, 1, "mimas.Application"));
   const char *key = luaL_checkstring(L, 2);
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
-  int key_h = dub_hash(key, 2);
+  int key_h = dub_hash(key, 4);
   switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
+    case 0: {
+      if (DUB_ASSERT_KEY(key, " QObject ")) break;
+      *retval__ = static_cast< QObject  *>(self);
       return 1;
     }
-    case 0: {
+    case 2: {
       if (DUB_ASSERT_KEY(key, "mimas.QApplication")) break;
       *retval__ = static_cast<QApplication *>(self);
       return 1;
@@ -35,7 +35,7 @@ static int Application__cast_(lua_State *L) {
 }
 
 /** Application::Application()
- * include/mimas/Application.h:53
+ * include/mimas/Application.h:55
  */
 static int Application_Application(lua_State *L) {
   try {
@@ -51,7 +51,7 @@ static int Application_Application(lua_State *L) {
 }
 
 /** Application::~Application()
- * include/mimas/Application.h:55
+ * include/mimas/Application.h:57
  */
 static int Application__Application(lua_State *L) {
   try {
@@ -71,7 +71,7 @@ static int Application__Application(lua_State *L) {
 }
 
 /** int Application::exec()
- * include/mimas/Application.h:59
+ * include/mimas/Application.h:61
  */
 static int Application_exec(lua_State *L) {
   try {
@@ -87,7 +87,7 @@ static int Application_exec(lua_State *L) {
 }
 
 /** LuaStackSize Application::screenSize(lua_State *L)
- * include/mimas/Application.h:67
+ * include/mimas/Application.h:69
  */
 static int Application_screenSize(lua_State *L) {
   try {
@@ -101,72 +101,88 @@ static int Application_screenSize(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QObject::objectName() const
- * bind/QObject.h:7
+/** void Application::click(QWidget *widget, int x=10, int y=10, int type=QEvent::None, int btn=Qt::LeftButton, int mod=Qt::NoModifier)
+ * include/mimas/Application.h:79
  */
-static int Application_objectName(lua_State *L) {
+static int Application_click(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    QByteArray str_(self->objectName().toUtf8());
-    lua_pushlstring(L, str_.constData(), str_.size());
-    return 1;
+    int top__ = lua_gettop(L);
+    if (top__ >= 7) {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      int x = dub_checkint(L, 3);
+      int y = dub_checkint(L, 4);
+      int type = dub_checkint(L, 5);
+      int btn = dub_checkint(L, 6);
+      int mod = dub_checkint(L, 7);
+      self->click(widget, x, y, type, btn, mod);
+      return 0;
+    } else if (top__ >= 6) {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      int x = dub_checkint(L, 3);
+      int y = dub_checkint(L, 4);
+      int type = dub_checkint(L, 5);
+      int btn = dub_checkint(L, 6);
+      self->click(widget, x, y, type, btn);
+      return 0;
+    } else if (top__ >= 5) {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      int x = dub_checkint(L, 3);
+      int y = dub_checkint(L, 4);
+      int type = dub_checkint(L, 5);
+      self->click(widget, x, y, type);
+      return 0;
+    } else if (top__ >= 4) {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      int x = dub_checkint(L, 3);
+      int y = dub_checkint(L, 4);
+      self->click(widget, x, y);
+      return 0;
+    } else if (top__ >= 3) {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      int x = dub_checkint(L, 3);
+      self->click(widget, x);
+      return 0;
+    } else {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      self->click(widget);
+      return 0;
+    }
   } catch (std::exception &e) {
-    lua_pushfstring(L, "objectName: %s", e.what());
+    lua_pushfstring(L, "click: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "objectName: Unknown exception");
+    lua_pushfstring(L, "click: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** void QObject::setObjectName(const QString &name)
- * bind/QObject.h:8
+/** void Application::mouse(QWidget *widget, int x=10, int y=10)
+ * include/mimas/Application.h:90
  */
-static int Application_setObjectName(lua_State *L) {
+static int Application_mouse(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    size_t name_sz_;
-    const char *name = dub_checklstring(L, 2, &name_sz_);
-    
-    self->setObjectName(QString::fromUtf8(name, name_sz_));
-    return 0;
+    int top__ = lua_gettop(L);
+    if (top__ >= 4) {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      int x = dub_checkint(L, 3);
+      int y = dub_checkint(L, 4);
+      self->mouse(widget, x, y);
+      return 0;
+    } else if (top__ >= 3) {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      int x = dub_checkint(L, 3);
+      self->mouse(widget, x);
+      return 0;
+    } else {
+      QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+      self->mouse(widget);
+      return 0;
+    }
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setObjectName: %s", e.what());
+    lua_pushfstring(L, "mouse: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setObjectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QVariant QObject::property(const char *name)
- * bind/QObject.h:9
- */
-static int Application_property(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    const char *name = dub_checkstring(L, 2);
-    return pushVariantInLua(L, self->property(name));
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "property: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "property: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** bool QObject::setProperty(const char *name, const QVariant &value)
- * bind/QObject.h:10
- */
-static int Application_setProperty(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    const char *name = dub_checkstring(L, 2);
-    QVariant value(variantFromLua(L, 3));
-    lua_pushboolean(L, self->setProperty(name, value));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setProperty: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setProperty: Unknown exception");
+    lua_pushfstring(L, "mouse: Unknown exception");
   }
   return dub_error(L);
 }
@@ -258,10 +274,8 @@ static const struct luaL_Reg Application_member_methods[] = {
   { "__gc"         , Application__Application },
   { "exec"         , Application_exec     },
   { "screenSize"   , Application_screenSize },
-  { "objectName"   , Application_objectName },
-  { "setObjectName", Application_setObjectName },
-  { "property"     , Application_property },
-  { "setProperty"  , Application_setProperty },
+  { "click"        , Application_click    },
+  { "mouse"        , Application_mouse    },
   { "quit"         , Application_quit     },
   { "setQuitOnLastWindowClosed", Application_setQuitOnLastWindowClosed },
   { "setStyleSheet", Application_setStyleSheet },

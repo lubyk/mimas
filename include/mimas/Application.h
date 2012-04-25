@@ -33,6 +33,8 @@
 #include "mimas/mimas.h" // pushVariantInLua
 
 #include <QtGui/QApplication>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QWidget>
 
 #include <iostream>
 
@@ -66,7 +68,43 @@ public:
    */
   LuaStackSize screenSize(lua_State *L);
 
+  /** Simulate user click events (used for testing).
+   */
+  void click(QWidget *widget,
+      int x = 10,
+      int y = 10,
+      int type = QEvent::None,
+      int btn  = Qt::LeftButton,
+      int mod  = Qt::NoModifier
+      ) {
+    if (type == QEvent::None) {
+      sendMouseEvent(widget, QPoint(x,y), QEvent::MouseButtonPress, btn, mod);
+      sendMouseEvent(widget, QPoint(x,y), QEvent::MouseButtonRelease, btn, mod);
+    } else {
+      sendMouseEvent(widget, QPoint(x,y), type, btn, mod);
+    }
+  }
+
+  /** Simulate user mouse events (used for testing).
+   */
+  void mouse(QWidget *widget, int x = 10, int y = 10) {
+    sendMouseEvent(widget, QPoint(x,y), QEvent::MouseMove, Qt::NoButton, Qt::NoModifier);
+  }
+
 protected:
+  void sendMouseEvent(QWidget *widget, const QPoint &pos, int type, int btn, int mod) {
+    sendEvent(widget, new QMouseEvent(
+        (QEvent::Type)type,
+        // local to widget
+        pos,
+        // global
+        widget->mapToGlobal(pos),
+        (Qt::MouseButton)btn,
+        (Qt::MouseButton)btn,
+        (Qt::KeyboardModifiers)mod
+       ));
+  }
+
   /** Application event handler.
    */
   virtual bool event(QEvent *event);
