@@ -380,6 +380,7 @@ static const struct luaL_Reg Color_member_methods[] = {
   { "colorWithValue", Color_colorWithValue },
   { "colorWithAlpha", Color_colorWithAlpha },
   { "__tostring"   , Color___tostring     },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

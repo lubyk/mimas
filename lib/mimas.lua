@@ -10,11 +10,7 @@ mimas = Autoload('mimas', mimas)
 require 'mimas.core'
 
 --=============================================== app
-local singleApp = mimas.Application()
-app = singleApp
-function mimas.Application()
-  return singleApp
-end
+app = mimas.Application()
 
 --=============================================== scheduler
 -- First calls to Window creation in mimas should

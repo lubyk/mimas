@@ -861,6 +861,7 @@ static const struct luaL_Reg Button_member_methods[] = {
   { "globalMove"   , Button_globalMove    },
   { "setText"      , Button_setText       },
   { "__tostring"   , Button___tostring    },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

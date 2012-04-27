@@ -879,6 +879,7 @@ static const struct luaL_Reg Label_member_methods[] = {
   { "globalMove"   , Label_globalMove     },
   { "setText"      , Label_setText        },
   { "__tostring"   , Label___tostring     },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 
@@ -892,7 +893,7 @@ extern "C" int luaopen_mimas_Label(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Label_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Label");
+  dub_register(L, "mimas", "Label_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

@@ -853,6 +853,7 @@ static const struct luaL_Reg MenuBar_member_methods[] = {
   { "globalMove"   , MenuBar_globalMove   },
   { "addMenu"      , MenuBar_addMenu      },
   { "__tostring"   , MenuBar___tostring   },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

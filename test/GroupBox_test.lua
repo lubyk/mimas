@@ -9,13 +9,12 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.GroupBox')
-local withUser = should:testWithUser()
 
 function should.autoload()
   assertTrue(mimas.GroupBox)
 end
 
-function withUser.should.displayGroupBox(t)
+function should.displayGroupBox(t)
   t.win = mimas.GroupBox('Hello')
   t.lay = t.win
   t.lay = mimas.VBoxLayout(t.win)
@@ -27,8 +26,11 @@ function withUser.should.displayGroupBox(t)
     t.continue = true
   end
 
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function(elapsed)
+    if elapsed > 2000 then
+      app:click(t.btn)
+    end
+    return t.continue
   end)
   t.win:close()
   assertTrue(t.continue)

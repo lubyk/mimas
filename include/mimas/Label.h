@@ -36,7 +36,7 @@
 #include <iostream>
 
 /** Label widget.
- * @dub lib_name:'Label_core'
+ * @dub register: Label_core
  *      push: pushobject
  *      super: QWidget
  */

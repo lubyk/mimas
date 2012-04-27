@@ -66,8 +66,8 @@ function withUser.should.callback(t)
   -- visual check
   assertTrue(true)
   t.win:show()
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.win:close()
   assertTrue(t.continue)
@@ -100,8 +100,8 @@ function withUser.should.haveKeyboardCallback(t)
     end
   end
   t.win:show()
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.win:close()
   assertTrue(t.continue)
@@ -118,8 +118,8 @@ function withUser.should.haveClickCallback(t)
     t.continue = true
   end
   t.win:show()
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.win:close()
   assertTrue(t.continue)
@@ -153,12 +153,12 @@ function should.styleLineEdits(t)
     t[style_test] = lbl
   end
 
-  t.lbl2 = mimas.LineEdit("setHue")
+  t.lbl2 = mimas.LineEdit("setStyle")
   lay:addWidget(t.lbl2)
-  t.lbl2:setHue(210 / 360)
+  t.lbl2:setStyle('color:hsva(0.5,1,1,1)')
 
   t.lbl3 = mimas.LineEdit("name = test_name")
-  t.lbl3:setName("test_name")
+  t.lbl3:setObjectName("test_name")
   lay:addWidget(t.lbl3)
 
   -- visual check

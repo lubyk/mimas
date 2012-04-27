@@ -176,6 +176,7 @@ static const struct luaL_Reg Callback_member_methods[] = {
   { "property"     , Callback_property    },
   { "setProperty"  , Callback_setProperty },
   { "__tostring"   , Callback___tostring  },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

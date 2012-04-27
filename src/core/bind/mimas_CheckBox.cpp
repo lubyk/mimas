@@ -931,6 +931,7 @@ static const struct luaL_Reg CheckBox_member_methods[] = {
   { "setChecked"   , CheckBox_setChecked  },
   { "setText"      , CheckBox_setText     },
   { "__tostring"   , CheckBox___tostring  },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

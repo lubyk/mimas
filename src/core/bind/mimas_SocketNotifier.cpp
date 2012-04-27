@@ -193,6 +193,7 @@ static const struct luaL_Reg SocketNotifier_member_methods[] = {
   { "property"     , SocketNotifier_property },
   { "setProperty"  , SocketNotifier_setProperty },
   { "__tostring"   , SocketNotifier___tostring },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

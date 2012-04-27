@@ -423,6 +423,7 @@ static const struct luaL_Reg VBoxLayout_member_methods[] = {
   { "property"     , VBoxLayout_property  },
   { "setProperty"  , VBoxLayout_setProperty },
   { "__tostring"   , VBoxLayout___tostring },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

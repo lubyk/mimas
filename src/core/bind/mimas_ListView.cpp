@@ -975,6 +975,7 @@ static const struct luaL_Reg ListView_member_methods[] = {
   { "scrollToBottom", ListView_scrollToBottom },
   { "scrollToTop"  , ListView_scrollToTop },
   { "__tostring"   , ListView___tostring  },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

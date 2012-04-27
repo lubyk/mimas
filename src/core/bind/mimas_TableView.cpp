@@ -191,6 +191,7 @@ static const struct luaL_Reg TableView_member_methods[] = {
   { "selectColumn" , TableView_selectColumn },
   { "setModel"     , TableView_setModel   },
   { "__tostring"   , TableView___tostring },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

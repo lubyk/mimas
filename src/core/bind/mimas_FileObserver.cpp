@@ -98,6 +98,7 @@ static const struct luaL_Reg FileObserver_member_methods[] = {
   { "addPath"      , FileObserver_addPath },
   { "removePath"   , FileObserver_removePath },
   { "__tostring"   , FileObserver___tostring },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

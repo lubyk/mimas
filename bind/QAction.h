@@ -3,13 +3,13 @@
  *
  * @see Action
  * @see QObject
- * @dub super: 'QObject'
+ * @dub super: QObject
  *      bind:  'QAction.yml'
  */
 class QAction {
  public:
-  void text();
-  void setText(const char *text);
+  QString text();
+  void setText(const QString &txt);
   bool isChecked() const;
   void setChecked(bool on);
   bool isEnabled() const;

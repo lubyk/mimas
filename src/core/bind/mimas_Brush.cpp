@@ -153,6 +153,7 @@ static const struct luaL_Reg Brush_member_methods[] = {
   { "setStyle"     , Brush_setStyle       },
   { "setColor"     , Brush_setColor       },
   { "__tostring"   , Brush___tostring     },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

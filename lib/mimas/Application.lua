@@ -14,17 +14,21 @@
 local lib         = mimas.Application_core
 mimas.Application = lib
 
-local constr = lib.new
+local app
+local new = lib.new
 function lib.new(type)
-  local self = constr(type)
-  self:setQuitOnLastWindowClosed(mimas.Settings.quit_on_close)
-  self:setStyleSheet [[
-    /* FIXME: QWidget is too broad... 
+  if app then
+    return app
+  end
+  local app = new(type)
+  app:setQuitOnLastWindowClosed(mimas.Settings.quit_on_close)
+  app:setStyleSheet [[
+    /* FIXME: QWidget is too broad... we need to fix QPushButton and Co...
+    */
     QWidget {
       background:#151515;
       color:#B4B4B4;
     }
-    */
     TableView {
       alternate-background-color:#333;
       border:0;
@@ -75,7 +79,7 @@ function lib.new(type)
       selection-color:white;
       selection-background-color: rgb(40,85,140);
     }
-    GLWidget { border-style: none;}
+    GLWidget, LegacyGLWidget { border-style: none;}
     Label { background: transparent; }
 
     /* TabWidget */
@@ -150,7 +154,7 @@ function lib.new(type)
     #test_name.slider { color:hsv(30,200,200); }
   ]]
 
-  return self
+  return app
 end
 
 local singleShot = lib.singleShot

@@ -71,3 +71,91 @@ void GLWidget::createShaders(const char *vertex_shader, const char *fragment_sha
   CHECKERROR(glUseProgram);
 }
 
+void GLWidget::destroyShaders() {
+  GLenum ErrorCheckValue = glGetError();
+
+  glUseProgram(0);
+
+  glDetachShader(ProgramId, VertexShaderId);
+  glDetachShader(ProgramId, FragmentShaderId);
+
+  glDeleteShader(FragmentShaderId);
+  glDeleteShader(VertexShaderId);
+
+  glDeleteProgram(ProgramId);
+
+  ErrorCheckValue = glGetError();
+  if (ErrorCheckValue != GL_NO_ERROR) {
+    fprintf(stderr, "ERROR: Could not destroy the shaders: %s \n",
+        gluErrorString(ErrorCheckValue)
+    );
+  }
+}
+
+void GLWidget::createVBO() {
+  GLenum ErrorCheckValue;
+
+  GLfloat Vertices[] = {
+    -0.8f, -0.8f, 0.0f, 1.0f,
+    0.0f,  0.8f, 0.0f, 1.0f,
+    0.8f, -0.8f, 0.0f, 1.0f
+  };
+
+  GLfloat Colors[] = {
+    1.0f, 0.0f, 0.0f, 1.0f,
+    0.0f, 1.0f, 0.0f, 1.0f,
+    0.0f, 0.0f, 1.0f, 1.0f
+  };
+
+  CHECKERROR(createVBO);
+
+  glGenVertexArrays(1, &VaoId);
+  glBindVertexArray(VaoId);
+
+  glGenBuffers(1, &VboId);
+  glBindBuffer(GL_ARRAY_BUFFER, VboId);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(0);
+
+  glGenBuffers(1, &ColorBufferId);
+  glBindBuffer(GL_ARRAY_BUFFER, ColorBufferId);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(Colors), Colors, GL_STATIC_DRAW);
+  glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(1);
+
+  ErrorCheckValue = glGetError();
+  if (ErrorCheckValue != GL_NO_ERROR)
+  {
+    fprintf(
+        stderr,
+        "ERROR: Could not create a VBO: %s \n",
+        gluErrorString(ErrorCheckValue)
+        );
+
+    exit(-1);
+  }
+}
+
+void GLWidget::destroyVBO() {
+
+  GLenum ErrorCheckValue = glGetError();
+
+  glDisableVertexAttribArray(1);
+  glDisableVertexAttribArray(0);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  glDeleteBuffers(1, &ColorBufferId);
+  glDeleteBuffers(1, &VboId);
+
+  glBindVertexArray(0);
+  glDeleteVertexArrays(1, &VaoId);
+
+  ErrorCheckValue = glGetError();
+  if (ErrorCheckValue != GL_NO_ERROR) {
+    fprintf(stderr, "ERROR: Could not destroy the VBO: %s \n",
+      gluErrorString(ErrorCheckValue)
+    );
+  }
+}

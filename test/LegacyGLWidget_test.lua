@@ -14,7 +14,7 @@ local withUser = should:testWithUser()
 
 function withUser.should.displayGlWindow(t)
   -- we use the test env to protect from gc
-  t.win = mimas.GLWindow()
+  t.win = mimas.LegacyGLWidget()
   t.win:move(300,300)
   t.win:resize(400,400)
   function t.win:initializeGL()
@@ -94,7 +94,7 @@ function withUser.should.displayGlWindow(t)
 
     gl.Color(0.5,0.5,0.0,0.1)
     glut.SolidCube(2.6)
-    t.win:updateGL()
+    t.win:update()
   end
 
   t.btn = mimas.Button('ok', function()
@@ -117,15 +117,15 @@ function withUser.should.displayGlWindow(t)
 
   t.win:resize(300,300)
   t.win:show()
-  t:timeout(34000, function(done)
-    return done or t.continue
+  t:timeout(34000, function()
+    return t.continue
   end)
   t.win:close()
   assertTrue(t.continue)
 end
 
 function should.acceptDestroyFromGui(t)
-  t.win = mimas.GLWindow()
+  t.win = mimas.LegacyGLWidget()
   t.win:move(100, 170)
   t.win:resize(50, 50)
   t.win:show()
@@ -142,19 +142,17 @@ function should.acceptDestroyFromGui(t)
 end
 
 function should.acceptDestroyFromLua()
-  local win = mimas.GLWindow()
+  local win = mimas.LegacyGLWindow()
   win:move(100, 240)
   win:resize(50, 50)
   win:show()
   local label = mimas.Label("Hop", win)
 
-  thread = lk.Thread(function()
-    win = nil
-    collectgarbage('collect')
-    -- not deleted by Lua, but marked as deleted in C++
-    -- proof that win was deleted in C++
-    assertTrue(label:deleted())
-  end)
+  win = nil
+  collectgarbage('collect')
+  -- not deleted by Lua, but marked as deleted in C++
+  -- proof that win was deleted in C++
+  assertTrue(label:deleted())
 end
 
 test.all()

@@ -216,6 +216,7 @@ static const struct luaL_Reg Timer_member_methods[] = {
   { "property"     , Timer_property       },
   { "setProperty"  , Timer_setProperty    },
   { "__tostring"   , Timer___tostring     },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

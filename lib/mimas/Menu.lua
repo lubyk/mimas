@@ -7,7 +7,8 @@
   be inserted in a MenuBar (with addMenu).
 
 --]]------------------------------------------------------
-local lib = mimas.Menu_core
+local lib  = mimas.Menu_core
+mimas.Menu = lib
 
 local addAction = lib.addAction
 function lib:addAction(title, shortcut, func)

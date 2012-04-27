@@ -334,6 +334,7 @@ static const struct luaL_Reg Painter_member_methods[] = {
   { "drawLine"     , Painter_drawLine     },
   { "drawEllipse"  , Painter_drawEllipse  },
   { "__tostring"   , Painter___tostring   },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

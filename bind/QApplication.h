@@ -3,7 +3,7 @@
  *
  * @see Application
  * @see QObject
- * @dub super: 'QObject'
+ * @dub super: QObject
  */
 class QApplication {
  public:

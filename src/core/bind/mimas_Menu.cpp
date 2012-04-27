@@ -888,6 +888,7 @@ static const struct luaL_Reg Menu_member_methods[] = {
   { "addSeparator" , Menu_addSeparator    },
   { "clear"        , Menu_clear           },
   { "__tostring"   , Menu___tostring      },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

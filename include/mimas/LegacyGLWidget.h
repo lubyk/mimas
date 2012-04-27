@@ -43,7 +43,7 @@
  * http://doc.trolltech.com/qq/qq26-openglcanvas.html
  *
  * @dub push: pushobject
- *      super: 'QWidget'
+ *      super: QWidget
  */
 class LegacyGLWidget : public QGraphicsView, public dub::Thread {
   Q_OBJECT

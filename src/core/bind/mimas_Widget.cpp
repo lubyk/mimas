@@ -919,6 +919,7 @@ static const struct luaL_Reg Widget_member_methods[] = {
   { "position"     , Widget_position      },
   { "globalMove"   , Widget_globalMove    },
   { "__tostring"   , Widget___tostring    },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

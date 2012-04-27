@@ -11,7 +11,6 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.Label')
-local withUser = should:testWithUser()
 
 function should.acceptDestroyFromGui()
   local win = mimas.Window()
@@ -19,12 +18,10 @@ function should.acceptDestroyFromGui()
   win:show()
   local label = mimas.Label("Hop", win)
 
-  thread = lk.Thread(function()
-    win = nil
-    collectgarbage('collect')
-    -- not deleted by Lua, but marked as deleted in C++
-    assertTrue(label:deleted())
-  end)
+  win = nil
+  collectgarbage('collect')
+  -- not deleted by Lua, but marked as deleted in C++
+  assertTrue(label:deleted())
 end
 
 function should.acceptDestroyFromLua(t)
@@ -82,22 +79,23 @@ function should.styleLabels(t)
 
   t.lbl2 = mimas.Label("setHue")
   lay:addWidget(t.lbl2)
-  t.lbl2:setHue(210 / 360)
+  t.lbl2:setStyle 'color:#fee'
 
   t.lbl3 = mimas.Label("name = test_name")
-  t.lbl3:setName("test_name")
+  t.lbl3:setObjectName("test_name")
   lay:addWidget(t.lbl3)
 
   -- visual check
   assertTrue(true)
   t.win:show()
-  t.thread = lk.Thread(function()
-    sleep(2000)
-    t.win:close()
+  t:timeout(function(elapsed)
+    if elapsed > 2000 then
+      t.win:close()
+    end
   end)
 end
 
-function withUser.should.displayUTF8(t)
+function should.displayUTF8(t)
   t.win = mimas.Window()
   t.win:move(10,10)
   t.win:resize(100,100)
@@ -110,7 +108,10 @@ function withUser.should.displayUTF8(t)
   t.lay:addWidget(t.lbl)
   t.lay:addWidget(t.btn)
   t.win:show()
-  t:timeout(function()
+  t:timeout(function(elapsed)
+    if elapsed > 2000 then
+      app:click(t.btn)
+    end
     return t.continue
   end)
   assertTrue(t.continue)

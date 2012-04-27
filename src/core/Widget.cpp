@@ -131,10 +131,8 @@ bool Widget::click(dub::Thread *obj, QMouseEvent *event, int type) {
   lua_pushnumber(L, event->button());
   lua_pushnumber(L, event->modifiers());
   // <func> <self> <x> <y> <type> <btn> <modifiers>
-  int status = lua_pcall(L, 6, 1, 0);
-
-  if (status) {
-    fprintf(stderr, "Error in 'click' callback: %s\n", lua_tostring(L, -1));
+  if (!obj->dub_call(6, 1)) {
+    return true;
   }
 
   if (lua_isfalse(L, -1)) {

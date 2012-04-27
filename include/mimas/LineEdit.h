@@ -39,7 +39,6 @@
 /** Label widget.
  * @dub register: LineEdit_core
  *      push: pushobject
- *      super: QLineEdit
  */
 class LineEdit : public QLineEdit, public dub::Thread {
   Q_OBJECT

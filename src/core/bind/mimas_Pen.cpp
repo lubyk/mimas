@@ -296,6 +296,7 @@ static const struct luaL_Reg Pen_member_methods[] = {
   { "setCapStyle"  , Pen_setCapStyle      },
   { "setJoinStyle" , Pen_setJoinStyle     },
   { "__tostring"   , Pen___tostring       },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

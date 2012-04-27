@@ -8,29 +8,26 @@
 --]]------------------------------------------------------
 require 'lubyk'
 
-local should = test.Suite('mimas.GLSLWindow')
+local should = test.Suite('mimas.GLWindow')
 local withUser = should:testWithUser()
 
 function should.autoload()
-  assertTrue(mimas.GLSLWindow)
+  assertTrue(mimas.GLWindow)
 end
 
--- function should.createGl3Context()
---   local w = mimas.GLSLWindow()
---   w:show() -- this creates the OpenGL
---   local gl_version, glsl_version = w:openGLVersion()
---   print(gl_version, glsl_version)
---   assertMatch('3.2', gl_version)
--- end
+function should.createGl3Context()
+  local w = mimas.GLWindow()
+  w:show() -- this creates the OpenGL
+  local gl_version, glsl_version = w:openGLVersion()
+  assertMatch('3.2', gl_version)
+end
 
 function should.displayGlWindow(t)
-  -- we use the test env to protect from gc
-  t.win = mimas.GLSLWindow()
+  t.win = mimas.GLWindow()
   t.win:move(300,300)
   t.win:resize(400,400)
   t.win:show()
-  local gl_version, glsl_version = t.win:openGLVersion()
-  print(gl_version, glsl_version)
+
   t.win:compile(
 -- Vertex shader
 [=[
@@ -58,12 +55,14 @@ void main(void)
   out_Color = ex_Color;
 }
 ]=]
-)
-sleep(100000)
+  )
+  sleep(2000)
+  t.win:close()
+  assertTrue(true)
 end
 
 function should.acceptDestroyFromGui(t)
-  t.win = mimas.GLSLWindow()
+  t.win = mimas.GLWindow()
   t.win:move(100, 170)
   t.win:resize(50, 50)
   t.win:show()
@@ -80,7 +79,7 @@ function should.acceptDestroyFromGui(t)
 end
 
 function should.acceptDestroyFromLua()
-  local win = mimas.GLSLWindow()
+  local win = mimas.GLWindow()
   win:move(100, 240)
   win:resize(50, 50)
   win:show()

@@ -40,7 +40,7 @@ static int LineEdit__cast_(lua_State *L) {
 }
 
 /** LineEdit::LineEdit(const char *content=NULL, QWidget *parent=NULL)
- * include/mimas/LineEdit.h:48
+ * include/mimas/LineEdit.h:47
  */
 static int LineEdit_LineEdit(lua_State *L) {
   try {
@@ -70,7 +70,7 @@ static int LineEdit_LineEdit(lua_State *L) {
 }
 
 /** LineEdit::~LineEdit()
- * include/mimas/LineEdit.h:56
+ * include/mimas/LineEdit.h:55
  */
 static int LineEdit__LineEdit(lua_State *L) {
   try {
@@ -915,6 +915,7 @@ static const struct luaL_Reg LineEdit_member_methods[] = {
   { "setSelection" , LineEdit_setSelection },
   { "selectAll"    , LineEdit_selectAll   },
   { "__tostring"   , LineEdit___tostring  },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

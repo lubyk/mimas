@@ -925,6 +925,7 @@ static const struct luaL_Reg TabWidget_member_methods[] = {
   { "globalMove"   , TabWidget_globalMove },
   { "count"        , TabWidget_count      },
   { "__tostring"   , TabWidget___tostring },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

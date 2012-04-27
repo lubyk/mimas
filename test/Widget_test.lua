@@ -116,7 +116,6 @@ local function modName(mod)
   end
 end
 
-test.only = 'respondToClick'
 function should.respondToClick(t)
   -- we use the test env to protect from gc
   t.win = mimas.Window()
@@ -249,6 +248,22 @@ function withUser.should.captureKeyboard(t)
   end)
   t.win:close()
   assertTrue(t.continue)
+end
+
+function should.captureErrors()
+  local win = mimas.Widget()
+  local err_msg
+
+  function win:click()
+    error('Some bad message')
+  end
+
+  function win:error(msg)
+    err_msg = msg
+  end
+
+  app:click(win)
+  assertMatch('test/Widget_test.lua:%d+: Some bad message', err_msg)
 end
 
 test.all()

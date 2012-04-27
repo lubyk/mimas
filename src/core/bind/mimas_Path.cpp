@@ -209,6 +209,7 @@ static const struct luaL_Reg Path_member_methods[] = {
   { "addRect"      , Path_addRect         },
   { "lineTo"       , Path_lineTo          },
   { "__tostring"   , Path___tostring      },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

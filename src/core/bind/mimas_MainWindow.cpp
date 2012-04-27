@@ -920,6 +920,7 @@ static const struct luaL_Reg MainWindow_member_methods[] = {
   { "setMenuBar"   , MainWindow_setMenuBar },
   { "setCentralWidget", MainWindow_setCentralWidget },
   { "__tostring"   , MainWindow___tostring },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

@@ -836,6 +836,7 @@ static const struct luaL_Reg GroupBox_member_methods[] = {
   { "position"     , GroupBox_position    },
   { "globalMove"   , GroupBox_globalMove  },
   { "__tostring"   , GroupBox___tostring  },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

@@ -857,6 +857,7 @@ static const struct luaL_Reg GLWidget_member_methods[] = {
   { "position"     , GLWidget_position    },
   { "globalMove"   , GLWidget_globalMove  },
   { "__tostring"   , GLWidget___tostring  },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

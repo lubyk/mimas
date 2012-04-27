@@ -96,6 +96,7 @@ static const struct luaL_Reg DataSource_member_methods[] = {
   { "reset"        , DataSource_reset     },
   { "emitLayoutChanged", DataSource_emitLayoutChanged },
   { "__tostring"   , DataSource___tostring },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 

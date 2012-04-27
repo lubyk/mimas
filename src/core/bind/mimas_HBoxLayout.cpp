@@ -406,6 +406,7 @@ static const struct luaL_Reg HBoxLayout_member_methods[] = {
   { "property"     , HBoxLayout_property  },
   { "setProperty"  , HBoxLayout_setProperty },
   { "__tostring"   , HBoxLayout___tostring },
+  { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
 };
 
