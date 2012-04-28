@@ -101,28 +101,6 @@ class ListView : public QListView, public dub::Thread {
         selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
   }
 
-  int pushobject(lua_State *L, ListView *obj, const char *class_name, bool gc=true) {
-    dub::Thread::pushobject(L, obj, class_name, gc);
-    // <self>
-    lua_pushlstring(L, "data_source", 11);
-    // <self> <'data_source'>
-    // <self>
-    DataSource *data = new DataSource();
-    data->pushobject(L, data, "mimas.DataSource");
-    // <self> <'data_source'> <data>
-    lua_settable(L, -3); // self.data_source = data
-    // <self>
-    // make DataSource look in <self> for callbacks
-    lua_pushvalue(L, -1);
-    // <self> <self>
-    lua_pop(data->dub_L, 1);
-    lua_xmove(L, data->dub_L, 1);
-    // data: <self>
-    // <self>
-    setModel(data);
-    return 1;
-  }
-
   /** Turning this option on will call the 'paintItem' callback to draw
    * each cell (with the text as parameter).
    */

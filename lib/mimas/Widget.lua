@@ -12,20 +12,7 @@ mimas.Widget  = lib
 -- Lua changes before being used.
 require 'mimas.Menu'
 
-local constr = lib.new
--- This will become lib.new once bootstrapping is done.
-local function new(parent, flag)
-  if flag and parent then
-    return constr(parent, flag)
-  elseif flag then
-    return constr(flag)
-  elseif parent then
-    return constr(parent)
-  else
-    return constr()
-  end
-end
-
+local new = lib.new
 function lib.new(...)
   return mimas.bootstrap(lib, new, ...)
 end

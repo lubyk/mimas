@@ -133,7 +133,7 @@ static int ListView_selectRow(lua_State *L) {
 }
 
 /** void ListView::enablePaintItem(bool enable)
- * include/mimas/ListView.h:129
+ * include/mimas/ListView.h:107
  */
 static int ListView_enablePaintItem(lua_State *L) {
   try {
@@ -150,7 +150,7 @@ static int ListView_enablePaintItem(lua_State *L) {
 }
 
 /** void ListView::enableHtml(bool enable, const char *css=NULL)
- * include/mimas/ListView.h:134
+ * include/mimas/ListView.h:112
  */
 static int ListView_enableHtml(lua_State *L) {
   try {

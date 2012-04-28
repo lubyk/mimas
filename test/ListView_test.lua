@@ -7,8 +7,8 @@
 
 --]]------------------------------------------------------
 require 'lubyk'
-local should = {} --test.Suite('mimas.ListView')
-local withUser = test.UserSuite('aa') --should:testWithUser()
+local should = test.Suite('mimas.ListView')
+local withUser = should:testWithUser()
 local data = {'György', 'John', 'Marina', 'Damian'}
 
 function should.displayList(t)
@@ -21,12 +21,12 @@ function should.displayList(t)
   function t.view:data(row_i)
     return data[row_i]
   end
+
   t.view:show()
-  t.thread = lk.Thread(function()
-    sleep(2000)
-    t.view:close()
-    assertTrue(true)
+  t:timeout(500, function()
+    return t.continue
   end)
+  assertTrue(true)
 end
 
 function withUser.should.reloadOnClick(t)
@@ -58,8 +58,8 @@ function withUser.should.reloadOnClick(t)
   end
 
   t.win:show()
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.win:close()
   assertTrue(t.continue)
@@ -67,7 +67,7 @@ end
 
 function should.accessDataSource(t)
   t.view = mimas.ListView()
-  assertType('table', t.view.data_source)
+  assertType('table', t.view.ds)
 end
 
 function should.respondToClick(t)

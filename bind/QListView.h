@@ -7,7 +7,7 @@
  */
 class QListView {
  public:
-  /** Use an external model instead of the default one.
+  /** Set data source model.
    */
   void setModel(DataSource *model);
   void scrollToBottom();
