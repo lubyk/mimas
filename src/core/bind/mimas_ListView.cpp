@@ -20,9 +20,9 @@ static int ListView__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 3);
   switch(key_h) {
-    case 2: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
+    case 0: {
+      if (DUB_ASSERT_KEY(key, "mimas.QListView")) break;
+      *retval__ = static_cast<QListView *>(self);
       return 1;
     }
     case 1: {
@@ -30,23 +30,31 @@ static int ListView__cast_(lua_State *L) {
       *retval__ = static_cast<QWidget *>(self);
       return 1;
     }
-    case 0: {
-      if (DUB_ASSERT_KEY(key, "mimas.QListView")) break;
-      *retval__ = static_cast<QListView *>(self);
+    case 2: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
   return 0;
 }
 
-/** ListView::ListView()
- * include/mimas/ListView.h:53
+/** ListView::ListView(QWidget *parent=NULL)
+ * include/mimas/ListView.h:54
  */
 static int ListView_ListView(lua_State *L) {
   try {
-    ListView *retval__ = new ListView();
-    retval__->pushobject(L, retval__, "mimas.ListView", true);
-    return 1;
+    int top__ = lua_gettop(L);
+    if (top__ >= 1) {
+      QWidget *parent = *((QWidget **)dub_checksdata(L, 1, "mimas.QWidget"));
+      ListView *retval__ = new ListView(parent);
+      retval__->pushobject(L, retval__, "mimas.ListView", true);
+      return 1;
+    } else {
+      ListView *retval__ = new ListView();
+      retval__->pushobject(L, retval__, "mimas.ListView", true);
+      return 1;
+    }
   } catch (std::exception &e) {
     lua_pushfstring(L, "ListView: %s", e.what());
   } catch (...) {
@@ -56,7 +64,7 @@ static int ListView_ListView(lua_State *L) {
 }
 
 /** ListView::~ListView()
- * include/mimas/ListView.h:55
+ * include/mimas/ListView.h:56
  */
 static int ListView__ListView(lua_State *L) {
   try {
@@ -76,7 +84,7 @@ static int ListView__ListView(lua_State *L) {
 }
 
 /** LuaStackSize ListView::selectedIndexes(lua_State *L)
- * include/mimas/ListView.h:62
+ * include/mimas/ListView.h:63
  */
 static int ListView_selectedIndexes(lua_State *L) {
   try {
@@ -91,7 +99,7 @@ static int ListView_selectedIndexes(lua_State *L) {
 }
 
 /** LuaStackSize ListView::indexAt(float x, float y, lua_State *L)
- * include/mimas/ListView.h:85
+ * include/mimas/ListView.h:86
  */
 static int ListView_indexAt(lua_State *L) {
   try {
@@ -108,7 +116,7 @@ static int ListView_indexAt(lua_State *L) {
 }
 
 /** void ListView::selectRow(int row)
- * include/mimas/ListView.h:97
+ * include/mimas/ListView.h:98
  */
 static int ListView_selectRow(lua_State *L) {
   try {
@@ -125,7 +133,7 @@ static int ListView_selectRow(lua_State *L) {
 }
 
 /** void ListView::enablePaintItem(bool enable)
- * include/mimas/ListView.h:128
+ * include/mimas/ListView.h:129
  */
 static int ListView_enablePaintItem(lua_State *L) {
   try {
@@ -142,7 +150,7 @@ static int ListView_enablePaintItem(lua_State *L) {
 }
 
 /** void ListView::enableHtml(bool enable, const char *css=NULL)
- * include/mimas/ListView.h:133
+ * include/mimas/ListView.h:134
  */
 static int ListView_enableHtml(lua_State *L) {
   try {
@@ -166,72 +174,51 @@ static int ListView_enableHtml(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QObject::objectName() const
- * bind/QObject.h:7
+/** void QListView::setModel(DataSource *model)
+ * bind/QListView.h:12
  */
-static int ListView_objectName(lua_State *L) {
+static int ListView_setModel(lua_State *L) {
   try {
     ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    QByteArray str_(self->objectName().toUtf8());
-    lua_pushlstring(L, str_.constData(), str_.size());
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "objectName: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "objectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QObject::setObjectName(const QString &name)
- * bind/QObject.h:8
- */
-static int ListView_setObjectName(lua_State *L) {
-  try {
-    ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    size_t name_sz_;
-    const char *name = dub_checklstring(L, 2, &name_sz_);
-    
-    self->setObjectName(QString::fromUtf8(name, name_sz_));
+    DataSource *model = *((DataSource **)dub_checksdata(L, 2, "mimas.DataSource"));
+    self->setModel(model);
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setObjectName: %s", e.what());
+    lua_pushfstring(L, "setModel: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setObjectName: Unknown exception");
+    lua_pushfstring(L, "setModel: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** QVariant QObject::property(const char *name)
- * bind/QObject.h:9
+/** void QListView::scrollToBottom()
+ * bind/QListView.h:13
  */
-static int ListView_property(lua_State *L) {
+static int ListView_scrollToBottom(lua_State *L) {
   try {
     ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    const char *name = dub_checkstring(L, 2);
-    return pushVariantInLua(L, self->property(name));
+    self->scrollToBottom();
+    return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "property: %s", e.what());
+    lua_pushfstring(L, "scrollToBottom: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "property: Unknown exception");
+    lua_pushfstring(L, "scrollToBottom: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** bool QObject::setProperty(const char *name, const QVariant &value)
- * bind/QObject.h:10
+/** void QListView::scrollToTop()
+ * bind/QListView.h:14
  */
-static int ListView_setProperty(lua_State *L) {
+static int ListView_scrollToTop(lua_State *L) {
   try {
     ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    const char *name = dub_checkstring(L, 2);
-    QVariant value(variantFromLua(L, 3));
-    lua_pushboolean(L, self->setProperty(name, value));
-    return 1;
+    self->scrollToTop();
+    return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setProperty: %s", e.what());
+    lua_pushfstring(L, "scrollToTop: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setProperty: Unknown exception");
+    lua_pushfstring(L, "scrollToTop: Unknown exception");
   }
   return dub_error(L);
 }
@@ -353,8 +340,26 @@ static int ListView_setParent(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QWidget::update()
+/** QWidget* QWidget::parentWidget()
  * bind/QWidget.h:17
+ */
+static int ListView_parentWidget(lua_State *L) {
+  try {
+    ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
+    QWidget *retval__ = self->parentWidget();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QWidget", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parentWidget: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parentWidget: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QWidget::update()
+ * bind/QWidget.h:18
  */
 static int ListView_update(lua_State *L) {
   try {
@@ -370,7 +375,7 @@ static int ListView_update(lua_State *L) {
 }
 
 /** void QWidget::adjustSize()
- * bind/QWidget.h:18
+ * bind/QWidget.h:19
  */
 static int ListView_adjustSize(lua_State *L) {
   try {
@@ -386,7 +391,7 @@ static int ListView_adjustSize(lua_State *L) {
 }
 
 /** void QWidget::setFocus()
- * bind/QWidget.h:19
+ * bind/QWidget.h:20
  */
 static int ListView_setFocus(lua_State *L) {
   try {
@@ -402,7 +407,7 @@ static int ListView_setFocus(lua_State *L) {
 }
 
 /** void QWidget::setFocusPolicy(int policy)
- * bind/QWidget.h:20
+ * bind/QWidget.h:21
  */
 static int ListView_setFocusPolicy(lua_State *L) {
   try {
@@ -419,7 +424,7 @@ static int ListView_setFocusPolicy(lua_State *L) {
 }
 
 /** void QWidget::setAttribute(int attr, bool enabled)
- * bind/QWidget.h:21
+ * bind/QWidget.h:22
  */
 static int ListView_setAttribute(lua_State *L) {
   try {
@@ -437,7 +442,7 @@ static int ListView_setAttribute(lua_State *L) {
 }
 
 /** void QWidget::setMinimumSize(float w, float h)
- * bind/QWidget.h:24
+ * bind/QWidget.h:25
  */
 static int ListView_setMinimumSize(lua_State *L) {
   try {
@@ -455,7 +460,7 @@ static int ListView_setMinimumSize(lua_State *L) {
 }
 
 /** void QWidget::setMouseTracking(bool enable)
- * bind/QWidget.h:27
+ * bind/QWidget.h:28
  */
 static int ListView_setMouseTracking(lua_State *L) {
   try {
@@ -472,7 +477,7 @@ static int ListView_setMouseTracking(lua_State *L) {
 }
 
 /** bool QWidget::close()
- * bind/QWidget.h:28
+ * bind/QWidget.h:29
  */
 static int ListView_close(lua_State *L) {
   try {
@@ -488,7 +493,7 @@ static int ListView_close(lua_State *L) {
 }
 
 /** bool QWidget::isVisible()
- * bind/QWidget.h:29
+ * bind/QWidget.h:30
  */
 static int ListView_isVisible(lua_State *L) {
   try {
@@ -504,7 +509,7 @@ static int ListView_isVisible(lua_State *L) {
 }
 
 /** void QWidget::show()
- * bind/QWidget.h:30
+ * bind/QWidget.h:31
  */
 static int ListView_show(lua_State *L) {
   try {
@@ -520,7 +525,7 @@ static int ListView_show(lua_State *L) {
 }
 
 /** void QWidget::hide()
- * bind/QWidget.h:31
+ * bind/QWidget.h:32
  */
 static int ListView_hide(lua_State *L) {
   try {
@@ -536,7 +541,7 @@ static int ListView_hide(lua_State *L) {
 }
 
 /** void QWidget::lower()
- * bind/QWidget.h:32
+ * bind/QWidget.h:33
  */
 static int ListView_lower(lua_State *L) {
   try {
@@ -552,7 +557,7 @@ static int ListView_lower(lua_State *L) {
 }
 
 /** void QWidget::raise()
- * bind/QWidget.h:33
+ * bind/QWidget.h:34
  */
 static int ListView_raise(lua_State *L) {
   try {
@@ -568,7 +573,7 @@ static int ListView_raise(lua_State *L) {
 }
 
 /** void QWidget::activateWindow()
- * bind/QWidget.h:34
+ * bind/QWidget.h:35
  */
 static int ListView_activateWindow(lua_State *L) {
   try {
@@ -584,7 +589,7 @@ static int ListView_activateWindow(lua_State *L) {
 }
 
 /** bool QWidget::isFullScreen()
- * bind/QWidget.h:35
+ * bind/QWidget.h:36
  */
 static int ListView_isFullScreen(lua_State *L) {
   try {
@@ -600,7 +605,7 @@ static int ListView_isFullScreen(lua_State *L) {
 }
 
 /** void QWidget::addAction(Action *action)
- * bind/QWidget.h:36
+ * bind/QWidget.h:37
  */
 static int ListView_addAction(lua_State *L) {
   try {
@@ -617,7 +622,7 @@ static int ListView_addAction(lua_State *L) {
 }
 
 /** void QWidget::setWindowTitle(const QString &text)
- * bind/QWidget.h:37
+ * bind/QWidget.h:38
  */
 static int ListView_setWindowTitle(lua_State *L) {
   try {
@@ -636,7 +641,7 @@ static int ListView_setWindowTitle(lua_State *L) {
 }
 
 /** QString QWidget::windowTitle()
- * bind/QWidget.h:38
+ * bind/QWidget.h:39
  */
 static int ListView_windowTitle(lua_State *L) {
   try {
@@ -652,7 +657,7 @@ static int ListView_windowTitle(lua_State *L) {
 }
 
 /** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:44
+ * bind/QWidget.h:45
  */
 static int ListView_addWidget(lua_State *L) {
   try {
@@ -669,7 +674,7 @@ static int ListView_addWidget(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:48
+ * bind/QWidget.h:49
  */
 static int ListView_size(lua_State *L) {
   try {
@@ -687,7 +692,7 @@ static int ListView_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int ListView_setStyle(lua_State *L) {
   try {
@@ -704,7 +709,7 @@ static int ListView_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int ListView_setStyleSheet(lua_State *L) {
   try {
@@ -721,7 +726,7 @@ static int ListView_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:53
+ * bind/QWidget.h:54
  */
 static int ListView_textSize(lua_State *L) {
   try {
@@ -739,7 +744,7 @@ static int ListView_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int ListView_setSizePolicy(lua_State *L) {
   try {
@@ -758,7 +763,7 @@ static int ListView_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:62
+ * bind/QWidget.h:63
  */
 static int ListView_showFullScreen(lua_State *L) {
   try {
@@ -785,7 +790,7 @@ static int ListView_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:66
+ * bind/QWidget.h:67
  */
 static int ListView_swapFullScreen(lua_State *L) {
   try {
@@ -805,7 +810,7 @@ static int ListView_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:70
+ * bind/QWidget.h:71
  */
 static int ListView_globalPosition(lua_State *L) {
   try {
@@ -823,7 +828,7 @@ static int ListView_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:75
+ * bind/QWidget.h:76
  */
 static int ListView_position(lua_State *L) {
   try {
@@ -840,7 +845,7 @@ static int ListView_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:79
+ * bind/QWidget.h:80
  */
 static int ListView_globalMove(lua_State *L) {
   try {
@@ -861,51 +866,90 @@ static int ListView_globalMove(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QListView::setModel(DataSource *model)
- * bind/QListView.h:12
+/** QString QObject::objectName() const
+ * bind/QObject.h:7
  */
-static int ListView_setModel(lua_State *L) {
+static int ListView_objectName(lua_State *L) {
   try {
     ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    DataSource *model = *((DataSource **)dub_checksdata(L, 2, "mimas.DataSource"));
-    self->setModel(model);
-    return 0;
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
+    return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setModel: %s", e.what());
+    lua_pushfstring(L, "objectName: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setModel: Unknown exception");
+    lua_pushfstring(L, "objectName: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** void QListView::scrollToBottom()
- * bind/QListView.h:13
+/** void QObject::setObjectName(const QString &name)
+ * bind/QObject.h:8
  */
-static int ListView_scrollToBottom(lua_State *L) {
+static int ListView_setObjectName(lua_State *L) {
   try {
     ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    self->scrollToBottom();
+    size_t name_sz_;
+    const char *name = dub_checklstring(L, 2, &name_sz_);
+    
+    self->setObjectName(QString::fromUtf8(name, name_sz_));
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "scrollToBottom: %s", e.what());
+    lua_pushfstring(L, "setObjectName: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "scrollToBottom: Unknown exception");
+    lua_pushfstring(L, "setObjectName: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** void QListView::scrollToTop()
- * bind/QListView.h:14
+/** QVariant QObject::property(const char *name)
+ * bind/QObject.h:9
  */
-static int ListView_scrollToTop(lua_State *L) {
+static int ListView_property(lua_State *L) {
   try {
     ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    self->scrollToTop();
-    return 0;
+    const char *name = dub_checkstring(L, 2);
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
-    lua_pushfstring(L, "scrollToTop: %s", e.what());
+    lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "scrollToTop: Unknown exception");
+    lua_pushfstring(L, "property: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** bool QObject::setProperty(const char *name, const QVariant &value)
+ * bind/QObject.h:10
+ */
+static int ListView_setProperty(lua_State *L) {
+  try {
+    ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
+    const char *name = dub_checkstring(L, 2);
+    QVariant value(variantFromLua(L, 3));
+    lua_pushboolean(L, self->setProperty(name, value));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setProperty: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setProperty: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int ListView_parent(lua_State *L) {
+  try {
+    ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
   }
   return dub_error(L);
 }
@@ -931,10 +975,9 @@ static const struct luaL_Reg ListView_member_methods[] = {
   { "selectRow"    , ListView_selectRow   },
   { "enablePaintItem", ListView_enablePaintItem },
   { "enableHtml"   , ListView_enableHtml  },
-  { "objectName"   , ListView_objectName  },
-  { "setObjectName", ListView_setObjectName },
-  { "property"     , ListView_property    },
-  { "setProperty"  , ListView_setProperty },
+  { "setModel"     , ListView_setModel    },
+  { "scrollToBottom", ListView_scrollToBottom },
+  { "scrollToTop"  , ListView_scrollToTop },
   { "move"         , ListView_move        },
   { "resize"       , ListView_resize      },
   { "x"            , ListView_x           },
@@ -942,6 +985,7 @@ static const struct luaL_Reg ListView_member_methods[] = {
   { "width"        , ListView_width       },
   { "height"       , ListView_height      },
   { "setParent"    , ListView_setParent   },
+  { "parentWidget" , ListView_parentWidget },
   { "update"       , ListView_update      },
   { "adjustSize"   , ListView_adjustSize  },
   { "setFocus"     , ListView_setFocus    },
@@ -971,9 +1015,11 @@ static const struct luaL_Reg ListView_member_methods[] = {
   { "globalPosition", ListView_globalPosition },
   { "position"     , ListView_position    },
   { "globalMove"   , ListView_globalMove  },
-  { "setModel"     , ListView_setModel    },
-  { "scrollToBottom", ListView_scrollToBottom },
-  { "scrollToTop"  , ListView_scrollToTop },
+  { "objectName"   , ListView_objectName  },
+  { "setObjectName", ListView_setObjectName },
+  { "property"     , ListView_property    },
+  { "setProperty"  , ListView_setProperty },
+  { "parent"       , ListView_parent      },
   { "__tostring"   , ListView___tostring  },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
@@ -989,7 +1035,7 @@ extern "C" int luaopen_mimas_ListView(lua_State *L)
   // register member methods
   luaL_register(L, NULL, ListView_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "ListView");
+  dub_register(L, "mimas", "ListView_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

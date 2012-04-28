@@ -19,10 +19,15 @@ function withUser.should.callback(t)
   t.win = mimas.Window()
   t.win:move(100, 120)
   t.win:resize(200, 200)
-  t.db = editor.Library(sqlite3.open_memory())
-  t.db:sync()
+  local data = {
+    'lk.Node',
+    'lk.Socket',
+    'zmq.Socket',
+    'lubyk.Metro',
+  }
 
-  t.lb = mimas.LineEditAuto(t.win, "type 'm=l'", '^(.+= *)(.+)')
+  t.lb = mimas.LineEditAuto("type 'm=l'", '^(.+= *)(.+)')
+  t.win:addWidget(t.lb)
   t.lb:selectAll()
 
   t.win:addWidget(t.lb)
@@ -32,26 +37,36 @@ function withUser.should.callback(t)
   -- How this particular auto-complete works is defined by the following
   -- methods
   function t.lb:cueChanged(cue)
-    self.db_pattern = '%' .. cue .. '%'
+    self.db_pattern = cue
+  end
+
+  local function find(pattern, row)
+    row = row or 1
+    if data.pattern ~= pattern then
+      local found = {}
+      for _, v in ipairs(data) do
+        if v:match(pattern) then
+          table.insert(found, v)
+        end
+      end
+      data.found = found
+    end
+    return data.found[row]
   end
 
   function t.lb:resultCount()
-    return t.db:nodeCount(self.db_pattern)
+    -- dummy find to update pattern cache
+    find(self.db_pattern)
+    return #data.found
   end
 
   function t.lb:data(row)
-    local data
     if row then
       -- data for list
-      data = t.db:node(self.db_pattern, row)
+      return find(self.db_pattern, row)
     else
       -- data for inline
-      data = t.db:node(self.cue .. '%')
-    end
-    if data then
-      return data.name
-    else
-      return nil
+      return find('^'..self.cue)
     end
   end
 
@@ -64,8 +79,8 @@ function withUser.should.callback(t)
 
   t.win:show()
 
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.win:close()
   assertTrue(t.continue)

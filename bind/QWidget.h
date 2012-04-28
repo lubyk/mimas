@@ -14,6 +14,7 @@ class QWidget : public QObject {
   int width();
   int height();
   void setParent(QWidget *parent);
+  QWidget *parentWidget();
   void update();
   void adjustSize();
   void setFocus();

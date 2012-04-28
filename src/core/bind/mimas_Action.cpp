@@ -20,14 +20,14 @@ static int Action__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 2);
   switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
-      return 1;
-    }
     case 0: {
       if (DUB_ASSERT_KEY(key, "mimas.QAction")) break;
       *retval__ = static_cast<QAction *>(self);
+      return 1;
+    }
+    case 1: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
@@ -110,76 +110,6 @@ static int Action__Action(lua_State *L) {
     lua_pushfstring(L, "~Action: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "~Action: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QString QObject::objectName() const
- * bind/QObject.h:7
- */
-static int Action_objectName(lua_State *L) {
-  try {
-    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
-    QByteArray str_(self->objectName().toUtf8());
-    lua_pushlstring(L, str_.constData(), str_.size());
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "objectName: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "objectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QObject::setObjectName(const QString &name)
- * bind/QObject.h:8
- */
-static int Action_setObjectName(lua_State *L) {
-  try {
-    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
-    size_t name_sz_;
-    const char *name = dub_checklstring(L, 2, &name_sz_);
-    
-    self->setObjectName(QString::fromUtf8(name, name_sz_));
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setObjectName: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setObjectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QVariant QObject::property(const char *name)
- * bind/QObject.h:9
- */
-static int Action_property(lua_State *L) {
-  try {
-    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
-    const char *name = dub_checkstring(L, 2);
-    return pushVariantInLua(L, self->property(name));
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "property: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "property: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** bool QObject::setProperty(const char *name, const QVariant &value)
- * bind/QObject.h:10
- */
-static int Action_setProperty(lua_State *L) {
-  try {
-    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
-    const char *name = dub_checkstring(L, 2);
-    QVariant value(variantFromLua(L, 3));
-    lua_pushboolean(L, self->setProperty(name, value));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setProperty: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setProperty: Unknown exception");
   }
   return dub_error(L);
 }
@@ -319,6 +249,111 @@ static int Action_setCheckable(lua_State *L) {
   return dub_error(L);
 }
 
+/** QString QObject::objectName() const
+ * bind/QObject.h:7
+ */
+static int Action_objectName(lua_State *L) {
+  try {
+    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "objectName: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "objectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QObject::setObjectName(const QString &name)
+ * bind/QObject.h:8
+ */
+static int Action_setObjectName(lua_State *L) {
+  try {
+    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
+    size_t name_sz_;
+    const char *name = dub_checklstring(L, 2, &name_sz_);
+    
+    self->setObjectName(QString::fromUtf8(name, name_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setObjectName: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setObjectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QVariant QObject::property(const char *name)
+ * bind/QObject.h:9
+ */
+static int Action_property(lua_State *L) {
+  try {
+    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
+    const char *name = dub_checkstring(L, 2);
+    return pushVariantInLua(L, self->property(name));
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "property: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "property: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** bool QObject::setProperty(const char *name, const QVariant &value)
+ * bind/QObject.h:10
+ */
+static int Action_setProperty(lua_State *L) {
+  try {
+    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
+    const char *name = dub_checkstring(L, 2);
+    QVariant value(variantFromLua(L, 3));
+    lua_pushboolean(L, self->setProperty(name, value));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setProperty: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setProperty: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QObject::setParent(QObject *parent)
+ * bind/QObject.h:11
+ */
+static int Action_setParent(lua_State *L) {
+  try {
+    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
+    QObject *parent = *((QObject **)dub_checksdata(L, 2, "mimas.QObject"));
+    self->setParent(parent);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setParent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setParent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int Action_parent(lua_State *L) {
+  try {
+    Action *self = *((Action **)dub_checksdata(L, 1, "mimas.Action"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 
 
 // --=============================================== __tostring
@@ -337,10 +372,6 @@ static const struct luaL_Reg Action_member_methods[] = {
   { "setShortcut"  , Action_setShortcut   },
   { "setMenuRole"  , Action_setMenuRole   },
   { "__gc"         , Action__Action       },
-  { "objectName"   , Action_objectName    },
-  { "setObjectName", Action_setObjectName },
-  { "property"     , Action_property      },
-  { "setProperty"  , Action_setProperty   },
   { "text"         , Action_text          },
   { "setText"      , Action_setText       },
   { "isChecked"    , Action_isChecked     },
@@ -349,6 +380,12 @@ static const struct luaL_Reg Action_member_methods[] = {
   { "setEnabled"   , Action_setEnabled    },
   { "isCheckable"  , Action_isCheckable   },
   { "setCheckable" , Action_setCheckable  },
+  { "objectName"   , Action_objectName    },
+  { "setObjectName", Action_setObjectName },
+  { "property"     , Action_property      },
+  { "setProperty"  , Action_setProperty   },
+  { "setParent"    , Action_setParent     },
+  { "parent"       , Action_parent        },
   { "__tostring"   , Action___tostring    },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

@@ -173,7 +173,9 @@ void ListView::enableHtml(bool enable, const char *css) {
 }
 
 
-ListView::ListView() : item_delegate_(NULL) {
+ListView::ListView(QWidget *parent)
+  : QListView(parent)
+  , item_delegate_(NULL) {
   setAttribute(Qt::WA_DeleteOnClose);
   setSelectionMode(QAbstractItemView::SingleSelection);
   // Not editable

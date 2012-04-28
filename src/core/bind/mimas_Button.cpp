@@ -20,9 +20,9 @@ static int Button__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 10);
   switch(key_h) {
-    case 3: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
+    case 8: {
+      if (DUB_ASSERT_KEY(key, "mimas.QPushButton")) break;
+      *retval__ = static_cast<QPushButton *>(self);
       return 1;
     }
     case 6: {
@@ -30,9 +30,9 @@ static int Button__cast_(lua_State *L) {
       *retval__ = static_cast<QWidget *>(self);
       return 1;
     }
-    case 8: {
-      if (DUB_ASSERT_KEY(key, "mimas.QPushButton")) break;
-      *retval__ = static_cast<QPushButton *>(self);
+    case 3: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
@@ -89,72 +89,21 @@ static int Button__Button(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QObject::objectName() const
- * bind/QObject.h:7
+/** void QPushButton::setText(const QString &text)
+ * bind/QPushButton.h:10
  */
-static int Button_objectName(lua_State *L) {
+static int Button_setText(lua_State *L) {
   try {
     Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
-    QByteArray str_(self->objectName().toUtf8());
-    lua_pushlstring(L, str_.constData(), str_.size());
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "objectName: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "objectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QObject::setObjectName(const QString &name)
- * bind/QObject.h:8
- */
-static int Button_setObjectName(lua_State *L) {
-  try {
-    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
-    size_t name_sz_;
-    const char *name = dub_checklstring(L, 2, &name_sz_);
+    size_t text_sz_;
+    const char *text = dub_checklstring(L, 2, &text_sz_);
     
-    self->setObjectName(QString::fromUtf8(name, name_sz_));
+    self->setText(QString::fromUtf8(text, text_sz_));
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setObjectName: %s", e.what());
+    lua_pushfstring(L, "setText: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setObjectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QVariant QObject::property(const char *name)
- * bind/QObject.h:9
- */
-static int Button_property(lua_State *L) {
-  try {
-    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
-    const char *name = dub_checkstring(L, 2);
-    return pushVariantInLua(L, self->property(name));
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "property: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "property: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** bool QObject::setProperty(const char *name, const QVariant &value)
- * bind/QObject.h:10
- */
-static int Button_setProperty(lua_State *L) {
-  try {
-    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
-    const char *name = dub_checkstring(L, 2);
-    QVariant value(variantFromLua(L, 3));
-    lua_pushboolean(L, self->setProperty(name, value));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setProperty: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setProperty: Unknown exception");
+    lua_pushfstring(L, "setText: Unknown exception");
   }
   return dub_error(L);
 }
@@ -276,8 +225,26 @@ static int Button_setParent(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QWidget::update()
+/** QWidget* QWidget::parentWidget()
  * bind/QWidget.h:17
+ */
+static int Button_parentWidget(lua_State *L) {
+  try {
+    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
+    QWidget *retval__ = self->parentWidget();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QWidget", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parentWidget: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parentWidget: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QWidget::update()
+ * bind/QWidget.h:18
  */
 static int Button_update(lua_State *L) {
   try {
@@ -293,7 +260,7 @@ static int Button_update(lua_State *L) {
 }
 
 /** void QWidget::adjustSize()
- * bind/QWidget.h:18
+ * bind/QWidget.h:19
  */
 static int Button_adjustSize(lua_State *L) {
   try {
@@ -309,7 +276,7 @@ static int Button_adjustSize(lua_State *L) {
 }
 
 /** void QWidget::setFocus()
- * bind/QWidget.h:19
+ * bind/QWidget.h:20
  */
 static int Button_setFocus(lua_State *L) {
   try {
@@ -325,7 +292,7 @@ static int Button_setFocus(lua_State *L) {
 }
 
 /** void QWidget::setFocusPolicy(int policy)
- * bind/QWidget.h:20
+ * bind/QWidget.h:21
  */
 static int Button_setFocusPolicy(lua_State *L) {
   try {
@@ -342,7 +309,7 @@ static int Button_setFocusPolicy(lua_State *L) {
 }
 
 /** void QWidget::setAttribute(int attr, bool enabled)
- * bind/QWidget.h:21
+ * bind/QWidget.h:22
  */
 static int Button_setAttribute(lua_State *L) {
   try {
@@ -360,7 +327,7 @@ static int Button_setAttribute(lua_State *L) {
 }
 
 /** void QWidget::setMinimumSize(float w, float h)
- * bind/QWidget.h:24
+ * bind/QWidget.h:25
  */
 static int Button_setMinimumSize(lua_State *L) {
   try {
@@ -378,7 +345,7 @@ static int Button_setMinimumSize(lua_State *L) {
 }
 
 /** void QWidget::setMouseTracking(bool enable)
- * bind/QWidget.h:27
+ * bind/QWidget.h:28
  */
 static int Button_setMouseTracking(lua_State *L) {
   try {
@@ -395,7 +362,7 @@ static int Button_setMouseTracking(lua_State *L) {
 }
 
 /** bool QWidget::close()
- * bind/QWidget.h:28
+ * bind/QWidget.h:29
  */
 static int Button_close(lua_State *L) {
   try {
@@ -411,7 +378,7 @@ static int Button_close(lua_State *L) {
 }
 
 /** bool QWidget::isVisible()
- * bind/QWidget.h:29
+ * bind/QWidget.h:30
  */
 static int Button_isVisible(lua_State *L) {
   try {
@@ -427,7 +394,7 @@ static int Button_isVisible(lua_State *L) {
 }
 
 /** void QWidget::show()
- * bind/QWidget.h:30
+ * bind/QWidget.h:31
  */
 static int Button_show(lua_State *L) {
   try {
@@ -443,7 +410,7 @@ static int Button_show(lua_State *L) {
 }
 
 /** void QWidget::hide()
- * bind/QWidget.h:31
+ * bind/QWidget.h:32
  */
 static int Button_hide(lua_State *L) {
   try {
@@ -459,7 +426,7 @@ static int Button_hide(lua_State *L) {
 }
 
 /** void QWidget::lower()
- * bind/QWidget.h:32
+ * bind/QWidget.h:33
  */
 static int Button_lower(lua_State *L) {
   try {
@@ -475,7 +442,7 @@ static int Button_lower(lua_State *L) {
 }
 
 /** void QWidget::raise()
- * bind/QWidget.h:33
+ * bind/QWidget.h:34
  */
 static int Button_raise(lua_State *L) {
   try {
@@ -491,7 +458,7 @@ static int Button_raise(lua_State *L) {
 }
 
 /** void QWidget::activateWindow()
- * bind/QWidget.h:34
+ * bind/QWidget.h:35
  */
 static int Button_activateWindow(lua_State *L) {
   try {
@@ -507,7 +474,7 @@ static int Button_activateWindow(lua_State *L) {
 }
 
 /** bool QWidget::isFullScreen()
- * bind/QWidget.h:35
+ * bind/QWidget.h:36
  */
 static int Button_isFullScreen(lua_State *L) {
   try {
@@ -523,7 +490,7 @@ static int Button_isFullScreen(lua_State *L) {
 }
 
 /** void QWidget::addAction(Action *action)
- * bind/QWidget.h:36
+ * bind/QWidget.h:37
  */
 static int Button_addAction(lua_State *L) {
   try {
@@ -540,7 +507,7 @@ static int Button_addAction(lua_State *L) {
 }
 
 /** void QWidget::setWindowTitle(const QString &text)
- * bind/QWidget.h:37
+ * bind/QWidget.h:38
  */
 static int Button_setWindowTitle(lua_State *L) {
   try {
@@ -559,7 +526,7 @@ static int Button_setWindowTitle(lua_State *L) {
 }
 
 /** QString QWidget::windowTitle()
- * bind/QWidget.h:38
+ * bind/QWidget.h:39
  */
 static int Button_windowTitle(lua_State *L) {
   try {
@@ -575,7 +542,7 @@ static int Button_windowTitle(lua_State *L) {
 }
 
 /** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:44
+ * bind/QWidget.h:45
  */
 static int Button_addWidget(lua_State *L) {
   try {
@@ -592,7 +559,7 @@ static int Button_addWidget(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:48
+ * bind/QWidget.h:49
  */
 static int Button_size(lua_State *L) {
   try {
@@ -610,7 +577,7 @@ static int Button_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int Button_setStyle(lua_State *L) {
   try {
@@ -627,7 +594,7 @@ static int Button_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int Button_setStyleSheet(lua_State *L) {
   try {
@@ -644,7 +611,7 @@ static int Button_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:53
+ * bind/QWidget.h:54
  */
 static int Button_textSize(lua_State *L) {
   try {
@@ -662,7 +629,7 @@ static int Button_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int Button_setSizePolicy(lua_State *L) {
   try {
@@ -681,7 +648,7 @@ static int Button_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:62
+ * bind/QWidget.h:63
  */
 static int Button_showFullScreen(lua_State *L) {
   try {
@@ -708,7 +675,7 @@ static int Button_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:66
+ * bind/QWidget.h:67
  */
 static int Button_swapFullScreen(lua_State *L) {
   try {
@@ -728,7 +695,7 @@ static int Button_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:70
+ * bind/QWidget.h:71
  */
 static int Button_globalPosition(lua_State *L) {
   try {
@@ -746,7 +713,7 @@ static int Button_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:75
+ * bind/QWidget.h:76
  */
 static int Button_position(lua_State *L) {
   try {
@@ -763,7 +730,7 @@ static int Button_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:79
+ * bind/QWidget.h:80
  */
 static int Button_globalMove(lua_State *L) {
   try {
@@ -784,21 +751,90 @@ static int Button_globalMove(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QPushButton::setText(const QString &text)
- * bind/QPushButton.h:10
+/** QString QObject::objectName() const
+ * bind/QObject.h:7
  */
-static int Button_setText(lua_State *L) {
+static int Button_objectName(lua_State *L) {
   try {
     Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
-    size_t text_sz_;
-    const char *text = dub_checklstring(L, 2, &text_sz_);
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "objectName: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "objectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QObject::setObjectName(const QString &name)
+ * bind/QObject.h:8
+ */
+static int Button_setObjectName(lua_State *L) {
+  try {
+    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
+    size_t name_sz_;
+    const char *name = dub_checklstring(L, 2, &name_sz_);
     
-    self->setText(QString::fromUtf8(text, text_sz_));
+    self->setObjectName(QString::fromUtf8(name, name_sz_));
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setText: %s", e.what());
+    lua_pushfstring(L, "setObjectName: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setText: Unknown exception");
+    lua_pushfstring(L, "setObjectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QVariant QObject::property(const char *name)
+ * bind/QObject.h:9
+ */
+static int Button_property(lua_State *L) {
+  try {
+    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
+    const char *name = dub_checkstring(L, 2);
+    return pushVariantInLua(L, self->property(name));
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "property: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "property: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** bool QObject::setProperty(const char *name, const QVariant &value)
+ * bind/QObject.h:10
+ */
+static int Button_setProperty(lua_State *L) {
+  try {
+    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
+    const char *name = dub_checkstring(L, 2);
+    QVariant value(variantFromLua(L, 3));
+    lua_pushboolean(L, self->setProperty(name, value));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setProperty: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setProperty: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int Button_parent(lua_State *L) {
+  try {
+    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
   }
   return dub_error(L);
 }
@@ -819,10 +855,7 @@ static const struct luaL_Reg Button_member_methods[] = {
   { "_cast_"       , Button__cast_        },
   { "new"          , Button_Button        },
   { "__gc"         , Button__Button       },
-  { "objectName"   , Button_objectName    },
-  { "setObjectName", Button_setObjectName },
-  { "property"     , Button_property      },
-  { "setProperty"  , Button_setProperty   },
+  { "setText"      , Button_setText       },
   { "move"         , Button_move          },
   { "resize"       , Button_resize        },
   { "x"            , Button_x             },
@@ -830,6 +863,7 @@ static const struct luaL_Reg Button_member_methods[] = {
   { "width"        , Button_width         },
   { "height"       , Button_height        },
   { "setParent"    , Button_setParent     },
+  { "parentWidget" , Button_parentWidget  },
   { "update"       , Button_update        },
   { "adjustSize"   , Button_adjustSize    },
   { "setFocus"     , Button_setFocus      },
@@ -859,7 +893,11 @@ static const struct luaL_Reg Button_member_methods[] = {
   { "globalPosition", Button_globalPosition },
   { "position"     , Button_position      },
   { "globalMove"   , Button_globalMove    },
-  { "setText"      , Button_setText       },
+  { "objectName"   , Button_objectName    },
+  { "setObjectName", Button_setObjectName },
+  { "property"     , Button_property      },
+  { "setProperty"  , Button_setProperty   },
+  { "parent"       , Button_parent        },
   { "__tostring"   , Button___tostring    },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

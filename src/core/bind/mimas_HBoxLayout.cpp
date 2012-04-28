@@ -20,14 +20,14 @@ static int HBoxLayout__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 2);
   switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
-      return 1;
-    }
     case 0: {
       if (DUB_ASSERT_KEY(key, "mimas.QLayout")) break;
       *retval__ = static_cast<QLayout *>(self);
+      return 1;
+    }
+    case 1: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
@@ -375,6 +375,41 @@ static int HBoxLayout_setProperty(lua_State *L) {
   return dub_error(L);
 }
 
+/** void QObject::setParent(QObject *parent)
+ * bind/QObject.h:11
+ */
+static int HBoxLayout_setParent(lua_State *L) {
+  try {
+    HBoxLayout *self = *((HBoxLayout **)dub_checksdata(L, 1, "mimas.HBoxLayout"));
+    QObject *parent = *((QObject **)dub_checksdata(L, 2, "mimas.QObject"));
+    self->setParent(parent);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setParent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setParent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int HBoxLayout_parent(lua_State *L) {
+  try {
+    HBoxLayout *self = *((HBoxLayout **)dub_checksdata(L, 1, "mimas.HBoxLayout"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 
 
 // --=============================================== __tostring
@@ -405,6 +440,8 @@ static const struct luaL_Reg HBoxLayout_member_methods[] = {
   { "setObjectName", HBoxLayout_setObjectName },
   { "property"     , HBoxLayout_property  },
   { "setProperty"  , HBoxLayout_setProperty },
+  { "setParent"    , HBoxLayout_setParent },
+  { "parent"       , HBoxLayout_parent    },
   { "__tostring"   , HBoxLayout___tostring },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

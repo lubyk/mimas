@@ -20,9 +20,9 @@ static int LineEdit__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 3);
   switch(key_h) {
-    case 2: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
+    case 0: {
+      if (DUB_ASSERT_KEY(key, "mimas.QLineEdit")) break;
+      *retval__ = static_cast<QLineEdit *>(self);
       return 1;
     }
     case 1: {
@@ -30,9 +30,9 @@ static int LineEdit__cast_(lua_State *L) {
       *retval__ = static_cast<QWidget *>(self);
       return 1;
     }
-    case 0: {
-      if (DUB_ASSERT_KEY(key, "mimas.QLineEdit")) break;
-      *retval__ = static_cast<QLineEdit *>(self);
+    case 2: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
@@ -89,72 +89,72 @@ static int LineEdit__LineEdit(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QObject::objectName() const
- * bind/QObject.h:7
+/** void QLineEdit::setText(const QString &str)
+ * bind/QLineEdit.h:10
  */
-static int LineEdit_objectName(lua_State *L) {
+static int LineEdit_setText(lua_State *L) {
   try {
     LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
-    QByteArray str_(self->objectName().toUtf8());
+    size_t str_sz_;
+    const char *str = dub_checklstring(L, 2, &str_sz_);
+    
+    self->setText(QString::fromUtf8(str, str_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setText: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setText: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QString QLineEdit::text() const
+ * bind/QLineEdit.h:12
+ */
+static int LineEdit_text(lua_State *L) {
+  try {
+    LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
+    QByteArray str_(self->text().toUtf8());
     lua_pushlstring(L, str_.constData(), str_.size());
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "objectName: %s", e.what());
+    lua_pushfstring(L, "text: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "objectName: Unknown exception");
+    lua_pushfstring(L, "text: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** void QObject::setObjectName(const QString &name)
- * bind/QObject.h:8
+/** void QLineEdit::setSelection(int start, int length)
+ * bind/QLineEdit.h:14
  */
-static int LineEdit_setObjectName(lua_State *L) {
+static int LineEdit_setSelection(lua_State *L) {
   try {
     LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
-    size_t name_sz_;
-    const char *name = dub_checklstring(L, 2, &name_sz_);
-    
-    self->setObjectName(QString::fromUtf8(name, name_sz_));
+    int start = dub_checkint(L, 2);
+    int length = dub_checkint(L, 3);
+    self->setSelection(start, length);
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setObjectName: %s", e.what());
+    lua_pushfstring(L, "setSelection: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setObjectName: Unknown exception");
+    lua_pushfstring(L, "setSelection: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** QVariant QObject::property(const char *name)
- * bind/QObject.h:9
+/** void QLineEdit::selectAll()
+ * bind/QLineEdit.h:16
  */
-static int LineEdit_property(lua_State *L) {
+static int LineEdit_selectAll(lua_State *L) {
   try {
     LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
-    const char *name = dub_checkstring(L, 2);
-    return pushVariantInLua(L, self->property(name));
+    self->selectAll();
+    return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "property: %s", e.what());
+    lua_pushfstring(L, "selectAll: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "property: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** bool QObject::setProperty(const char *name, const QVariant &value)
- * bind/QObject.h:10
- */
-static int LineEdit_setProperty(lua_State *L) {
-  try {
-    LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
-    const char *name = dub_checkstring(L, 2);
-    QVariant value(variantFromLua(L, 3));
-    lua_pushboolean(L, self->setProperty(name, value));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setProperty: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setProperty: Unknown exception");
+    lua_pushfstring(L, "selectAll: Unknown exception");
   }
   return dub_error(L);
 }
@@ -276,8 +276,26 @@ static int LineEdit_setParent(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QWidget::update()
+/** QWidget* QWidget::parentWidget()
  * bind/QWidget.h:17
+ */
+static int LineEdit_parentWidget(lua_State *L) {
+  try {
+    LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
+    QWidget *retval__ = self->parentWidget();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QWidget", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parentWidget: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parentWidget: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QWidget::update()
+ * bind/QWidget.h:18
  */
 static int LineEdit_update(lua_State *L) {
   try {
@@ -293,7 +311,7 @@ static int LineEdit_update(lua_State *L) {
 }
 
 /** void QWidget::adjustSize()
- * bind/QWidget.h:18
+ * bind/QWidget.h:19
  */
 static int LineEdit_adjustSize(lua_State *L) {
   try {
@@ -309,7 +327,7 @@ static int LineEdit_adjustSize(lua_State *L) {
 }
 
 /** void QWidget::setFocus()
- * bind/QWidget.h:19
+ * bind/QWidget.h:20
  */
 static int LineEdit_setFocus(lua_State *L) {
   try {
@@ -325,7 +343,7 @@ static int LineEdit_setFocus(lua_State *L) {
 }
 
 /** void QWidget::setFocusPolicy(int policy)
- * bind/QWidget.h:20
+ * bind/QWidget.h:21
  */
 static int LineEdit_setFocusPolicy(lua_State *L) {
   try {
@@ -342,7 +360,7 @@ static int LineEdit_setFocusPolicy(lua_State *L) {
 }
 
 /** void QWidget::setAttribute(int attr, bool enabled)
- * bind/QWidget.h:21
+ * bind/QWidget.h:22
  */
 static int LineEdit_setAttribute(lua_State *L) {
   try {
@@ -360,7 +378,7 @@ static int LineEdit_setAttribute(lua_State *L) {
 }
 
 /** void QWidget::setMinimumSize(float w, float h)
- * bind/QWidget.h:24
+ * bind/QWidget.h:25
  */
 static int LineEdit_setMinimumSize(lua_State *L) {
   try {
@@ -378,7 +396,7 @@ static int LineEdit_setMinimumSize(lua_State *L) {
 }
 
 /** void QWidget::setMouseTracking(bool enable)
- * bind/QWidget.h:27
+ * bind/QWidget.h:28
  */
 static int LineEdit_setMouseTracking(lua_State *L) {
   try {
@@ -395,7 +413,7 @@ static int LineEdit_setMouseTracking(lua_State *L) {
 }
 
 /** bool QWidget::close()
- * bind/QWidget.h:28
+ * bind/QWidget.h:29
  */
 static int LineEdit_close(lua_State *L) {
   try {
@@ -411,7 +429,7 @@ static int LineEdit_close(lua_State *L) {
 }
 
 /** bool QWidget::isVisible()
- * bind/QWidget.h:29
+ * bind/QWidget.h:30
  */
 static int LineEdit_isVisible(lua_State *L) {
   try {
@@ -427,7 +445,7 @@ static int LineEdit_isVisible(lua_State *L) {
 }
 
 /** void QWidget::show()
- * bind/QWidget.h:30
+ * bind/QWidget.h:31
  */
 static int LineEdit_show(lua_State *L) {
   try {
@@ -443,7 +461,7 @@ static int LineEdit_show(lua_State *L) {
 }
 
 /** void QWidget::hide()
- * bind/QWidget.h:31
+ * bind/QWidget.h:32
  */
 static int LineEdit_hide(lua_State *L) {
   try {
@@ -459,7 +477,7 @@ static int LineEdit_hide(lua_State *L) {
 }
 
 /** void QWidget::lower()
- * bind/QWidget.h:32
+ * bind/QWidget.h:33
  */
 static int LineEdit_lower(lua_State *L) {
   try {
@@ -475,7 +493,7 @@ static int LineEdit_lower(lua_State *L) {
 }
 
 /** void QWidget::raise()
- * bind/QWidget.h:33
+ * bind/QWidget.h:34
  */
 static int LineEdit_raise(lua_State *L) {
   try {
@@ -491,7 +509,7 @@ static int LineEdit_raise(lua_State *L) {
 }
 
 /** void QWidget::activateWindow()
- * bind/QWidget.h:34
+ * bind/QWidget.h:35
  */
 static int LineEdit_activateWindow(lua_State *L) {
   try {
@@ -507,7 +525,7 @@ static int LineEdit_activateWindow(lua_State *L) {
 }
 
 /** bool QWidget::isFullScreen()
- * bind/QWidget.h:35
+ * bind/QWidget.h:36
  */
 static int LineEdit_isFullScreen(lua_State *L) {
   try {
@@ -523,7 +541,7 @@ static int LineEdit_isFullScreen(lua_State *L) {
 }
 
 /** void QWidget::addAction(Action *action)
- * bind/QWidget.h:36
+ * bind/QWidget.h:37
  */
 static int LineEdit_addAction(lua_State *L) {
   try {
@@ -540,7 +558,7 @@ static int LineEdit_addAction(lua_State *L) {
 }
 
 /** void QWidget::setWindowTitle(const QString &text)
- * bind/QWidget.h:37
+ * bind/QWidget.h:38
  */
 static int LineEdit_setWindowTitle(lua_State *L) {
   try {
@@ -559,7 +577,7 @@ static int LineEdit_setWindowTitle(lua_State *L) {
 }
 
 /** QString QWidget::windowTitle()
- * bind/QWidget.h:38
+ * bind/QWidget.h:39
  */
 static int LineEdit_windowTitle(lua_State *L) {
   try {
@@ -575,7 +593,7 @@ static int LineEdit_windowTitle(lua_State *L) {
 }
 
 /** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:44
+ * bind/QWidget.h:45
  */
 static int LineEdit_addWidget(lua_State *L) {
   try {
@@ -592,7 +610,7 @@ static int LineEdit_addWidget(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:48
+ * bind/QWidget.h:49
  */
 static int LineEdit_size(lua_State *L) {
   try {
@@ -610,7 +628,7 @@ static int LineEdit_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int LineEdit_setStyle(lua_State *L) {
   try {
@@ -627,7 +645,7 @@ static int LineEdit_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int LineEdit_setStyleSheet(lua_State *L) {
   try {
@@ -644,7 +662,7 @@ static int LineEdit_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:53
+ * bind/QWidget.h:54
  */
 static int LineEdit_textSize(lua_State *L) {
   try {
@@ -662,7 +680,7 @@ static int LineEdit_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int LineEdit_setSizePolicy(lua_State *L) {
   try {
@@ -681,7 +699,7 @@ static int LineEdit_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:62
+ * bind/QWidget.h:63
  */
 static int LineEdit_showFullScreen(lua_State *L) {
   try {
@@ -708,7 +726,7 @@ static int LineEdit_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:66
+ * bind/QWidget.h:67
  */
 static int LineEdit_swapFullScreen(lua_State *L) {
   try {
@@ -728,7 +746,7 @@ static int LineEdit_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:70
+ * bind/QWidget.h:71
  */
 static int LineEdit_globalPosition(lua_State *L) {
   try {
@@ -746,7 +764,7 @@ static int LineEdit_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:75
+ * bind/QWidget.h:76
  */
 static int LineEdit_position(lua_State *L) {
   try {
@@ -763,7 +781,7 @@ static int LineEdit_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:79
+ * bind/QWidget.h:80
  */
 static int LineEdit_globalMove(lua_State *L) {
   try {
@@ -784,72 +802,90 @@ static int LineEdit_globalMove(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QLineEdit::setText(const QString &str)
- * bind/QLineEdit.h:10
+/** QString QObject::objectName() const
+ * bind/QObject.h:7
  */
-static int LineEdit_setText(lua_State *L) {
+static int LineEdit_objectName(lua_State *L) {
   try {
     LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
-    size_t str_sz_;
-    const char *str = dub_checklstring(L, 2, &str_sz_);
-    
-    self->setText(QString::fromUtf8(str, str_sz_));
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setText: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setText: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QString QLineEdit::text() const
- * bind/QLineEdit.h:12
- */
-static int LineEdit_text(lua_State *L) {
-  try {
-    LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
-    QByteArray str_(self->text().toUtf8());
+    QByteArray str_(self->objectName().toUtf8());
     lua_pushlstring(L, str_.constData(), str_.size());
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "text: %s", e.what());
+    lua_pushfstring(L, "objectName: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "text: Unknown exception");
+    lua_pushfstring(L, "objectName: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** void QLineEdit::setSelection(int start, int length)
- * bind/QLineEdit.h:14
+/** void QObject::setObjectName(const QString &name)
+ * bind/QObject.h:8
  */
-static int LineEdit_setSelection(lua_State *L) {
+static int LineEdit_setObjectName(lua_State *L) {
   try {
     LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
-    int start = dub_checkint(L, 2);
-    int length = dub_checkint(L, 3);
-    self->setSelection(start, length);
+    size_t name_sz_;
+    const char *name = dub_checklstring(L, 2, &name_sz_);
+    
+    self->setObjectName(QString::fromUtf8(name, name_sz_));
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setSelection: %s", e.what());
+    lua_pushfstring(L, "setObjectName: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setSelection: Unknown exception");
+    lua_pushfstring(L, "setObjectName: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** void QLineEdit::selectAll()
- * bind/QLineEdit.h:16
+/** QVariant QObject::property(const char *name)
+ * bind/QObject.h:9
  */
-static int LineEdit_selectAll(lua_State *L) {
+static int LineEdit_property(lua_State *L) {
   try {
     LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
-    self->selectAll();
-    return 0;
+    const char *name = dub_checkstring(L, 2);
+    return pushVariantInLua(L, self->property(name));
   } catch (std::exception &e) {
-    lua_pushfstring(L, "selectAll: %s", e.what());
+    lua_pushfstring(L, "property: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "selectAll: Unknown exception");
+    lua_pushfstring(L, "property: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** bool QObject::setProperty(const char *name, const QVariant &value)
+ * bind/QObject.h:10
+ */
+static int LineEdit_setProperty(lua_State *L) {
+  try {
+    LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
+    const char *name = dub_checkstring(L, 2);
+    QVariant value(variantFromLua(L, 3));
+    lua_pushboolean(L, self->setProperty(name, value));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setProperty: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setProperty: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int LineEdit_parent(lua_State *L) {
+  try {
+    LineEdit *self = *((LineEdit **)dub_checksdata(L, 1, "mimas.LineEdit"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
   }
   return dub_error(L);
 }
@@ -870,10 +906,10 @@ static const struct luaL_Reg LineEdit_member_methods[] = {
   { "_cast_"       , LineEdit__cast_      },
   { "new"          , LineEdit_LineEdit    },
   { "__gc"         , LineEdit__LineEdit   },
-  { "objectName"   , LineEdit_objectName  },
-  { "setObjectName", LineEdit_setObjectName },
-  { "property"     , LineEdit_property    },
-  { "setProperty"  , LineEdit_setProperty },
+  { "setText"      , LineEdit_setText     },
+  { "text"         , LineEdit_text        },
+  { "setSelection" , LineEdit_setSelection },
+  { "selectAll"    , LineEdit_selectAll   },
   { "move"         , LineEdit_move        },
   { "resize"       , LineEdit_resize      },
   { "x"            , LineEdit_x           },
@@ -881,6 +917,7 @@ static const struct luaL_Reg LineEdit_member_methods[] = {
   { "width"        , LineEdit_width       },
   { "height"       , LineEdit_height      },
   { "setParent"    , LineEdit_setParent   },
+  { "parentWidget" , LineEdit_parentWidget },
   { "update"       , LineEdit_update      },
   { "adjustSize"   , LineEdit_adjustSize  },
   { "setFocus"     , LineEdit_setFocus    },
@@ -910,10 +947,11 @@ static const struct luaL_Reg LineEdit_member_methods[] = {
   { "globalPosition", LineEdit_globalPosition },
   { "position"     , LineEdit_position    },
   { "globalMove"   , LineEdit_globalMove  },
-  { "setText"      , LineEdit_setText     },
-  { "text"         , LineEdit_text        },
-  { "setSelection" , LineEdit_setSelection },
-  { "selectAll"    , LineEdit_selectAll   },
+  { "objectName"   , LineEdit_objectName  },
+  { "setObjectName", LineEdit_setObjectName },
+  { "property"     , LineEdit_property    },
+  { "setProperty"  , LineEdit_setProperty },
+  { "parent"       , LineEdit_parent      },
   { "__tostring"   , LineEdit___tostring  },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

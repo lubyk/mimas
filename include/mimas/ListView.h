@@ -43,14 +43,15 @@
 
 /** The ListView is used to display data as a list.
  *
- * @dub push: pushobject
+ * @dub register: ListView_core
+ *      push: pushobject
  */
 class ListView : public QListView, public dub::Thread {
   Q_OBJECT
   QAbstractItemDelegate *item_delegate_;
  public:
 
-  ListView();
+  ListView(QWidget *parent = NULL);
 
   ~ListView();
 

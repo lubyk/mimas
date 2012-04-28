@@ -20,9 +20,9 @@ static int MenuBar__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 8);
   switch(key_h) {
-    case 5: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
+    case 6: {
+      if (DUB_ASSERT_KEY(key, "mimas.QMenuBar")) break;
+      *retval__ = static_cast<QMenuBar *>(self);
       return 1;
     }
     case 2: {
@@ -30,9 +30,9 @@ static int MenuBar__cast_(lua_State *L) {
       *retval__ = static_cast<QWidget *>(self);
       return 1;
     }
-    case 6: {
-      if (DUB_ASSERT_KEY(key, "mimas.QMenuBar")) break;
-      *retval__ = static_cast<QMenuBar *>(self);
+    case 5: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
@@ -83,72 +83,19 @@ static int MenuBar__MenuBar(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QObject::objectName() const
- * bind/QObject.h:7
+/** void QMenuBar::addMenu(Menu *menu)
+ * bind/QMenuBar.h:10
  */
-static int MenuBar_objectName(lua_State *L) {
+static int MenuBar_addMenu(lua_State *L) {
   try {
     MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
-    QByteArray str_(self->objectName().toUtf8());
-    lua_pushlstring(L, str_.constData(), str_.size());
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "objectName: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "objectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QObject::setObjectName(const QString &name)
- * bind/QObject.h:8
- */
-static int MenuBar_setObjectName(lua_State *L) {
-  try {
-    MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
-    size_t name_sz_;
-    const char *name = dub_checklstring(L, 2, &name_sz_);
-    
-    self->setObjectName(QString::fromUtf8(name, name_sz_));
+    Menu *menu = *((Menu **)dub_checksdata(L, 2, "mimas.Menu"));
+    self->addMenu(menu);
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "setObjectName: %s", e.what());
+    lua_pushfstring(L, "addMenu: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "setObjectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QVariant QObject::property(const char *name)
- * bind/QObject.h:9
- */
-static int MenuBar_property(lua_State *L) {
-  try {
-    MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
-    const char *name = dub_checkstring(L, 2);
-    return pushVariantInLua(L, self->property(name));
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "property: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "property: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** bool QObject::setProperty(const char *name, const QVariant &value)
- * bind/QObject.h:10
- */
-static int MenuBar_setProperty(lua_State *L) {
-  try {
-    MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
-    const char *name = dub_checkstring(L, 2);
-    QVariant value(variantFromLua(L, 3));
-    lua_pushboolean(L, self->setProperty(name, value));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setProperty: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setProperty: Unknown exception");
+    lua_pushfstring(L, "addMenu: Unknown exception");
   }
   return dub_error(L);
 }
@@ -270,8 +217,26 @@ static int MenuBar_setParent(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QWidget::update()
+/** QWidget* QWidget::parentWidget()
  * bind/QWidget.h:17
+ */
+static int MenuBar_parentWidget(lua_State *L) {
+  try {
+    MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
+    QWidget *retval__ = self->parentWidget();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QWidget", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parentWidget: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parentWidget: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QWidget::update()
+ * bind/QWidget.h:18
  */
 static int MenuBar_update(lua_State *L) {
   try {
@@ -287,7 +252,7 @@ static int MenuBar_update(lua_State *L) {
 }
 
 /** void QWidget::adjustSize()
- * bind/QWidget.h:18
+ * bind/QWidget.h:19
  */
 static int MenuBar_adjustSize(lua_State *L) {
   try {
@@ -303,7 +268,7 @@ static int MenuBar_adjustSize(lua_State *L) {
 }
 
 /** void QWidget::setFocus()
- * bind/QWidget.h:19
+ * bind/QWidget.h:20
  */
 static int MenuBar_setFocus(lua_State *L) {
   try {
@@ -319,7 +284,7 @@ static int MenuBar_setFocus(lua_State *L) {
 }
 
 /** void QWidget::setFocusPolicy(int policy)
- * bind/QWidget.h:20
+ * bind/QWidget.h:21
  */
 static int MenuBar_setFocusPolicy(lua_State *L) {
   try {
@@ -336,7 +301,7 @@ static int MenuBar_setFocusPolicy(lua_State *L) {
 }
 
 /** void QWidget::setAttribute(int attr, bool enabled)
- * bind/QWidget.h:21
+ * bind/QWidget.h:22
  */
 static int MenuBar_setAttribute(lua_State *L) {
   try {
@@ -354,7 +319,7 @@ static int MenuBar_setAttribute(lua_State *L) {
 }
 
 /** void QWidget::setMinimumSize(float w, float h)
- * bind/QWidget.h:24
+ * bind/QWidget.h:25
  */
 static int MenuBar_setMinimumSize(lua_State *L) {
   try {
@@ -372,7 +337,7 @@ static int MenuBar_setMinimumSize(lua_State *L) {
 }
 
 /** void QWidget::setMouseTracking(bool enable)
- * bind/QWidget.h:27
+ * bind/QWidget.h:28
  */
 static int MenuBar_setMouseTracking(lua_State *L) {
   try {
@@ -389,7 +354,7 @@ static int MenuBar_setMouseTracking(lua_State *L) {
 }
 
 /** bool QWidget::close()
- * bind/QWidget.h:28
+ * bind/QWidget.h:29
  */
 static int MenuBar_close(lua_State *L) {
   try {
@@ -405,7 +370,7 @@ static int MenuBar_close(lua_State *L) {
 }
 
 /** bool QWidget::isVisible()
- * bind/QWidget.h:29
+ * bind/QWidget.h:30
  */
 static int MenuBar_isVisible(lua_State *L) {
   try {
@@ -421,7 +386,7 @@ static int MenuBar_isVisible(lua_State *L) {
 }
 
 /** void QWidget::show()
- * bind/QWidget.h:30
+ * bind/QWidget.h:31
  */
 static int MenuBar_show(lua_State *L) {
   try {
@@ -437,7 +402,7 @@ static int MenuBar_show(lua_State *L) {
 }
 
 /** void QWidget::hide()
- * bind/QWidget.h:31
+ * bind/QWidget.h:32
  */
 static int MenuBar_hide(lua_State *L) {
   try {
@@ -453,7 +418,7 @@ static int MenuBar_hide(lua_State *L) {
 }
 
 /** void QWidget::lower()
- * bind/QWidget.h:32
+ * bind/QWidget.h:33
  */
 static int MenuBar_lower(lua_State *L) {
   try {
@@ -469,7 +434,7 @@ static int MenuBar_lower(lua_State *L) {
 }
 
 /** void QWidget::raise()
- * bind/QWidget.h:33
+ * bind/QWidget.h:34
  */
 static int MenuBar_raise(lua_State *L) {
   try {
@@ -485,7 +450,7 @@ static int MenuBar_raise(lua_State *L) {
 }
 
 /** void QWidget::activateWindow()
- * bind/QWidget.h:34
+ * bind/QWidget.h:35
  */
 static int MenuBar_activateWindow(lua_State *L) {
   try {
@@ -501,7 +466,7 @@ static int MenuBar_activateWindow(lua_State *L) {
 }
 
 /** bool QWidget::isFullScreen()
- * bind/QWidget.h:35
+ * bind/QWidget.h:36
  */
 static int MenuBar_isFullScreen(lua_State *L) {
   try {
@@ -517,7 +482,7 @@ static int MenuBar_isFullScreen(lua_State *L) {
 }
 
 /** void QWidget::addAction(Action *action)
- * bind/QWidget.h:36
+ * bind/QWidget.h:37
  */
 static int MenuBar_addAction(lua_State *L) {
   try {
@@ -534,7 +499,7 @@ static int MenuBar_addAction(lua_State *L) {
 }
 
 /** void QWidget::setWindowTitle(const QString &text)
- * bind/QWidget.h:37
+ * bind/QWidget.h:38
  */
 static int MenuBar_setWindowTitle(lua_State *L) {
   try {
@@ -553,7 +518,7 @@ static int MenuBar_setWindowTitle(lua_State *L) {
 }
 
 /** QString QWidget::windowTitle()
- * bind/QWidget.h:38
+ * bind/QWidget.h:39
  */
 static int MenuBar_windowTitle(lua_State *L) {
   try {
@@ -569,7 +534,7 @@ static int MenuBar_windowTitle(lua_State *L) {
 }
 
 /** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:44
+ * bind/QWidget.h:45
  */
 static int MenuBar_addWidget(lua_State *L) {
   try {
@@ -586,7 +551,7 @@ static int MenuBar_addWidget(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:48
+ * bind/QWidget.h:49
  */
 static int MenuBar_size(lua_State *L) {
   try {
@@ -604,7 +569,7 @@ static int MenuBar_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int MenuBar_setStyle(lua_State *L) {
   try {
@@ -621,7 +586,7 @@ static int MenuBar_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int MenuBar_setStyleSheet(lua_State *L) {
   try {
@@ -638,7 +603,7 @@ static int MenuBar_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:53
+ * bind/QWidget.h:54
  */
 static int MenuBar_textSize(lua_State *L) {
   try {
@@ -656,7 +621,7 @@ static int MenuBar_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int MenuBar_setSizePolicy(lua_State *L) {
   try {
@@ -675,7 +640,7 @@ static int MenuBar_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:62
+ * bind/QWidget.h:63
  */
 static int MenuBar_showFullScreen(lua_State *L) {
   try {
@@ -702,7 +667,7 @@ static int MenuBar_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:66
+ * bind/QWidget.h:67
  */
 static int MenuBar_swapFullScreen(lua_State *L) {
   try {
@@ -722,7 +687,7 @@ static int MenuBar_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:70
+ * bind/QWidget.h:71
  */
 static int MenuBar_globalPosition(lua_State *L) {
   try {
@@ -740,7 +705,7 @@ static int MenuBar_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:75
+ * bind/QWidget.h:76
  */
 static int MenuBar_position(lua_State *L) {
   try {
@@ -757,7 +722,7 @@ static int MenuBar_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:79
+ * bind/QWidget.h:80
  */
 static int MenuBar_globalMove(lua_State *L) {
   try {
@@ -778,19 +743,90 @@ static int MenuBar_globalMove(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QMenuBar::addMenu(Menu *menu)
- * bind/QMenuBar.h:10
+/** QString QObject::objectName() const
+ * bind/QObject.h:7
  */
-static int MenuBar_addMenu(lua_State *L) {
+static int MenuBar_objectName(lua_State *L) {
   try {
     MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
-    Menu *menu = *((Menu **)dub_checksdata(L, 2, "mimas.Menu"));
-    self->addMenu(menu);
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "objectName: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "objectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QObject::setObjectName(const QString &name)
+ * bind/QObject.h:8
+ */
+static int MenuBar_setObjectName(lua_State *L) {
+  try {
+    MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
+    size_t name_sz_;
+    const char *name = dub_checklstring(L, 2, &name_sz_);
+    
+    self->setObjectName(QString::fromUtf8(name, name_sz_));
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "addMenu: %s", e.what());
+    lua_pushfstring(L, "setObjectName: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "addMenu: Unknown exception");
+    lua_pushfstring(L, "setObjectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QVariant QObject::property(const char *name)
+ * bind/QObject.h:9
+ */
+static int MenuBar_property(lua_State *L) {
+  try {
+    MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
+    const char *name = dub_checkstring(L, 2);
+    return pushVariantInLua(L, self->property(name));
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "property: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "property: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** bool QObject::setProperty(const char *name, const QVariant &value)
+ * bind/QObject.h:10
+ */
+static int MenuBar_setProperty(lua_State *L) {
+  try {
+    MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
+    const char *name = dub_checkstring(L, 2);
+    QVariant value(variantFromLua(L, 3));
+    lua_pushboolean(L, self->setProperty(name, value));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setProperty: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setProperty: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int MenuBar_parent(lua_State *L) {
+  try {
+    MenuBar *self = *((MenuBar **)dub_checksdata(L, 1, "mimas.MenuBar"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
   }
   return dub_error(L);
 }
@@ -811,10 +847,7 @@ static const struct luaL_Reg MenuBar_member_methods[] = {
   { "_cast_"       , MenuBar__cast_       },
   { "new"          , MenuBar_MenuBar      },
   { "__gc"         , MenuBar__MenuBar     },
-  { "objectName"   , MenuBar_objectName   },
-  { "setObjectName", MenuBar_setObjectName },
-  { "property"     , MenuBar_property     },
-  { "setProperty"  , MenuBar_setProperty  },
+  { "addMenu"      , MenuBar_addMenu      },
   { "move"         , MenuBar_move         },
   { "resize"       , MenuBar_resize       },
   { "x"            , MenuBar_x            },
@@ -822,6 +855,7 @@ static const struct luaL_Reg MenuBar_member_methods[] = {
   { "width"        , MenuBar_width        },
   { "height"       , MenuBar_height       },
   { "setParent"    , MenuBar_setParent    },
+  { "parentWidget" , MenuBar_parentWidget },
   { "update"       , MenuBar_update       },
   { "adjustSize"   , MenuBar_adjustSize   },
   { "setFocus"     , MenuBar_setFocus     },
@@ -851,7 +885,11 @@ static const struct luaL_Reg MenuBar_member_methods[] = {
   { "globalPosition", MenuBar_globalPosition },
   { "position"     , MenuBar_position     },
   { "globalMove"   , MenuBar_globalMove   },
-  { "addMenu"      , MenuBar_addMenu      },
+  { "objectName"   , MenuBar_objectName   },
+  { "setObjectName", MenuBar_setObjectName },
+  { "property"     , MenuBar_property     },
+  { "setProperty"  , MenuBar_setProperty  },
+  { "parent"       , MenuBar_parent       },
   { "__tostring"   , MenuBar___tostring   },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

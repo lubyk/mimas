@@ -20,14 +20,14 @@ static int VBoxLayout__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 2);
   switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
-      return 1;
-    }
     case 0: {
       if (DUB_ASSERT_KEY(key, "mimas.QLayout")) break;
       *retval__ = static_cast<QLayout *>(self);
+      return 1;
+    }
+    case 1: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
@@ -391,6 +391,41 @@ static int VBoxLayout_setProperty(lua_State *L) {
   return dub_error(L);
 }
 
+/** void QObject::setParent(QObject *parent)
+ * bind/QObject.h:11
+ */
+static int VBoxLayout_setParent(lua_State *L) {
+  try {
+    VBoxLayout *self = *((VBoxLayout **)dub_checksdata(L, 1, "mimas.VBoxLayout"));
+    QObject *parent = *((QObject **)dub_checksdata(L, 2, "mimas.QObject"));
+    self->setParent(parent);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setParent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setParent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int VBoxLayout_parent(lua_State *L) {
+  try {
+    VBoxLayout *self = *((VBoxLayout **)dub_checksdata(L, 1, "mimas.VBoxLayout"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 
 
 // --=============================================== __tostring
@@ -422,6 +457,8 @@ static const struct luaL_Reg VBoxLayout_member_methods[] = {
   { "setObjectName", VBoxLayout_setObjectName },
   { "property"     , VBoxLayout_property  },
   { "setProperty"  , VBoxLayout_setProperty },
+  { "setParent"    , VBoxLayout_setParent },
+  { "parent"       , VBoxLayout_parent    },
   { "__tostring"   , VBoxLayout___tostring },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

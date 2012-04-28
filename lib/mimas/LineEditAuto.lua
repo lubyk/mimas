@@ -12,15 +12,11 @@ mimas.LineEditAuto = lib
 -- contants
 local POS = 23
 
-function lib:init(parent, initial_text, pattern)
+function lib:init(initial_text, pattern)
   self:setText(initial_text)
   self.pattern   = pattern
   self.show_list = true
-  -- FIXME: we need this because we cannot find a useable Lua object with
-  -- LineEdit:parent(). This could be fixed with minimal bindings for QWidget (not mimas::Widget).
-  self.parent    = parent
 end
-
 
 function lib:moved(x, y)
   if self.list then
@@ -68,13 +64,13 @@ local function createList(self)
   local list = mimas.ListView()
   self.list = list
 
-  -- FIXME: we cannot use self:parent():addWidget
-  self.parent:addWidget(list)
+  list:setParent(self:parentWidget())
   list:resize(self:width(), 100)
   list:move(self:x(), self:y() + POS)
   list:setStyleSheet[[
-    .list { background:rgb(60,60,60); color:white; padding:0;}
-    .list::item:selected { background:rgb(40,85,140); color:white; }
+    QListView { background:rgb(60,60,60); color:white; padding:0;}
+    QListView::item{ color:white; }
+    QListView::item:selected { background:rgb(40,85,140); color:white; }
   ]]
   list:show()
   --self.list_hidden = true

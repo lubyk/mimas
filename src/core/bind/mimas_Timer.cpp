@@ -192,6 +192,41 @@ static int Timer_setProperty(lua_State *L) {
   return dub_error(L);
 }
 
+/** void QObject::setParent(QObject *parent)
+ * bind/QObject.h:11
+ */
+static int Timer_setParent(lua_State *L) {
+  try {
+    Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
+    QObject *parent = *((QObject **)dub_checksdata(L, 2, "mimas.QObject"));
+    self->setParent(parent);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setParent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setParent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int Timer_parent(lua_State *L) {
+  try {
+    Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 
 
 // --=============================================== __tostring
@@ -215,6 +250,8 @@ static const struct luaL_Reg Timer_member_methods[] = {
   { "setObjectName", Timer_setObjectName  },
   { "property"     , Timer_property       },
   { "setProperty"  , Timer_setProperty    },
+  { "setParent"    , Timer_setParent      },
+  { "parent"       , Timer_parent         },
   { "__tostring"   , Timer___tostring     },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

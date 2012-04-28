@@ -170,6 +170,41 @@ static int SocketNotifier_setProperty(lua_State *L) {
   return dub_error(L);
 }
 
+/** void QObject::setParent(QObject *parent)
+ * bind/QObject.h:11
+ */
+static int SocketNotifier_setParent(lua_State *L) {
+  try {
+    SocketNotifier *self = *((SocketNotifier **)dub_checksdata(L, 1, "mimas.SocketNotifier"));
+    QObject *parent = *((QObject **)dub_checksdata(L, 2, "mimas.QObject"));
+    self->setParent(parent);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setParent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setParent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int SocketNotifier_parent(lua_State *L) {
+  try {
+    SocketNotifier *self = *((SocketNotifier **)dub_checksdata(L, 1, "mimas.SocketNotifier"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 
 
 // --=============================================== __tostring
@@ -192,6 +227,8 @@ static const struct luaL_Reg SocketNotifier_member_methods[] = {
   { "setObjectName", SocketNotifier_setObjectName },
   { "property"     , SocketNotifier_property },
   { "setProperty"  , SocketNotifier_setProperty },
+  { "setParent"    , SocketNotifier_setParent },
+  { "parent"       , SocketNotifier_parent },
   { "__tostring"   , SocketNotifier___tostring },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

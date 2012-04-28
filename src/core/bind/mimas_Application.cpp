@@ -20,14 +20,14 @@ static int Application__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 2);
   switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
-      return 1;
-    }
     case 0: {
       if (DUB_ASSERT_KEY(key, "mimas.QApplication")) break;
       *retval__ = static_cast<QApplication *>(self);
+      return 1;
+    }
+    case 1: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
@@ -187,6 +187,75 @@ static int Application_mouse(lua_State *L) {
   return dub_error(L);
 }
 
+/** void QApplication::quit()
+ * bind/QApplication.h:11
+ */
+static int Application_quit(lua_State *L) {
+  try {
+    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
+    self->quit();
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "quit: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "quit: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QApplication::setQuitOnLastWindowClosed(bool quit)
+ * bind/QApplication.h:15
+ */
+static int Application_setQuitOnLastWindowClosed(lua_State *L) {
+  try {
+    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
+    bool quit = dub_checkboolean(L, 2);
+    self->setQuitOnLastWindowClosed(quit);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setQuitOnLastWindowClosed: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setQuitOnLastWindowClosed: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QApplication::setStyleSheet(QString text)
+ * bind/QApplication.h:17
+ */
+static int Application_setStyleSheet(lua_State *L) {
+  try {
+    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
+    size_t text_sz_;
+    const char *text = dub_checklstring(L, 2, &text_sz_);
+    
+    self->setStyleSheet(QString::fromUtf8(text, text_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setStyleSheet: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setStyleSheet: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QString QApplication::styleSheet()
+ * bind/QApplication.h:19
+ */
+static int Application_styleSheet(lua_State *L) {
+  try {
+    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
+    QByteArray str_(self->styleSheet().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "styleSheet: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "styleSheet: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 /** QString QObject::objectName() const
  * bind/QObject.h:7
  */
@@ -257,71 +326,37 @@ static int Application_setProperty(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QApplication::quit()
- * bind/QApplication.h:11
+/** void QObject::setParent(QObject *parent)
+ * bind/QObject.h:11
  */
-static int Application_quit(lua_State *L) {
+static int Application_setParent(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    self->quit();
+    QObject *parent = *((QObject **)dub_checksdata(L, 2, "mimas.QObject"));
+    self->setParent(parent);
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "quit: %s", e.what());
+    lua_pushfstring(L, "setParent: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "quit: Unknown exception");
+    lua_pushfstring(L, "setParent: Unknown exception");
   }
   return dub_error(L);
 }
 
-/** void QApplication::setQuitOnLastWindowClosed(bool quit)
- * bind/QApplication.h:15
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
  */
-static int Application_setQuitOnLastWindowClosed(lua_State *L) {
+static int Application_parent(lua_State *L) {
   try {
     Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    bool quit = dub_checkboolean(L, 2);
-    self->setQuitOnLastWindowClosed(quit);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setQuitOnLastWindowClosed: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setQuitOnLastWindowClosed: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QApplication::setStyleSheet(QString text)
- * bind/QApplication.h:17
- */
-static int Application_setStyleSheet(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    size_t text_sz_;
-    const char *text = dub_checklstring(L, 2, &text_sz_);
-    
-    self->setStyleSheet(QString::fromUtf8(text, text_sz_));
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setStyleSheet: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setStyleSheet: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QString QApplication::styleSheet()
- * bind/QApplication.h:19
- */
-static int Application_styleSheet(lua_State *L) {
-  try {
-    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
-    QByteArray str_(self->styleSheet().toUtf8());
-    lua_pushlstring(L, str_.constData(), str_.size());
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "styleSheet: %s", e.what());
+    lua_pushfstring(L, "parent: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "styleSheet: Unknown exception");
+    lua_pushfstring(L, "parent: Unknown exception");
   }
   return dub_error(L);
 }
@@ -346,14 +381,16 @@ static const struct luaL_Reg Application_member_methods[] = {
   { "screenSize"   , Application_screenSize },
   { "click"        , Application_click    },
   { "mouse"        , Application_mouse    },
-  { "objectName"   , Application_objectName },
-  { "setObjectName", Application_setObjectName },
-  { "property"     , Application_property },
-  { "setProperty"  , Application_setProperty },
   { "quit"         , Application_quit     },
   { "setQuitOnLastWindowClosed", Application_setQuitOnLastWindowClosed },
   { "setStyleSheet", Application_setStyleSheet },
   { "styleSheet"   , Application_styleSheet },
+  { "objectName"   , Application_objectName },
+  { "setObjectName", Application_setObjectName },
+  { "property"     , Application_property },
+  { "setProperty"  , Application_setProperty },
+  { "setParent"    , Application_setParent },
+  { "parent"       , Application_parent   },
   { "__tostring"   , Application___tostring },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

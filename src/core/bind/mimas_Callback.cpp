@@ -154,6 +154,41 @@ static int Callback_setProperty(lua_State *L) {
   return dub_error(L);
 }
 
+/** void QObject::setParent(QObject *parent)
+ * bind/QObject.h:11
+ */
+static int Callback_setParent(lua_State *L) {
+  try {
+    Callback *self = *((Callback **)dub_checksdata(L, 1, "mimas.Callback"));
+    QObject *parent = *((QObject **)dub_checksdata(L, 2, "mimas.QObject"));
+    self->setParent(parent);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setParent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setParent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int Callback_parent(lua_State *L) {
+  try {
+    Callback *self = *((Callback **)dub_checksdata(L, 1, "mimas.Callback"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 
 
 // --=============================================== __tostring
@@ -175,6 +210,8 @@ static const struct luaL_Reg Callback_member_methods[] = {
   { "setObjectName", Callback_setObjectName },
   { "property"     , Callback_property    },
   { "setProperty"  , Callback_setProperty },
+  { "setParent"    , Callback_setParent   },
+  { "parent"       , Callback_parent      },
   { "__tostring"   , Callback___tostring  },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},

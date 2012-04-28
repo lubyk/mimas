@@ -20,9 +20,9 @@ static int TabWidget__cast_(lua_State *L) {
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
   int key_h = dub_hash(key, 4);
   switch(key_h) {
-    case 1: {
-      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
-      *retval__ = static_cast<QObject *>(self);
+    case 3: {
+      if (DUB_ASSERT_KEY(key, "mimas.QTabWidget")) break;
+      *retval__ = static_cast<QTabWidget *>(self);
       return 1;
     }
     case 2: {
@@ -30,9 +30,9 @@ static int TabWidget__cast_(lua_State *L) {
       *retval__ = static_cast<QWidget *>(self);
       return 1;
     }
-    case 3: {
-      if (DUB_ASSERT_KEY(key, "mimas.QTabWidget")) break;
-      *retval__ = static_cast<QTabWidget *>(self);
+    case 1: {
+      if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
+      *retval__ = static_cast<QObject *>(self);
       return 1;
     }
   }
@@ -152,72 +152,18 @@ static int TabWidget_setCurrentIndex(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QObject::objectName() const
- * bind/QObject.h:7
+/** int QTabWidget::count()
+ * bind/QTabWidget.h:12
  */
-static int TabWidget_objectName(lua_State *L) {
+static int TabWidget_count(lua_State *L) {
   try {
     TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
-    QByteArray str_(self->objectName().toUtf8());
-    lua_pushlstring(L, str_.constData(), str_.size());
+    lua_pushnumber(L, self->count());
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "objectName: %s", e.what());
+    lua_pushfstring(L, "count: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "objectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void QObject::setObjectName(const QString &name)
- * bind/QObject.h:8
- */
-static int TabWidget_setObjectName(lua_State *L) {
-  try {
-    TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
-    size_t name_sz_;
-    const char *name = dub_checklstring(L, 2, &name_sz_);
-    
-    self->setObjectName(QString::fromUtf8(name, name_sz_));
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setObjectName: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setObjectName: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** QVariant QObject::property(const char *name)
- * bind/QObject.h:9
- */
-static int TabWidget_property(lua_State *L) {
-  try {
-    TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
-    const char *name = dub_checkstring(L, 2);
-    return pushVariantInLua(L, self->property(name));
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "property: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "property: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** bool QObject::setProperty(const char *name, const QVariant &value)
- * bind/QObject.h:10
- */
-static int TabWidget_setProperty(lua_State *L) {
-  try {
-    TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
-    const char *name = dub_checkstring(L, 2);
-    QVariant value(variantFromLua(L, 3));
-    lua_pushboolean(L, self->setProperty(name, value));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setProperty: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setProperty: Unknown exception");
+    lua_pushfstring(L, "count: Unknown exception");
   }
   return dub_error(L);
 }
@@ -339,8 +285,26 @@ static int TabWidget_setParent(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QWidget::update()
+/** QWidget* QWidget::parentWidget()
  * bind/QWidget.h:17
+ */
+static int TabWidget_parentWidget(lua_State *L) {
+  try {
+    TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
+    QWidget *retval__ = self->parentWidget();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QWidget", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parentWidget: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parentWidget: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QWidget::update()
+ * bind/QWidget.h:18
  */
 static int TabWidget_update(lua_State *L) {
   try {
@@ -356,7 +320,7 @@ static int TabWidget_update(lua_State *L) {
 }
 
 /** void QWidget::adjustSize()
- * bind/QWidget.h:18
+ * bind/QWidget.h:19
  */
 static int TabWidget_adjustSize(lua_State *L) {
   try {
@@ -372,7 +336,7 @@ static int TabWidget_adjustSize(lua_State *L) {
 }
 
 /** void QWidget::setFocus()
- * bind/QWidget.h:19
+ * bind/QWidget.h:20
  */
 static int TabWidget_setFocus(lua_State *L) {
   try {
@@ -388,7 +352,7 @@ static int TabWidget_setFocus(lua_State *L) {
 }
 
 /** void QWidget::setFocusPolicy(int policy)
- * bind/QWidget.h:20
+ * bind/QWidget.h:21
  */
 static int TabWidget_setFocusPolicy(lua_State *L) {
   try {
@@ -405,7 +369,7 @@ static int TabWidget_setFocusPolicy(lua_State *L) {
 }
 
 /** void QWidget::setAttribute(int attr, bool enabled)
- * bind/QWidget.h:21
+ * bind/QWidget.h:22
  */
 static int TabWidget_setAttribute(lua_State *L) {
   try {
@@ -423,7 +387,7 @@ static int TabWidget_setAttribute(lua_State *L) {
 }
 
 /** void QWidget::setMinimumSize(float w, float h)
- * bind/QWidget.h:24
+ * bind/QWidget.h:25
  */
 static int TabWidget_setMinimumSize(lua_State *L) {
   try {
@@ -441,7 +405,7 @@ static int TabWidget_setMinimumSize(lua_State *L) {
 }
 
 /** void QWidget::setMouseTracking(bool enable)
- * bind/QWidget.h:27
+ * bind/QWidget.h:28
  */
 static int TabWidget_setMouseTracking(lua_State *L) {
   try {
@@ -458,7 +422,7 @@ static int TabWidget_setMouseTracking(lua_State *L) {
 }
 
 /** bool QWidget::close()
- * bind/QWidget.h:28
+ * bind/QWidget.h:29
  */
 static int TabWidget_close(lua_State *L) {
   try {
@@ -474,7 +438,7 @@ static int TabWidget_close(lua_State *L) {
 }
 
 /** bool QWidget::isVisible()
- * bind/QWidget.h:29
+ * bind/QWidget.h:30
  */
 static int TabWidget_isVisible(lua_State *L) {
   try {
@@ -490,7 +454,7 @@ static int TabWidget_isVisible(lua_State *L) {
 }
 
 /** void QWidget::show()
- * bind/QWidget.h:30
+ * bind/QWidget.h:31
  */
 static int TabWidget_show(lua_State *L) {
   try {
@@ -506,7 +470,7 @@ static int TabWidget_show(lua_State *L) {
 }
 
 /** void QWidget::hide()
- * bind/QWidget.h:31
+ * bind/QWidget.h:32
  */
 static int TabWidget_hide(lua_State *L) {
   try {
@@ -522,7 +486,7 @@ static int TabWidget_hide(lua_State *L) {
 }
 
 /** void QWidget::lower()
- * bind/QWidget.h:32
+ * bind/QWidget.h:33
  */
 static int TabWidget_lower(lua_State *L) {
   try {
@@ -538,7 +502,7 @@ static int TabWidget_lower(lua_State *L) {
 }
 
 /** void QWidget::raise()
- * bind/QWidget.h:33
+ * bind/QWidget.h:34
  */
 static int TabWidget_raise(lua_State *L) {
   try {
@@ -554,7 +518,7 @@ static int TabWidget_raise(lua_State *L) {
 }
 
 /** void QWidget::activateWindow()
- * bind/QWidget.h:34
+ * bind/QWidget.h:35
  */
 static int TabWidget_activateWindow(lua_State *L) {
   try {
@@ -570,7 +534,7 @@ static int TabWidget_activateWindow(lua_State *L) {
 }
 
 /** bool QWidget::isFullScreen()
- * bind/QWidget.h:35
+ * bind/QWidget.h:36
  */
 static int TabWidget_isFullScreen(lua_State *L) {
   try {
@@ -586,7 +550,7 @@ static int TabWidget_isFullScreen(lua_State *L) {
 }
 
 /** void QWidget::addAction(Action *action)
- * bind/QWidget.h:36
+ * bind/QWidget.h:37
  */
 static int TabWidget_addAction(lua_State *L) {
   try {
@@ -603,7 +567,7 @@ static int TabWidget_addAction(lua_State *L) {
 }
 
 /** void QWidget::setWindowTitle(const QString &text)
- * bind/QWidget.h:37
+ * bind/QWidget.h:38
  */
 static int TabWidget_setWindowTitle(lua_State *L) {
   try {
@@ -622,7 +586,7 @@ static int TabWidget_setWindowTitle(lua_State *L) {
 }
 
 /** QString QWidget::windowTitle()
- * bind/QWidget.h:38
+ * bind/QWidget.h:39
  */
 static int TabWidget_windowTitle(lua_State *L) {
   try {
@@ -638,7 +602,7 @@ static int TabWidget_windowTitle(lua_State *L) {
 }
 
 /** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:44
+ * bind/QWidget.h:45
  */
 static int TabWidget_addWidget(lua_State *L) {
   try {
@@ -655,7 +619,7 @@ static int TabWidget_addWidget(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:48
+ * bind/QWidget.h:49
  */
 static int TabWidget_size(lua_State *L) {
   try {
@@ -673,7 +637,7 @@ static int TabWidget_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int TabWidget_setStyle(lua_State *L) {
   try {
@@ -690,7 +654,7 @@ static int TabWidget_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int TabWidget_setStyleSheet(lua_State *L) {
   try {
@@ -707,7 +671,7 @@ static int TabWidget_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:53
+ * bind/QWidget.h:54
  */
 static int TabWidget_textSize(lua_State *L) {
   try {
@@ -725,7 +689,7 @@ static int TabWidget_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int TabWidget_setSizePolicy(lua_State *L) {
   try {
@@ -744,7 +708,7 @@ static int TabWidget_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:62
+ * bind/QWidget.h:63
  */
 static int TabWidget_showFullScreen(lua_State *L) {
   try {
@@ -771,7 +735,7 @@ static int TabWidget_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:66
+ * bind/QWidget.h:67
  */
 static int TabWidget_swapFullScreen(lua_State *L) {
   try {
@@ -791,7 +755,7 @@ static int TabWidget_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:70
+ * bind/QWidget.h:71
  */
 static int TabWidget_globalPosition(lua_State *L) {
   try {
@@ -809,7 +773,7 @@ static int TabWidget_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:75
+ * bind/QWidget.h:76
  */
 static int TabWidget_position(lua_State *L) {
   try {
@@ -826,7 +790,7 @@ static int TabWidget_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:79
+ * bind/QWidget.h:80
  */
 static int TabWidget_globalMove(lua_State *L) {
   try {
@@ -847,18 +811,90 @@ static int TabWidget_globalMove(lua_State *L) {
   return dub_error(L);
 }
 
-/** int QTabWidget::count()
- * bind/QTabWidget.h:12
+/** QString QObject::objectName() const
+ * bind/QObject.h:7
  */
-static int TabWidget_count(lua_State *L) {
+static int TabWidget_objectName(lua_State *L) {
   try {
     TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
-    lua_pushnumber(L, self->count());
+    QByteArray str_(self->objectName().toUtf8());
+    lua_pushlstring(L, str_.constData(), str_.size());
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "count: %s", e.what());
+    lua_pushfstring(L, "objectName: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "count: Unknown exception");
+    lua_pushfstring(L, "objectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QObject::setObjectName(const QString &name)
+ * bind/QObject.h:8
+ */
+static int TabWidget_setObjectName(lua_State *L) {
+  try {
+    TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
+    size_t name_sz_;
+    const char *name = dub_checklstring(L, 2, &name_sz_);
+    
+    self->setObjectName(QString::fromUtf8(name, name_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setObjectName: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setObjectName: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QVariant QObject::property(const char *name)
+ * bind/QObject.h:9
+ */
+static int TabWidget_property(lua_State *L) {
+  try {
+    TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
+    const char *name = dub_checkstring(L, 2);
+    return pushVariantInLua(L, self->property(name));
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "property: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "property: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** bool QObject::setProperty(const char *name, const QVariant &value)
+ * bind/QObject.h:10
+ */
+static int TabWidget_setProperty(lua_State *L) {
+  try {
+    TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
+    const char *name = dub_checkstring(L, 2);
+    QVariant value(variantFromLua(L, 3));
+    lua_pushboolean(L, self->setProperty(name, value));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setProperty: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setProperty: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QObject* QObject::parent()
+ * bind/QObject.h:12
+ */
+static int TabWidget_parent(lua_State *L) {
+  try {
+    TabWidget *self = *((TabWidget **)dub_checksdata(L, 1, "mimas.TabWidget"));
+    QObject *retval__ = self->parent();
+    if (!retval__) return 0;
+    dub_pushudata(L, retval__, "mimas.QObject", false);
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "parent: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "parent: Unknown exception");
   }
   return dub_error(L);
 }
@@ -883,10 +919,7 @@ static const struct luaL_Reg TabWidget_member_methods[] = {
   { "addTab"       , TabWidget_addTab     },
   { "currentIndex" , TabWidget_currentIndex },
   { "setCurrentIndex", TabWidget_setCurrentIndex },
-  { "objectName"   , TabWidget_objectName },
-  { "setObjectName", TabWidget_setObjectName },
-  { "property"     , TabWidget_property   },
-  { "setProperty"  , TabWidget_setProperty },
+  { "count"        , TabWidget_count      },
   { "move"         , TabWidget_move       },
   { "resize"       , TabWidget_resize     },
   { "x"            , TabWidget_x          },
@@ -894,6 +927,7 @@ static const struct luaL_Reg TabWidget_member_methods[] = {
   { "width"        , TabWidget_width      },
   { "height"       , TabWidget_height     },
   { "setParent"    , TabWidget_setParent  },
+  { "parentWidget" , TabWidget_parentWidget },
   { "update"       , TabWidget_update     },
   { "adjustSize"   , TabWidget_adjustSize },
   { "setFocus"     , TabWidget_setFocus   },
@@ -923,7 +957,11 @@ static const struct luaL_Reg TabWidget_member_methods[] = {
   { "globalPosition", TabWidget_globalPosition },
   { "position"     , TabWidget_position   },
   { "globalMove"   , TabWidget_globalMove },
-  { "count"        , TabWidget_count      },
+  { "objectName"   , TabWidget_objectName },
+  { "setObjectName", TabWidget_setObjectName },
+  { "property"     , TabWidget_property   },
+  { "setProperty"  , TabWidget_setProperty },
+  { "parent"       , TabWidget_parent     },
   { "__tostring"   , TabWidget___tostring },
   { "deleted"      , dub_isDeleted        },
   { NULL, NULL},
