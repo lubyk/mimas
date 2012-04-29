@@ -16,10 +16,6 @@ local function new(...)
   -- To ease a purely functional style, we pass calls to the
   -- DataSource (ds) directly to ListView (lv)
   local ds = mimas.DataSource()
-  function ds:columnCount()
-    return lv:columnCount()
-  end
-
   function ds:rowCount()
     return lv:rowCount()
   end
@@ -36,11 +32,6 @@ end
 
 function lib.new(...)
   return mimas.bootstrap(lib, new, ...)
-end
-
--- Default column count.
-function lib:columnCount()
-  return 1
 end
 
 function lib:rowCount()

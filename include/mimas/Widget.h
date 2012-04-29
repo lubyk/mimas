@@ -77,7 +77,7 @@ public:
   }
 
   void setStyle(const char *text) {
-    setStyleSheet(QString(".%1 { %2 }").arg(css_class_).arg(text));
+    setStyleSheet(QString("Widget { %2 }").arg(text));
   }
 
   // ============================================================ Dialog

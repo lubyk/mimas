@@ -62,7 +62,7 @@ function withUSer.should.changeAlignment(t)
   lay:addWidget(btn2, 0, mimas.AlignLeft)
 
   win:move(100, 100)
-  win:resize(100,100)
+  win:resize(300,100)
   local callback = mimas.Callback(function()
     t.continue = true
   end)

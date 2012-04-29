@@ -29,6 +29,7 @@
 
 #include "mimas/ListView.h"
 #include "mimas/Painter.h"
+
 #include <QtCore/QUrl>
 #include <QtGui/QApplication>
 #include <QtGui/QStyledItemDelegate>

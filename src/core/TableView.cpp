@@ -31,39 +31,31 @@
 #include "mimas/Painter.h"
 #include "mimas/Widget.h"
 
-void TableView::mouseMoveEvent(QMouseEvent *event) {
-  if (!dub_pushcallback("mouse")) return;
-  lua_State *L = dub_L;
-  lua_pushnumber(L, event->x());
-  lua_pushnumber(L, event->y());
-  // <func> <self> <x> <y>
-  if (!dub_call(3, 1)) return;
-
-  if (lua_isfalse(L, -1)) {
-    // Pass to QTableView
-    QTableView::mouseMoveEvent(event);
-  }
-  lua_pop(L, 1);
-}
+#include <QtGui/QScrollBar>
 
 bool TableView::click(QMouseEvent *event, int type) {
+  lua_State *L = dub_L;
+
   if (dub_pushcallback("select")) {
     // ... <select> <self>
-    return select(event, type);
-  } else {
-    return Widget::click(this, event, type);
+    if (type == MousePress) {
+      // normal click processing
+      lua_pop(L, 2);
+      // continue processing
+      update();
+      return false;
+    } else {
+      // select
+      QModelIndex idx = QTableView::indexAt(QPoint(event->x(), event->y()));
+      return select(idx, event);
+    }
   }
+  return Widget::click(this, event, type);
 }
 
-bool TableView::select(QMouseEvent *event, int type) {
+bool TableView::select(const QModelIndex &idx, QEvent *event) {
   lua_State *L = dub_L;
   // ... <select> <self>
-  if (type != MousePress) {
-    lua_pop(L, 2);
-    return true; // ignore
-  }
-
-  QModelIndex idx = QTableView::indexAt(QPoint(event->x(), event->y()));
   if (!idx.isValid()) {
     lua_pop(L, 2);
     return false;
@@ -73,20 +65,50 @@ bool TableView::select(QMouseEvent *event, int type) {
   lua_pushnumber(L, idx.column() + 1);
   // ... <select> <self> <row> <col>
   if (!dub_call(3, 1)) {
-    // error
+    // Error in callback
     return false;
   }
 
-  // FIXME: find another way to remove the dotted lines around text after click.
-  clearFocus();
-
   if (lua_isfalse(L, -1)) {
-    // Pass to TableView
+    // We are not concerned.
+    event->ignore();
+  } else if (lua_istrue(L, -1)) {
+    // continue processing with super
     lua_pop(L, 1);
     return false;
   }
-
+  // processing done.
   lua_pop(L, 1);
   return true;
+}
+
+
+TableView::TableView(QWidget *parent)
+  : QTableView(parent) {
+  setAttribute(Qt::WA_DeleteOnClose);
+  setSelectionMode(QAbstractItemView::SingleSelection);
+  // Not editable
+  setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+  QObject::connect(
+      verticalScrollBar(), SIGNAL(actionTriggered(int)),
+      this,                SLOT(sliderVActionTriggered(int)));
+
+  QObject::connect(
+      horizontalScrollBar(), SIGNAL(actionTriggered(int)),
+      this,                  SLOT(sliderHActionTriggered(int)));
+
+}
+
+TableView::~TableView() {
+}
+
+void TableView::slider(int orientation, int action) {
+  if (!dub_pushcallback("slider")) return;
+  lua_State *L = dub_L;
+  lua_pushnumber(L, orientation);
+  lua_pushnumber(L, action);
+  // <func> <self> <dir> <action>
+  dub_call(3, 0);
 }
 

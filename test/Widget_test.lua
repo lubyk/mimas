@@ -201,33 +201,38 @@ function withUser.should.showContextualMenu(t)
   assertTrue(t.continue)
 end
 
-function withUser.should.passClick(t)
-  t.win = mimas.Window()
-  t.btn = mimas.Button('click me', function()
-    t.continue = true
-  end)
-  t.win:addWidget(t.btn)
-  t.btn:move(50, 50)
-  t.top = mimas.Widget()
-  t.win:addWidget(t.top)
-  t.top:move(60, 50)
-  function t.top:paint(p, w, h)
-    p:fillRect(0, 0, w, h, mimas.Color(0.3,1,1,0.3))
-  end
-  t.top:resize(40, 200)
-  function t.top:click()
-    t.btn:setText('passing through')
-    return true --false
-  end
-  t.win:resize(200,300)
-  t.win:move(10,10)
-  t.win:show()
-  t:timeout(function()
-    return t.continue
-  end)
-  t.win:close()
-  assertTrue(t.continue)
-end
+-- Qt cannot pass events 'down'. This cannot work.
+-- function withUser.should.passClick(t)
+--   t.win = mimas.Window()
+--   t.lbl = mimas.Label('Click on bar above btn', t.win)
+--   t.lbl:show()
+--   t.lbl:move(10, 10)
+--   t.btn = mimas.Button('click me', function()
+--     t.lbl:setText('Click on btn')
+--     t.continue = true
+--   end)
+--   t.win:addWidget(t.btn)
+--   t.btn:move(50, 50)
+--   t.top = mimas.Widget()
+--   t.win:addWidget(t.top)
+--   t.top:move(60, 50)
+--   function t.top:paint(p, w, h)
+--     p:fillRect(0, 0, w, h, mimas.Color(0.3,1,1,0.3))
+--   end
+--   t.top:resize(40, 200)
+--   function t.top:click()
+--     t.lbl:setText('Click on bar')
+--     return false -- we want to ignore the event so that it is passed down.
+--   end
+--   t.win:resize(200,300)
+--   t.win:move(10,10)
+--   t.win:show()
+--   t:timeout(function()
+--     return t.continue
+--   end)
+--   t.win:close()
+--   assertTrue(t.continue)
+-- end
 
 function withUser.should.captureKeyboard(t)
   t.win = mimas.Window()
@@ -264,6 +269,34 @@ function should.captureErrors()
 
   app:click(win)
   assertMatch('test/Widget_test.lua:%d+: Some bad message', err_msg)
+end
+
+function should.acceptDestroyFromGui(t)
+  t.win = mimas.Widget()
+  t.win:move(100, 170)
+  t.win:resize(50, 50)
+  t.win:show()
+
+  sleep(200)
+  t.win:close()
+  t:timeout(function()
+    return t.win:deleted()
+  end)
+  assertTrue(t.win:deleted())
+end
+
+function should.acceptDestroyFromLua()
+  local win = mimas.Widget()
+  win:move(100, 240)
+  win:resize(50, 50)
+  win:show()
+  local label = mimas.Label("Hop", win)
+
+  win = nil
+  collectgarbage('collect')
+  -- not deleted by Lua, but marked as deleted in C++
+  -- proof that win was deleted in C++
+  assertTrue(label:deleted())
 end
 
 test.all()

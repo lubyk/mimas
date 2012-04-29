@@ -35,7 +35,7 @@ static int LegacyGLWidget__cast_(lua_State *L) {
 }
 
 /** LegacyGLWidget::LegacyGLWidget()
- * include/mimas/LegacyGLWidget.h:75
+ * include/mimas/LegacyGLWidget.h:76
  */
 static int LegacyGLWidget_LegacyGLWidget(lua_State *L) {
   try {
@@ -51,7 +51,7 @@ static int LegacyGLWidget_LegacyGLWidget(lua_State *L) {
 }
 
 /** LegacyGLWidget::~LegacyGLWidget()
- * include/mimas/LegacyGLWidget.h:88
+ * include/mimas/LegacyGLWidget.h:89
  */
 static int LegacyGLWidget__LegacyGLWidget(lua_State *L) {
   try {
@@ -70,10 +70,10 @@ static int LegacyGLWidget__LegacyGLWidget(lua_State *L) {
   return dub_error(L);
 }
 
-/** void LegacyGLWidget::addWidgetToScene(QWidget *widget, float x=0, float y=0)
- * include/mimas/LegacyGLWidget.h:91
+/** void LegacyGLWidget::addWidget(QWidget *widget, float x=0, float y=0)
+ * include/mimas/LegacyGLWidget.h:92
  */
-static int LegacyGLWidget_addWidgetToScene(lua_State *L) {
+static int LegacyGLWidget_addWidget(lua_State *L) {
   try {
     LegacyGLWidget *self = *((LegacyGLWidget **)dub_checksdata(L, 1, "mimas.LegacyGLWidget"));
     int top__ = lua_gettop(L);
@@ -81,22 +81,22 @@ static int LegacyGLWidget_addWidgetToScene(lua_State *L) {
       QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
       float x = dub_checknumber(L, 3);
       float y = dub_checknumber(L, 4);
-      self->addWidgetToScene(widget, x, y);
+      self->addWidget(widget, x, y);
       return 0;
     } else if (top__ >= 3) {
       QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
       float x = dub_checknumber(L, 3);
-      self->addWidgetToScene(widget, x);
+      self->addWidget(widget, x);
       return 0;
     } else {
       QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
-      self->addWidgetToScene(widget);
+      self->addWidget(widget);
       return 0;
     }
   } catch (std::exception &e) {
-    lua_pushfstring(L, "addWidgetToScene: %s", e.what());
+    lua_pushfstring(L, "addWidget: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "addWidgetToScene: Unknown exception");
+    lua_pushfstring(L, "addWidget: Unknown exception");
   }
   return dub_error(L);
 }
@@ -534,23 +534,6 @@ static int LegacyGLWidget_windowTitle(lua_State *L) {
   return dub_error(L);
 }
 
-/** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:45
- */
-static int LegacyGLWidget_addWidget(lua_State *L) {
-  try {
-    LegacyGLWidget *self = *((LegacyGLWidget **)dub_checksdata(L, 1, "mimas.LegacyGLWidget"));
-    QWidget *widget = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
-    widget->setParent(self);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "addWidget: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "addWidget: Unknown exception");
-  }
-  return dub_error(L);
-}
-
 /** LuaStackSize QWidget::size()
  * bind/QWidget.h:49
  */
@@ -848,7 +831,7 @@ static const struct luaL_Reg LegacyGLWidget_member_methods[] = {
   { "_cast_"       , LegacyGLWidget__cast_ },
   { "new"          , LegacyGLWidget_LegacyGLWidget },
   { "__gc"         , LegacyGLWidget__LegacyGLWidget },
-  { "addWidgetToScene", LegacyGLWidget_addWidgetToScene },
+  { "addWidget"    , LegacyGLWidget_addWidget },
   { "update"       , LegacyGLWidget_update },
   { "move"         , LegacyGLWidget_move  },
   { "resize"       , LegacyGLWidget_resize },
@@ -875,7 +858,6 @@ static const struct luaL_Reg LegacyGLWidget_member_methods[] = {
   { "addAction"    , LegacyGLWidget_addAction },
   { "setWindowTitle", LegacyGLWidget_setWindowTitle },
   { "windowTitle"  , LegacyGLWidget_windowTitle },
-  { "addWidget"    , LegacyGLWidget_addWidget },
   { "size"         , LegacyGLWidget_size  },
   { "setStyle"     , LegacyGLWidget_setStyle },
   { "setStyleSheet", LegacyGLWidget_setStyleSheet },
@@ -906,7 +888,7 @@ extern "C" int luaopen_mimas_LegacyGLWidget(lua_State *L)
   // register member methods
   luaL_register(L, NULL, LegacyGLWidget_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "LegacyGLWidget");
+  dub_register(L, "mimas", "LegacyGLWidget_core");
   // <mt>
   lua_pop(L, 1);
   return 0;

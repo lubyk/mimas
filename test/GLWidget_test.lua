@@ -56,26 +56,25 @@ void main(void)
 }
 ]=]
   )
-  sleep(2000)
-  t.win:close()
+  t:timeout(500, function()
+    return t.continue
+  end)
+  t.win:hide()
   assertTrue(true)
 end
 
 function should.acceptDestroyFromGui(t)
-  t.win = mimas.GLWindow()
+  t.win = mimas.GLWidget()
   t.win:move(100, 170)
   t.win:resize(50, 50)
   t.win:show()
 
-  t.thread = lk.Thread(function()
-    sleep(200)
-    t.win:close()
-    while not t.win:deleted() do
-      sleep(200)
-    end
-    -- should be deleted by GUI
-    assertMatch('NULL', t.win:__tostring())
+  sleep(200)
+  t.win:close()
+  t:timeout(function()
+    return t.win:deleted()
   end)
+  assertTrue(t.win:deleted())
 end
 
 function should.acceptDestroyFromLua()

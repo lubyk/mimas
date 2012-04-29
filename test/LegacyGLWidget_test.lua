@@ -66,6 +66,7 @@ function withUser.should.displayGlWindow(t)
     return t.fps
   end
 
+  t.label = mimas.Label('fps: 0.000')
   local function animate(now)
     local dt = (now - t.last) * t.dt
     t.n = t.n + t.dt
@@ -97,13 +98,15 @@ function withUser.should.displayGlWindow(t)
     t.win:update()
   end
 
-  t.btn = mimas.Button('ok', function()
+  t.btn = mimas.Button('Push if OK', function()
     t.continue = true
+    t.win:hide()
   end)
   t.win:addWidget(t.btn, 10, 10)
-  t.label = mimas.Label('Hello')
 
   t.shape = mimas.Widget()
+  t.shape:addWidget(t.label)
+  t.label:move(17, 40)
   t.win:addWidget(t.shape, 100, 100)
   t.shape:resize(100, 100)
   function t.shape:paint(p, w, h)
@@ -112,15 +115,12 @@ function withUser.should.displayGlWindow(t)
     p:drawRoundedRect(5, 5, 90, 90, 10, 10)
   end
   t.shape:setStyle('background:transparent')
-  t.shape:addWidget(t.label, 20, 40)
-  t.label:resize(100)
 
   t.win:resize(300,300)
   t.win:show()
-  t:timeout(34000, function()
+  t:timeout(function()
     return t.continue
   end)
-  t.win:close()
   assertTrue(t.continue)
 end
 
@@ -130,15 +130,12 @@ function should.acceptDestroyFromGui(t)
   t.win:resize(50, 50)
   t.win:show()
 
-  t.thread = lk.Thread(function()
-    sleep(200)
-    t.win:close()
-    while not t.win:deleted() do
-      sleep(200)
-    end
-    -- should be deleted by GUI
-    assertMatch('NULL', t.win:__tostring())
+  sleep(200)
+  t.win:close()
+  t:timeout(function()
+    return t.win:deleted()
   end)
+  assertTrue(t.win:deleted())
 end
 
 function should.acceptDestroyFromLua()

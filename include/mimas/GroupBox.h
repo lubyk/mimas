@@ -42,7 +42,7 @@
  *      push: pushobject
  *      super: QWidget
  */
-class GroupBox : public QGroupBox, public dub::Object {
+class GroupBox : public QGroupBox, public dub::Thread {
   Q_OBJECT
 public:
   GroupBox(const char *title = NULL, QWidget *parent = NULL)

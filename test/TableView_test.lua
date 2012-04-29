@@ -27,7 +27,7 @@ function withUser.should.displayTable(t)
   t.view:move(10,10)
   t.view:setAlternatingRowColors(true)
   t.view:setVisibleHeaders(mimas.Vertical, false)
-  t.view:setGridStyle(mimas.NoPen)
+  t.view:setGridStyle(mimas.NoPenStyle)
 
   function t.view:columnCount()
     return #data.head
@@ -60,10 +60,13 @@ function withUser.should.displayTable(t)
     end
   end
 
+  -- We must do this because the column count is cached on the first
+  -- call which occurs during 'setModel' (in mimas.TableView()).
+  t.view:reset()
   t.view:show()
 
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   assertTrue(t.continue)
   t.view:close()

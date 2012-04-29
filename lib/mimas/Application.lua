@@ -25,7 +25,8 @@ function lib.new(type)
   app:setStyleSheet [[
     /* FIXME: QWidget is too broad... we need to fix QPushButton and Co...
     */
-    QWidget {
+    Widget, QLabel, ListView, TableView, TabWidget, QTabBar::tab:selected,
+    Menu, CheckBox {
       background:#151515;
       color:#B4B4B4;
     }
@@ -45,7 +46,7 @@ function lib.new(type)
     ListView::item {
       padding:2px;
     }
-    ListView::item:selected {
+    ListView::item:selected, TableView::item:selected {
       border: 0;
       color: #B4B4B4;
       background:#6E4E24;
@@ -68,13 +69,13 @@ function lib.new(type)
       border-top:0;
     }
     Menu::item:selected {
-      background: rgb(55,55,55);
+      background: #444;
     }
     GroupBox {
-      background: #222;
+      background: #333;
     }
     LineEdit {
-      background:rgb(55,55,55);
+      background:#333;
       color:white;
       selection-color:white;
       selection-background-color: rgb(40,85,140);
@@ -83,9 +84,6 @@ function lib.new(type)
     Label { background: transparent; }
 
     /* TabWidget */
-    TabWidget { 
-      background:#444;
-    }
     TabWidget::pane {
       position:absolute;
       top: -1px;
@@ -107,7 +105,6 @@ function lib.new(type)
       margin-left:0px;
     }
     QTabBar::tab:selected {
-      background:#262626;
       border-bottom:0;
       margin-top:5px;
       color:#B4B4B4;
@@ -138,15 +135,15 @@ function lib.new(type)
         width: 0px;
     }
     /* end TabWidget */
-    .control {
+    Control {
       font-size:10px;
     }
-    QCheckBox::indicator {
+    CheckBox::indicator {
       border:1px solid #aaa;
       width: 6px;
       height: 6px;
     }
-    QCheckBox::indicator:checked {
+    CheckBox::indicator:checked {
       background:#888;
     }
 

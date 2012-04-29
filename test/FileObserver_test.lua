@@ -18,6 +18,8 @@ function should.observeFiles(t)
   local filepath = lk.absolutizePath(fixture.path('baz.txt'))
   -- just because mimas needs a window to start and quit
   local win = mimas.Window()
+  win:move(10,10)
+  win:resize(50,50)
   win:show()
 
   lk.writeall(filepath, 'Hello')
@@ -36,11 +38,8 @@ function should.observeFiles(t)
   end)
   -- we edit the file
   lk.writeall(filepath, 'World!')
-  t:timeout(function(done)
-    if done or t.continue then
-      assertTrue(t.continue)
-      return true
-    end
+  t:timeout(function()
+    return t.continue
   end)
   lk.rmFile(filepath)
   win:close()

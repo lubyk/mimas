@@ -43,6 +43,7 @@
  * http://doc.trolltech.com/qq/qq26-openglcanvas.html
  *
  * @dub push: pushobject
+ *      register: LegacyGLWidget_core
  *      super: QWidget
  */
 class LegacyGLWidget : public QGraphicsView, public dub::Thread {
@@ -88,10 +89,9 @@ public:
   ~LegacyGLWidget() {
   }
 
-  void addWidgetToScene(QWidget *widget, float x=0, float y=0) {
+  void addWidget(QWidget *widget, float x=0, float y=0) {
     gl_scene_->addWidget(widget);
     widget->move(x, y);
-    widget->show();
   }
 
   // =============================================================
@@ -101,6 +101,11 @@ public:
   }
 
 protected:
+  virtual void closeEvent(QCloseEvent *event) {
+    // FIXME: Why doesn't setAttribute(Qt::WA_DeleteOnClose) work ?
+    delete this;
+  }
+
   /** Force the scene to have the same size as the view.
    */
   void resizeEvent(QResizeEvent *event) {

@@ -122,7 +122,7 @@ protected:
   virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const {
     if (role != Qt::DisplayRole) return QVariant();
 
-    if (!dub_pushcallback("data")) return QVariant();
+    if (!dub_pushcallback("header")) return QVariant();
     lua_State *L = const_cast<lua_State*>(dub_L);
     lua_pushnumber(L, section + 1);
     lua_pushnumber(L, orientation);

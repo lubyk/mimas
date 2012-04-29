@@ -58,13 +58,17 @@ function should.styleCheckBoxs(t)
   t.win:move(100, 400)
   t.win:resize(200,200)
   t.lay = mimas.VBoxLayout(t.win)
+  t.btn = mimas.Button('Push if OK', function()
+    t.continue = true
+  end)
+  t.lay:addWidget(t.btn)
 
   -- can use rgb(), rgba(), hsv(), hsva() or #00FA88 (caps)
   local tests = {
-    '.checkbox {color:#EAA844}',
-    '.checkbox {border: 3px solid #EAA844; border-radius:5}',
-    '.checkbox {background-color: hsva(80, 255, 255, 40%)}',
-    '.checkbox:hover {background:#EAA844}'
+    'CheckBox {color:#EAA844}',
+    'CheckBox {border: 3px solid #EAA844; border-radius:5}',
+    'CheckBox {background-color: hsva(80, 255, 255, 40%)}',
+    'CheckBox:hover {background:#EAA844}'
   }
 
   for _, style_test in ipairs(tests) do
@@ -75,10 +79,10 @@ function should.styleCheckBoxs(t)
     t[style_test] = lbl
   end
   t.win:show()
-  t.timeout = lk.Thread(function()
-    sleep(30000)
-    t.win:close()
+  t:timeout(function()
+    return t.continue
   end)
+  t.win:close()
 end
 
 test.all()

@@ -11,6 +11,7 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.Label')
+local withUser = should:testWithUser()
 
 function should.acceptDestroyFromGui()
   local win = mimas.Window()
@@ -49,7 +50,7 @@ function should.setAlignment(t)
   end)
 end
 
-function should.styleLabels(t)
+function withUser.should.styleLabels(t)
   t.win = mimas.Window()
   t.win:move(100, 120)
   t.lb = mimas.Label("Label not in layout", t.win)
@@ -60,6 +61,12 @@ function should.styleLabels(t)
   local lay = t.lay
   t.lbl1 = mimas.Label("Label in layout")
   t.lay:addWidget(t.lbl1)
+  t.btn = mimas.Button('Push if OK')
+  function t.btn:click()
+    t.continue = true
+    t.win:hide()
+  end
+  t.lay:addWidget(t.btn)
 
   -- can use rgb(), rgba(), hsv(), hsva() or #00FA88 (caps)
   local tests = {
@@ -88,14 +95,13 @@ function should.styleLabels(t)
   -- visual check
   assertTrue(true)
   t.win:show()
-  t:timeout(function(elapsed)
-    if elapsed > 2000 then
-      t.win:close()
-    end
+  t:timeout(function()
+    return t.continue
   end)
+  assertTrue(t.continue)
 end
 
-function should.displayUTF8(t)
+function withUser.should.displayUTF8(t)
   t.win = mimas.Window()
   t.win:move(10,10)
   t.win:resize(100,100)
@@ -103,19 +109,17 @@ function should.displayUTF8(t)
   t.btn = mimas.Button('Push if OK')
   function t.btn:click()
     t.continue = true
+    t.win:hide()
   end
+  t.lay:addWidget(t.btn, mimas.AlignLeft)
+
   t.lbl = mimas.Label("Phryné devant l'aréopage")
   t.lay:addWidget(t.lbl)
-  t.lay:addWidget(t.btn)
   t.win:show()
-  t:timeout(function(elapsed)
-    if elapsed > 2000 then
-      app:click(t.btn)
-    end
+  t:timeout(function()
     return t.continue
   end)
   assertTrue(t.continue)
-  t.win:close()
 end
 
 test.all()

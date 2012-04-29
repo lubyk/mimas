@@ -6,23 +6,69 @@
   Display tabular data
 
 --]]------------------------------------------------------
-local constr     = mimas_core.TableView
-local mt         = mimas_core.TableView_
-mimas.TableView_ = mt
+local lib = mimas.TableView_core
+mimas.TableView = lib
 
-function mimas.TableView(...)
-  return mimas.bootstrap('TableView', constr, ...)
-end
+local base_new = lib.new
 
-local close = mt.close
-function mt:close()
-  -- close is like delete: ensure it only runs in GUI thread
-  if not self:deleted() then
-    close(self)
+local function new(...)
+  local tv = base_new(...)
+  -- To ease a purely functional style, we pass calls to the
+  -- DataSource (ds) directly to TableView (tv)
+  local ds = mimas.DataSource()
+
+  function ds:header(...)
+    return tv:header(...)
   end
+
+  function ds:columnCount()
+    return tv:columnCount()
+  end
+
+  function ds:rowCount()
+    return tv:rowCount()
+  end
+
+  function ds:data(...)
+    return tv:data(...)
+  end
+
+  tv:setModel(ds)
+  -- Prevent garbage collection
+  tv.ds = ds
+  return tv
 end
+
+function lib.new(...)
+  return mimas.bootstrap(lib, new, ...)
+end
+
+-- Default column count.
+function lib:columnCount()
+  return 1
+end
+
+function lib:rowCount()
+  return 0
+end
+
+function lib:data()
+  return nil
+end
+
+function lib:header()
+  return nil
+end
+
+--function lib:close()
+--  -- close is like delete: ensure it only runs in GUI thread
+--  if not self:deleted() then
+--    close(self)
+--  end
+--end
 
 -- refresh
-function mt:reset()
-  self.data_source:reset()
+function lib:reset()
+  self.ds:reset()
 end
+

@@ -29,8 +29,9 @@
 #ifndef LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
 #define LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
 
+#include "mimas/mimas.h"
 #include "mimas/DataSource.h"
-#include "mimas/Action.h"
+#include "mimas/Widget.h"
 
 #include <QtGui/QTableView>
 #include <QtGui/QHeaderView>
@@ -42,19 +43,15 @@
 /** The TableView is used to display data in a table.
  *
  * @dub push: pushobject
- *      super: 'QWidget'
+ *      register: TableView_core
+ *      super: QWidget
  */
 class TableView : public QTableView, public dub::Thread {
   Q_OBJECT
 public:
-  TableView() {
-    setAttribute(Qt::WA_DeleteOnClose);
-    // Not editable
-    setEditTriggers(QAbstractItemView::NoEditTriggers);
-  }
+  TableView(QWidget *parent = NULL);
 
-  ~TableView() {
-  }
+  ~TableView();
 
   /** Show or hide horizontal and vertical headers.
    */
@@ -79,12 +76,6 @@ public:
     QTableView::setGridStyle((Qt::PenStyle)style);
   }
 
-  /** Enable/disable alternating row background.
-   */
-  void setAlternatingRowColors(bool should_enable) {
-    QTableView::setAlternatingRowColors(should_enable);
-  }
-
   virtual void selectRow(int row) {
     QTableView::selectRow(row - 1);
   }
@@ -93,36 +84,16 @@ public:
     QTableView::selectColumn(row - 1);
   }
 
-  /** Use an external model instead of the default one.
-   */
-  void setModel(DataSource *model) {
-    QTableView::setModel(model);
-  }
-
-  int pushobject(lua_State *L, TableView *obj, const char *class_name, bool gc = true) {
-    dub::Thread::pushobject(L, obj, class_name, gc);
-    // <self>
-    lua_pushlstring(L, "data_source", 5);
-    // <self> <'data_source'>
-    // <self>
-    DataSource *data = new DataSource();
-    data->pushobject(L, data, "mimas.DataSource");
-    // <self> <'data_source'> <data>
-    lua_settable(L, -3); // self.data_source = data
-    // <self>
-    // make DataSource look in <self> for callbacks
-    lua_pushvalue(L, -1);
-    // <self> <self>
-    lua_pop(data->dub_L, 1);
-    lua_xmove(L, data->dub_L, 1);
-    // data: <self>
-    // <self>
-    setModel(data);
-    return 1;
-  }
-
 protected:
-  virtual void mouseMoveEvent(QMouseEvent *event);
+
+  //--=============================================== COMMON CALLBACKS [
+  virtual void closeEvent(QCloseEvent *event) {
+    Widget::closed(this, event);
+  }
+
+  virtual void mouseMoveEvent(QMouseEvent *event) {
+    Widget::mouse(this, event);
+  }
 
   virtual void mousePressEvent(QMouseEvent *event) {
     if (!click(event, MousePress))
@@ -138,9 +109,51 @@ protected:
     if (!click(event, MouseRelease))
       QTableView::mouseReleaseEvent(event);
   }
+
+  virtual void resizeEvent(QResizeEvent *event) {
+    Widget::resized(this, width(), height());
+  }
+
+  virtual void moveEvent(QMoveEvent * event) {
+    Widget::moved(this, event);
+  }
+
+  // Not sure this is useful
+
+  // virtual void showEvent(QShowEvent *event) {
+  //   Widget::showHide(this, true);
+  // }
+
+  // virtual void hideEvent(QHideEvent *event) {
+  //   Widget::showHide(this, false);
+  // }
+
+  virtual void keyPressEvent(QKeyEvent *event) {
+    if (!Widget::keyboard(this, event, true))
+      QTableView::keyPressEvent(event);
+  }
+
+  virtual void keyReleaseEvent(QKeyEvent *event) {
+    if (!Widget::keyboard(this, event, false))
+      QTableView::keyReleaseEvent(event);
+  }
+
+  //--=============================================== COMMON CALLBACKS ]
+
+private slots:
+
+  void sliderVActionTriggered(int action) {
+    slider(Qt::Vertical, action);
+  }
+
+  void sliderHActionTriggered(int action) {
+    slider(Qt::Horizontal, action);
+  }
+
 private:
   bool click(QMouseEvent *event, int type);
-  bool select(QMouseEvent *event, int type);
+  bool select(const QModelIndex &idx, QEvent *event);
+  void slider(int orientation, int action);
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_

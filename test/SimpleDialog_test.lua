@@ -61,8 +61,8 @@ function withUser.should.displayDialog(t)
     end
   end
 
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.dlg:close()
   assertTrue(t.continue)
@@ -95,8 +95,8 @@ function withUser.should.askForPath(t)
     end
   end
 
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.dlg:close()
   assertTrue(t.continue)

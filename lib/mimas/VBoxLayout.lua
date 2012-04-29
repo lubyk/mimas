@@ -21,7 +21,6 @@ function lib:addWidget(other, ...)
   end
 end
 
-
 local insertWidget = lib.insertWidget
 function lib:insertWidget(pos, other, ...)
   if other.is_layout then

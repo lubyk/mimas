@@ -68,8 +68,8 @@ function withUser.should.drawPath(t)
   end
 
   t.win:update()
-  t:timeout(function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.win:close()
   assertTrue(t.continue)
