@@ -977,7 +977,7 @@ extern "C" int luaopen_mimas_TabWidget(lua_State *L)
   // register member methods
   luaL_register(L, NULL, TabWidget_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "TabWidget");
+  dub_register(L, "mimas", "TabWidget", "TabWidget");
   // <mt>
   lua_pop(L, 1);
   return 0;

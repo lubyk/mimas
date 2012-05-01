@@ -888,7 +888,7 @@ extern "C" int luaopen_mimas_GroupBox(lua_State *L)
   // register member methods
   luaL_register(L, NULL, GroupBox_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "GroupBox_core");
+  dub_register(L, "mimas", "GroupBox_core", "GroupBox");
   // <mt>
   lua_pop(L, 1);
   return 0;

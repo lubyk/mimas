@@ -167,7 +167,7 @@ extern "C" int luaopen_mimas_Brush(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Brush_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Brush");
+  dub_register(L, "mimas", "Brush", "Brush");
   // <mt>
   lua_pop(L, 1);
   return 0;

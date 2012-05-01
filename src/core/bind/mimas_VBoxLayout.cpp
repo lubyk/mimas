@@ -474,7 +474,7 @@ extern "C" int luaopen_mimas_VBoxLayout(lua_State *L)
   // register member methods
   luaL_register(L, NULL, VBoxLayout_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "VBoxLayout_core");
+  dub_register(L, "mimas", "VBoxLayout_core", "VBoxLayout");
   // <mt>
   lua_pop(L, 1);
   return 0;

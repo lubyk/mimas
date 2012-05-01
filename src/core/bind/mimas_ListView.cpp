@@ -1035,7 +1035,7 @@ extern "C" int luaopen_mimas_ListView(lua_State *L)
   // register member methods
   luaL_register(L, NULL, ListView_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "ListView_core");
+  dub_register(L, "mimas", "ListView_core", "ListView");
   // <mt>
   lua_pop(L, 1);
   return 0;

@@ -913,7 +913,7 @@ extern "C" int luaopen_mimas_Button(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Button_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Button_core");
+  dub_register(L, "mimas", "Button_core", "Button");
   // <mt>
   lua_pop(L, 1);
   return 0;

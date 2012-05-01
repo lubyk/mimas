@@ -972,7 +972,7 @@ extern "C" int luaopen_mimas_MainWindow(lua_State *L)
   // register member methods
   luaL_register(L, NULL, MainWindow_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "MainWindow");
+  dub_register(L, "mimas", "MainWindow", "MainWindow");
   // <mt>
   lua_pop(L, 1);
   return 0;

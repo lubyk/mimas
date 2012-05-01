@@ -348,7 +348,7 @@ extern "C" int luaopen_mimas_Painter(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Painter_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Painter");
+  dub_register(L, "mimas", "Painter", "Painter");
   // <mt>
   lua_pop(L, 1);
   return 0;

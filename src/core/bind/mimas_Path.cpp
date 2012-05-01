@@ -223,7 +223,7 @@ extern "C" int luaopen_mimas_Path(lua_State *L)
   // register member methods
   luaL_register(L, NULL, Path_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "Path");
+  dub_register(L, "mimas", "Path", "Path");
   // <mt>
   lua_pop(L, 1);
   return 0;

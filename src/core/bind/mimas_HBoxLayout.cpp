@@ -457,7 +457,7 @@ extern "C" int luaopen_mimas_HBoxLayout(lua_State *L)
   // register member methods
   luaL_register(L, NULL, HBoxLayout_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "HBoxLayout_core");
+  dub_register(L, "mimas", "HBoxLayout_core", "HBoxLayout");
   // <mt>
   lua_pop(L, 1);
   return 0;

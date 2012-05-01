@@ -905,7 +905,7 @@ extern "C" int luaopen_mimas_MenuBar(lua_State *L)
   // register member methods
   luaL_register(L, NULL, MenuBar_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "MenuBar");
+  dub_register(L, "mimas", "MenuBar", "MenuBar");
   // <mt>
   lua_pop(L, 1);
   return 0;

@@ -112,7 +112,7 @@ extern "C" int luaopen_mimas_FileObserver(lua_State *L)
   // register member methods
   luaL_register(L, NULL, FileObserver_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "FileObserver_core");
+  dub_register(L, "mimas", "FileObserver_core", "FileObserver");
   // <mt>
   lua_pop(L, 1);
   return 0;

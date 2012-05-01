@@ -983,7 +983,7 @@ extern "C" int luaopen_mimas_CheckBox(lua_State *L)
   // register member methods
   luaL_register(L, NULL, CheckBox_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "CheckBox_core");
+  dub_register(L, "mimas", "CheckBox_core", "CheckBox");
   // <mt>
   lua_pop(L, 1);
   return 0;
