@@ -30,14 +30,14 @@ static int SocketNotifier__cast_(lua_State *L) {
 }
 
 /** SocketNotifier::SocketNotifier(int fd, int event_type)
- * include/mimas/SocketNotifier.h:52
+ * include/mimas/SocketNotifier.h:53
  */
 static int SocketNotifier_SocketNotifier(lua_State *L) {
   try {
     int fd = dub_checkint(L, 1);
     int event_type = dub_checkint(L, 2);
     SocketNotifier *retval__ = new SocketNotifier(fd, event_type);
-    dub_pushudata(L, retval__, "mimas.SocketNotifier", true);
+    retval__->pushobject(L, retval__, "mimas.SocketNotifier", true);
     return 1;
   } catch (std::exception &e) {
     lua_pushfstring(L, "SocketNotifier: %s", e.what());
@@ -48,7 +48,7 @@ static int SocketNotifier_SocketNotifier(lua_State *L) {
 }
 
 /** virtual SocketNotifier::~SocketNotifier()
- * include/mimas/SocketNotifier.h:57
+ * include/mimas/SocketNotifier.h:58
  */
 static int SocketNotifier__SocketNotifier(lua_State *L) {
   try {
@@ -68,7 +68,7 @@ static int SocketNotifier__SocketNotifier(lua_State *L) {
 }
 
 /** int SocketNotifier::socket() const
- * include/mimas/SocketNotifier.h:60
+ * include/mimas/SocketNotifier.h:61
  */
 static int SocketNotifier_socket(lua_State *L) {
   try {
@@ -84,7 +84,7 @@ static int SocketNotifier_socket(lua_State *L) {
 }
 
 /** void SocketNotifier::setEnabled(bool enabled)
- * include/mimas/SocketNotifier.h:67
+ * include/mimas/SocketNotifier.h:68
  */
 static int SocketNotifier_setEnabled(lua_State *L) {
   try {

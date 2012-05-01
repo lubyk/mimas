@@ -9,6 +9,7 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.Color')
+local withUser = should:testWithUser()
 
 function makeColors()
   collectgarbage('collect')
@@ -33,7 +34,7 @@ function should.createManyColorsAndGc(t)
 
   collectgarbage('collect')
   local after = collectgarbage('count')
-  if testing_gui then
+  if test.file_count > 0 then
     -- with other tests messing around, we have to be more tolerant
     assertLessThen(before * 1.01, after)
   else
@@ -75,28 +76,26 @@ function Col:click()
   return false
 end
 
-function should.createConstantColors(t)
+function withUser.should.createConstantColors(t)
   t.win = mimas.Window()
   t.win:move(10,10)
   t.win:resize(200,340)
   t.lay = mimas.VBoxLayout(t.win)
+  t.btn = mimas.Button('Push if OK', function()
+    t.continue = true
+    t.win:close()
+  end)
+  t.lay:addWidget(t.btn)
   t.col = {}
   for k, color in pairs(mimas.colors) do
     t.col[k] = Col(k, color)
     t.lay:addWidget(t.col[k])
   end
   t.win:show()
-  function t.win:click()
-    t.continue = true
-  end
   local now = elapsed()
   t:timeout(function()
-    if elapsed() > now + 1500 then
-      app:click(t.win)
-    end
     return t.continue
   end)
   assertTrue(t.continue)
-  t.win:close()
 end
 test.all()

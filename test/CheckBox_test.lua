@@ -11,18 +11,19 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.CheckBox')
+local withUser = should:testWithUser()
 
 function should.connectToCallback(t)
   t.win = mimas.Window()
-  t.win:move(100, 100)
+  t.win:move(10, 10)
   t.win:resize(200,200)
 
-  t.btn = mimas.CheckBox("click me", t.win)
+  t.btn = mimas.CheckBox("btn", t.win)
   local callback = mimas.Callback(function()
     t.continue = true
   end)
 
-  t.btn2 = mimas.CheckBox('ignore me')
+  t.btn2 = mimas.CheckBox('btn2')
   t.btn2:setCheckable(false)
   t.win:addWidget(t.btn2)
   t.btn2:move(40,40)
@@ -39,10 +40,10 @@ end
 
 function should.createWithFunction(t)
   t.win = mimas.Window()
-  t.win:move(200, 200)
+  t.win:move(10, 10)
   t.win:resize(200,200)
   t.lay = mimas.HBoxLayout(t.win)
-  local btn = mimas.CheckBox("click me too", function(b, state)
+  local btn = mimas.CheckBox("btn", function(b, state)
     t.continue = not state
   end)
   btn:setChecked(true)
@@ -53,9 +54,9 @@ function should.createWithFunction(t)
   assertTrue(t.continue)
 end
 
-function should.styleCheckBoxs(t)
+function withUser.should.styleCheckBoxs(t)
   t.win = mimas.Window()
-  t.win:move(100, 400)
+  t.win:move(10, 10)
   t.win:resize(200,200)
   t.lay = mimas.VBoxLayout(t.win)
   t.btn = mimas.Button('Push if OK', function()

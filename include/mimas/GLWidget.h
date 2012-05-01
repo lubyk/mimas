@@ -46,10 +46,9 @@
   //#include <GL/glu.h>
 #endif
 
-#define CHECKERROR(msg) ErrorCheckValue = glGetError();\
-if (ErrorCheckValue != GL_NO_ERROR) { \
-  fprintf(stderr, "%s: %s \n", #msg, gluErrorString(ErrorCheckValue)); \
-  exit(-1); \
+#define CHECKERROR(msg) gl_error = glGetError();\
+if (gl_error != GL_NO_ERROR) { \
+  fprintf(stderr, "%s: %s \n", #msg, gluErrorString(gl_error)); \
 }
   
 /** GLWidget
@@ -89,7 +88,12 @@ public:
 #else
     : QGLWidget(GLSLFormat())
 #endif
-  {
+    , vertext_shader_id_(0)
+    , fragment_shader_id_(0)
+    , program_id_(0)
+    , vao_id_(0)
+    , vbo_id_(0)
+    , color_buffer_id_(0) {
     setAttribute(Qt::WA_DeleteOnClose);
     // get focus on tab and click
     setFocusPolicy(Qt::StrongFocus);
@@ -120,7 +124,6 @@ public:
     if (!glGetString(GL_VERSION)) {
       printf("OpenGL not initialized. Show window before compiling.\n");
     } else {
-      printf("COMPILE...\n");
       createShaders(vertex_shader, fragment_shader);
       createVBO();
     }
@@ -130,16 +133,13 @@ public:
 
 protected:
   virtual void initializeGL() {
-    printf("glewInit\n");     
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (GLEW_OK != err) {
-      fprintf(
-        stderr,
+      throw dub::Exception(
         "glewInit error: %s\n",
         glewGetErrorString(err)
         );
-      exit(EXIT_FAILURE);
     } 
     glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -240,12 +240,12 @@ protected:
   //virtual void paintEvent(QPaintEvent *event);
 private:
   GLuint
-    VertexShaderId,
-    FragmentShaderId,
-    ProgramId,
-    VaoId,
-    VboId,
-    ColorBufferId;
+    vertext_shader_id_,
+    fragment_shader_id_,
+    program_id_,
+    vao_id_,
+    vbo_id_,
+    color_buffer_id_;
    
   // FIXME: Write gl bindings so that we can do all this in Lua.
   void createVBO();

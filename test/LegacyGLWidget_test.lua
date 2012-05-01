@@ -9,7 +9,7 @@
 --]]------------------------------------------------------
 require 'lubyk'
 
-local should = test.Suite('mimas.GLWindow')
+local should = test.Suite('mimas.LegacyGLWidget')
 local withUser = should:testWithUser()
 
 function withUser.should.displayGlWindow(t)
@@ -126,21 +126,21 @@ end
 
 function should.acceptDestroyFromGui(t)
   t.win = mimas.LegacyGLWidget()
-  t.win:move(100, 170)
+  t.win:move(10, 10)
   t.win:resize(50, 50)
   t.win:show()
 
   sleep(200)
   t.win:close()
-  t:timeout(function()
-    return t.win:deleted()
-  end)
+  while not t.win:deleted() do
+    sleep(200)
+  end
   assertTrue(t.win:deleted())
 end
 
 function should.acceptDestroyFromLua()
   local win = mimas.LegacyGLWindow()
-  win:move(100, 240)
+  win:move(10, 10)
   win:resize(50, 50)
   win:show()
   local label = mimas.Label("Hop", win)

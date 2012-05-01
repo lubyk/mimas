@@ -51,7 +51,7 @@ end
 
 function withUser.should.styleButtons(t)
   t.win = mimas.Window()
-  t.win:move(100, 400)
+  t.win:move(10, 10)
   t.win:resize(200,200)
   t.lay = mimas.VBoxLayout(t.win)
   t.btn = mimas.Button('Push if OK')

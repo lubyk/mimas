@@ -51,7 +51,7 @@ function withUser.should.displayTabs(t)
   win:addTab(mars, 'Mars')
   win:addTab(venus, 'Venus')
 
-  win:move(100, 100)
+  win:move(10, 10)
   win:resize(200,200)
 
   win:show()

@@ -42,7 +42,7 @@ end
 
 --=====================================================
 
-function should.centerWidget(t)
+function withUser.should.centerWidget(t)
   t.win = mimas.Window()
   t.win:setStyle 'background:transparent'
   t.lay = mimas.VBoxLayout(t.win)
@@ -56,32 +56,39 @@ function should.centerWidget(t)
     t.continue = true
   end
 
-  t:timeout(500, function()
+  t:timeout(function()
     return t.continue
   end)
   t.win:close()
 end
 
-function should.addWidgetsToWindow(t)
-  -- we use the test env to protect from gc
+function should.showWindow(t)
+  t.win = mimas.Window()
+  t.win:show()
+  sleep(100)
+  t.win:close()
+  assertTrue(true)
+end
+
+function withUser.should.addWidgetsToWindow(t)
   t.win = mimas.Window()
   t.lay = mimas.VBoxLayout(t.win)
   t.wid1 = MyWidget('Hello')
   t.lay:addWidget(t.wid1)
   t.wid2 = MyWidget('Lubyk')
   t.lay:addWidget(t.wid2)
-  t.win:move(100, 100)
+  t.win:move(10, 10)
   t.win:resize(400, 400)
   t.win:show()
 
   function t.win:click()
     t.continue = true
+    t.win:close()
   end
 
-  t:timeout(500, function()
+  t:timeout(function()
     return t.continue
   end)
-  t.win:close()
 end
 
 local function opName(op)
@@ -126,14 +133,12 @@ function should.respondToClick(t)
   t.lay = mimas.VBoxLayout(t.win)
   t.label = mimas.Label('Click on window (not on me, press ESC to close)')
   t.lay:addWidget(t.label)
-  t.win:move(100, 300)
+  t.win:move(10, 10)
   t.win:resize(400, 400)
   t.win:show()
   -- Simulate user click at local pos 10, 10
   app:click(t.win, 10, 10)
-  t:timeout(function()
-    return t.continue
-  end)
+  assertTrue(t.continue)
   t.win:close()
 end
 
@@ -273,21 +278,19 @@ end
 
 function should.acceptDestroyFromGui(t)
   t.win = mimas.Widget()
-  t.win:move(100, 170)
+  t.win:move(10, 10)
   t.win:resize(50, 50)
   t.win:show()
 
   sleep(200)
   t.win:close()
-  t:timeout(function()
-    return t.win:deleted()
-  end)
+  sleep(200)
   assertTrue(t.win:deleted())
 end
 
 function should.acceptDestroyFromLua()
   local win = mimas.Widget()
-  win:move(100, 240)
+  win:move(10, 10)
   win:resize(50, 50)
   win:show()
   local label = mimas.Label("Hop", win)

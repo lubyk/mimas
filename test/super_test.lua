@@ -11,7 +11,8 @@
 require 'lubyk'
 require 'mimas.Window'
 
-local should = test.Suite('mimas.Window')
+local should = test.Suite('mimas.super')
+local withUser = should:testWithUser()
 
 -- FIXME: mimas.Window === metatable &&
 --        use new instead of call ?
@@ -28,10 +29,10 @@ function LogWindow:paint(p, w, h)
   p:fillRect(0, 0, w, h, mimas.Color(self.hue))
 end
 
-function should.displayWindow(t)
+function withUser.should.displayWindow(t)
   t.win = LogWindow(0.7)
   t.layout = mimas.HBoxLayout(t.win)
-  t.win:move(100, 100)
+  t.win:move(10, 10)
   t.win:resize(100, 100)
   t.win:show()
   function t.win:click()
@@ -41,11 +42,11 @@ function should.displayWindow(t)
   t.label = mimas.Label("Super window. Click to close.")
   t.layout:addWidget(t.label)
 
-  t:timeout(500, function(done)
-    return done or t.continue
+  t:timeout(function()
+    return t.continue
   end)
   t.win:close()
-  assertTrue(true)
+  assertTrue(t.continue)
 end
 
 test.all()

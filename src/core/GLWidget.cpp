@@ -27,9 +27,8 @@ const GLchar* VertexShader = {
 };
  
 static bool compileShader(GLuint shader_id, const char *source) {
-  printf("Compile ==============\n%s\n===============\n", source);
-  GLenum ErrorCheckValue = glGetError();
-  //glShaderSource(VertexShaderId, 1, &source, NULL);
+  GLenum gl_error = glGetError();
+  //glShaderSource(vertext_shader_id_, 1, &source, NULL);
   glShaderSource(shader_id, 1, &source, NULL);
   CHECKERROR(glShaderSource);
   glCompileShader(shader_id);
@@ -41,59 +40,50 @@ static bool compileShader(GLuint shader_id, const char *source) {
     //glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &len);
     char buf[2048];
     glGetShaderInfoLog(shader_id, 2084, &len, buf);
-    printf("Compilation error: %s\n", buf);
-    return false;
+    throw dub::Exception("Compilation error: %s\n", buf);
   }
   return true;
 }
 
 void GLWidget::createShaders(const char *vertex_shader, const char *fragment_shader) {
-  GLenum ErrorCheckValue = glGetError();
+  GLenum gl_error = glGetError();
 
-  VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+  vertext_shader_id_ = glCreateShader(GL_VERTEX_SHADER);
   CHECKERROR(glCreateShader);
-  if (!compileShader(VertexShaderId, vertex_shader)) return;
+  if (!compileShader(vertext_shader_id_, vertex_shader)) return;
 
 
-  FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+  fragment_shader_id_ = glCreateShader(GL_FRAGMENT_SHADER);
   CHECKERROR(glCreateShader);
-  if (!compileShader(FragmentShaderId, fragment_shader)) return;
+  if (!compileShader(fragment_shader_id_, fragment_shader)) return;
 
-  ProgramId = glCreateProgram();
+  program_id_ = glCreateProgram();
   CHECKERROR(glCreateProgram);
-  glAttachShader(ProgramId, VertexShaderId);
+  glAttachShader(program_id_, vertext_shader_id_);
   CHECKERROR(glAttachShader);
-  glAttachShader(ProgramId, FragmentShaderId);
+  glAttachShader(program_id_, fragment_shader_id_);
   CHECKERROR(glAttachShader2);
-  glLinkProgram(ProgramId);
+  glLinkProgram(program_id_);
   CHECKERROR(glLinkProgram);
-  glUseProgram(ProgramId);
+  glUseProgram(program_id_);
   CHECKERROR(glUseProgram);
 }
 
 void GLWidget::destroyShaders() {
-  GLenum ErrorCheckValue = glGetError();
-
+  if (program_id_ == 0) return;
+  GLenum gl_error = glGetError();
   glUseProgram(0);
+  glDetachShader(program_id_, vertext_shader_id_);
+  glDetachShader(program_id_, fragment_shader_id_);
+  if (fragment_shader_id_ > 0) glDeleteShader(fragment_shader_id_);
+  if (fragment_shader_id_ > 0) glDeleteShader(vertext_shader_id_);
 
-  glDetachShader(ProgramId, VertexShaderId);
-  glDetachShader(ProgramId, FragmentShaderId);
-
-  glDeleteShader(FragmentShaderId);
-  glDeleteShader(VertexShaderId);
-
-  glDeleteProgram(ProgramId);
-
-  ErrorCheckValue = glGetError();
-  if (ErrorCheckValue != GL_NO_ERROR) {
-    fprintf(stderr, "ERROR: Could not destroy the shaders: %s \n",
-        gluErrorString(ErrorCheckValue)
-    );
-  }
+  glDeleteProgram(program_id_);
+  CHECKERROR(destroyShaders);
 }
 
 void GLWidget::createVBO() {
-  GLenum ErrorCheckValue;
+  GLenum gl_error = glGetError();
 
   GLfloat Vertices[] = {
     -0.8f, -0.8f, 0.0f, 1.0f,
@@ -107,55 +97,44 @@ void GLWidget::createVBO() {
     0.0f, 0.0f, 1.0f, 1.0f
   };
 
-  CHECKERROR(createVBO);
 
-  glGenVertexArrays(1, &VaoId);
-  glBindVertexArray(VaoId);
+  glGenVertexArrays(1, &vao_id_);
+  glBindVertexArray(vao_id_);
 
-  glGenBuffers(1, &VboId);
-  glBindBuffer(GL_ARRAY_BUFFER, VboId);
+  glGenBuffers(1, &vbo_id_);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_id_);
   glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
   glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(0);
 
-  glGenBuffers(1, &ColorBufferId);
-  glBindBuffer(GL_ARRAY_BUFFER, ColorBufferId);
+  glGenBuffers(1, &color_buffer_id_);
+  glBindBuffer(GL_ARRAY_BUFFER, color_buffer_id_);
   glBufferData(GL_ARRAY_BUFFER, sizeof(Colors), Colors, GL_STATIC_DRAW);
   glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(1);
 
-  ErrorCheckValue = glGetError();
-  if (ErrorCheckValue != GL_NO_ERROR)
-  {
-    fprintf(
-        stderr,
-        "ERROR: Could not create a VBO: %s \n",
-        gluErrorString(ErrorCheckValue)
-        );
-
-    exit(-1);
-  }
+  CHECKERROR(createVBO);
 }
 
 void GLWidget::destroyVBO() {
-
-  GLenum ErrorCheckValue = glGetError();
-
-  glDisableVertexAttribArray(1);
-  glDisableVertexAttribArray(0);
+  GLenum gl_error = glGetError();
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-  glDeleteBuffers(1, &ColorBufferId);
-  glDeleteBuffers(1, &VboId);
-
-  glBindVertexArray(0);
-  glDeleteVertexArrays(1, &VaoId);
-
-  ErrorCheckValue = glGetError();
-  if (ErrorCheckValue != GL_NO_ERROR) {
-    fprintf(stderr, "ERROR: Could not destroy the VBO: %s \n",
-      gluErrorString(ErrorCheckValue)
-    );
+  if (color_buffer_id_ > 0) {
+    glDisableVertexAttribArray(1);
+    glDeleteBuffers(1, &color_buffer_id_);
   }
+
+  if (vbo_id_ > 0) {
+    glDisableVertexAttribArray(0);
+    glDeleteBuffers(1, &vbo_id_);
+  }
+
+  if (vao_id_ > 0) {
+    glBindVertexArray(0);
+    glDeleteVertexArrays(1, &vao_id_);
+  }
+
+  CHECKERROR(destroyVBO);
 }

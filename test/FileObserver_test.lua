@@ -38,9 +38,9 @@ function should.observeFiles(t)
   end)
   -- we edit the file
   lk.writeall(filepath, 'World!')
-  t:timeout(function()
-    return t.continue
-  end)
+  while not t.continue do
+    sleep(100)
+  end
   lk.rmFile(filepath)
   win:close()
 end

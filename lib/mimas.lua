@@ -11,6 +11,9 @@ require 'mimas.core'
 
 --=============================================== app
 app = mimas.Application()
+if rawget(_G, 'test') then
+  app:setQuitOnLastWindowClosed(false)
+end
 
 --=============================================== scheduler
 -- First calls to Window creation in mimas should

@@ -17,7 +17,7 @@ end
 
 function withUser.should.callback(t)
   t.win = mimas.Window()
-  t.win:move(100, 120)
+  t.win:move(10, 10)
   t.win:resize(200, 200)
   local data = {
     'lk.Node',

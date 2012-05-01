@@ -11,16 +11,9 @@ require 'lubyk'
 local should = test.Suite('mimas.LineEdit')
 local withUser = should:testWithUser()
 
-local pos = 10
-local function stack(win)
-  win:move(10, pos)
-  win:resize(200, 50)
-  pos = pos + 100
-end
-
 function should.acceptDestroyFromGui()
   local win = mimas.Window()
-  stack(win)
+  win:move(10, 10)
   win:show()
   local edit = mimas.LineEdit("Hop", win)
   thread = lk.Thread(function()
@@ -33,17 +26,17 @@ end
 
 function should.acceptDestroyFromLua(t)
   t.win = mimas.Window()
-  stack(t.win)
+  t.win:move(10, 10)
   t.layout = mimas.HBoxLayout(t.win)
   local edit = mimas.LineEdit("LineEdit destroyed by Lua in 1s")
   t.layout:addWidget(edit)
   t.win:show()
   t.thread = lk.Thread(function()
-    sleep(1000)
+    sleep(100)
     edit = nil
     collectgarbage('collect')
     -- LineEdit destroyed by Lua
-    sleep(1000)
+    sleep(100)
     t.win:close()
     assertTrue(true) -- visual feedback needed..
   end)
@@ -51,7 +44,7 @@ end
 
 function withUser.should.callback(t)
   t.win = mimas.Window()
-  stack(t.win)
+  t.win:move(10, 10)
   t.lb = mimas.LineEdit("Change this to close")
   t.lb2 = mimas.LineEdit("")
   t.lb:selectAll()
@@ -86,7 +79,7 @@ end
 
 function withUser.should.haveKeyboardCallback(t)
   t.win = mimas.Window()
-  stack(t.win)
+  t.win:move(10, 10)
   t.lb = mimas.LineEdit("type up key to close")
   t.lb:selectAll()
   t.lay = mimas.VBoxLayout(t.win)
@@ -109,7 +102,7 @@ end
 
 function withUser.should.haveClickCallback(t)
   t.win = mimas.Window()
-  stack(t.win)
+  t.win:move(10, 10)
   t.lb = mimas.LineEdit("click to close")
   t.lb:selectAll()
   t.lay = mimas.VBoxLayout(t.win)
@@ -125,15 +118,18 @@ function withUser.should.haveClickCallback(t)
   assertTrue(t.continue)
 end
 
-function should.styleLineEdits(t)
+function withUser.should.styleLineEdits(t)
   t.win = mimas.Window()
-  stack(t.win)
+  t.win:move(10, 10)
   t.lb = mimas.LineEdit("LineEdit not in layout", t.win)
   t.lb:move(180, 0)
   t.lb:resize(180, 20)
 
   t.lay = mimas.VBoxLayout(t.win)
-  local lay = t.lay
+  t.btn = mimas.Button('Push if OK', function()
+    t.continue = true
+  end)
+  t.lay:addWidget(t.btn)
   t.lbl1 = mimas.LineEdit("LineEdit in layout")
   t.lay:addWidget(t.lbl1)
 
@@ -147,19 +143,19 @@ function should.styleLineEdits(t)
 
   for _, style_test in ipairs(tests) do
     local lbl = mimas.LineEdit(string.format("setStyle: %s", style_test))
-    lay:addWidget(lbl)
+    t.lay:addWidget(lbl)
     lbl:setStyle(style_test)
     -- avoid GC
     t[style_test] = lbl
   end
 
   t.lbl2 = mimas.LineEdit("setStyle")
-  lay:addWidget(t.lbl2)
+  t.lay:addWidget(t.lbl2)
   t.lbl2:setStyle('color:hsva(0.5,1,1,1)')
 
   t.lbl3 = mimas.LineEdit("name = test_name")
   t.lbl3:setObjectName("test_name")
-  lay:addWidget(t.lbl3)
+  t.lay:addWidget(t.lbl3)
 
   -- visual check
   assertTrue(true)

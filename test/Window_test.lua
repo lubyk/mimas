@@ -11,21 +11,18 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.Window')
+local withUser = should:testWithUser()
 
 function should.displayWindow(t)
   -- direct call to userdata
   t.win = mimas.Window().super
   t.layout = mimas.HBoxLayout(t.win)
-  t.win:move(100, 100)
+  t.win:move(10, 10)
   t.win:show()
   t.label = mimas.Label("Window closes in 200ms")
   t.layout:addWidget(t.label)
-
-  t.thread = lk.Thread(function()
-    sleep(200)
-    t.win:close()
-    assertTrue(true)
-  end)
+  sleep(200)
+  assertTrue(true)
 end
 
 function should.accessUserdataWithSuper(t)
@@ -38,17 +35,19 @@ function should.accessUserdataWithSuper(t)
   t.label = mimas.Label("Super closes in 200ms")
   t.layout:addWidget(t.label)
 
-  t.thread = lk.Thread(function()
-    sleep(200)
-    t.win:close()
-    assertTrue(true)
-  end)
+  sleep(200)
+  t.win:close()
+  assertTrue(true)
 end
 
-function should.useCustomPaint(t)
+function withUser.should.useCustomPaint(t)
   -- we use the test env to protect from gc
   t.win = mimas.Window()
-  t.win:move(300, 100)
+  t.btn = mimas.Button('Push if OK', function()
+    t.continue = true
+  end)
+  t.win:addWidget(t.btn, 10, 10)
+  t.win:move(10, 10)
   t.win:resize(100, 100)
   function t.win:paint(p)
     for i=0,40,10 do
@@ -57,16 +56,15 @@ function should.useCustomPaint(t)
   end
   t.win:show()
 
-  t.thread = lk.Thread(function()
-    sleep(400)
-    t.win:close()
-    assertTrue(true)
+  t:timeout(function()
+    return t.continue
   end)
+  assertTrue(t.continue)
 end
 
 function should.setResizedCallback(t)
   t.win = mimas.Window()
-  t.win:move(100, 170)
+  t.win:move(10, 10)
   t.ok = false
   function t.win:resized(w, h)
     assertEqual(10, w)
@@ -76,35 +74,31 @@ function should.setResizedCallback(t)
   t.win:resize(10, 20)
   t.win:show()
 
-  t.thread = lk.Thread(function()
+  sleep(200)
+  t.win:close()
+  while not t.ok do
     sleep(200)
-    t.win:close()
-    while not t.ok do
-      sleep(200)
-    end
-  end)
+  end
+  assertTrue(t.ok)
 end
 
 function should.acceptDestroyFromGui(t)
   t.win = mimas.Window()
-  t.win:move(100, 170)
+  t.win:move(10, 10)
   t.win:resize(50, 50)
   t.win:show()
 
-  t.thread = lk.Thread(function()
+  sleep(200)
+  t.win:close()
+  while not t.win:deleted() do
     sleep(200)
-    t.win:close()
-    while not t.win:deleted() do
-      sleep(200)
-    end
-    -- should be deleted by GUI
-    assertMatch('NULL', t.win:__tostring())
-  end)
+  end
+  assertTrue(t.win:deleted())
 end
 
 function should.acceptDestroyFromLua()
   local win = mimas.Window()
-  win:move(100, 240)
+  win:move(10, 10)
   win:resize(50, 50)
   win:show()
   local label = mimas.Label("Hop", win)
@@ -122,4 +116,5 @@ function should.computeTextSize()
   local win = mimas.Window()
   assertEqual(78, win:textSize("Hello Lubyk!"))
 end
+
 test.all()

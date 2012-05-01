@@ -9,9 +9,30 @@
 require 'lubyk'
 
 local should = test.Suite('mimas.GroupBox')
+local withUser = should:testWithUser()
 
 function should.autoload()
   assertTrue(mimas.GroupBox)
+end
+
+function withUser.should.displayGroupBox(t)
+  t.win = mimas.Window()
+  t.box = mimas.GroupBox('Hello')
+  t.win:addWidget(t.box)
+  t.box:move(10,10)
+  t.lay = mimas.VBoxLayout(t.box)
+  t.btn = mimas.Button('Push if OK')
+  t.lay:addWidget(t.btn)
+  t.win:show()
+  function t.btn:click(x, y)
+    t.continue = true
+    t.win:close()
+  end
+
+  t:timeout(function()
+    return t.continue
+  end)
+  assertTrue(t.continue)
 end
 
 function should.displayGroupBox(t)
@@ -22,18 +43,8 @@ function should.displayGroupBox(t)
   t.btn = mimas.Button('click if ok')
   t.lay:addWidget(t.btn)
   t.win:show()
-  function t.btn:click(x, y)
-    t.continue = true
-  end
-
-  t:timeout(function(elapsed)
-    if elapsed > 2000 then
-      app:click(t.btn)
-    end
-    return t.continue
-  end)
   t.win:close()
-  assertTrue(t.continue)
+  assertTrue(true)
 end
-test.all()
 
+test.all()

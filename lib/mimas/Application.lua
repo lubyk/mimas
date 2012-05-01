@@ -26,7 +26,7 @@ function lib.new(type)
     /* FIXME: QWidget is too broad... we need to fix QPushButton and Co...
     */
     Widget, QLabel, ListView, TableView, TabWidget, QTabBar::tab:selected,
-    Menu, CheckBox {
+    Menu, CheckBox, GroupBox {
       background:#151515;
       color:#B4B4B4;
     }
@@ -73,6 +73,15 @@ function lib.new(type)
     }
     GroupBox {
       background: #333;
+      border: 1px solid #777;
+      border-radius: 5px;
+      margin-top:9px;
+    }
+    QGroupBox::title {
+      subcontrol-origin: margin;
+      subcontrol-position: top left;
+      position:relative;
+      left:6px;
     }
     LineEdit {
       background:#333;

@@ -13,20 +13,23 @@ local data = {'György', 'John', 'Marina', 'Damian'}
 
 function should.displayList(t)
   t.view = mimas.ListView()
+  t.view:move(10,10)
 
   function t.view:rowCount()
     return #data
   end
 
   function t.view:data(row_i)
+    t.continue = true
     return data[row_i]
   end
 
   t.view:show()
-  t:timeout(500, function()
-    return t.continue
-  end)
-  assertTrue(true)
+  while not t.continue do
+    sleep(200)
+  end
+  assertTrue(t.continue)
+  t.view:close()
 end
 
 function withUser.should.reloadOnClick(t)
@@ -50,7 +53,7 @@ function withUser.should.reloadOnClick(t)
     t.continue = true
   end
 
-  t.btn = mimas.Button('click to change')
+  t.btn = mimas.Button('Click to change')
   t.lay:addWidget(t.btn)
   function t.btn:click()
     t.data = {'cat', 'select me', 'mouse'}
@@ -70,7 +73,7 @@ function should.accessDataSource(t)
   assertType('table', t.view.ds)
 end
 
-function should.respondToClick(t)
+function withUser.should.respondToClick(t)
   t.view = mimas.ListView()
   t.view:move(10,10)
 
@@ -79,12 +82,17 @@ function should.respondToClick(t)
   end
 
   function t.view:data(row_i)
-    return data[row_i]
+    if row_i == 2 then
+      return 'Click on me'
+    else
+      return data[row_i]
+    end
   end
 
   function t.view:click(x, y)
     local i, j = t.view:indexAt(x, y)
     assertEqual(2, i)
+    t.continue = true
   end
 
   function t.view:mouse(x, y)
@@ -92,15 +100,16 @@ function should.respondToClick(t)
   end
 
   t.view:show()
-  t.thread = lk.Thread(function()
-    sleep(200000)
-    t.view:close()
-    assertTrue(true)
+  t:timeout(function()
+    return t.continue
   end)
+  assertTrue(t.continue)
+  t.view:close()
 end
 
-function should.useDataSource(t)
+function withUser.should.useDataSource(t)
   t.view = mimas.ListView()
+  t.view:move(10, 10)
   t.data = mimas.DataSource()
 
   function t.data:rowCount()
@@ -108,16 +117,26 @@ function should.useDataSource(t)
   end
 
   function t.data:data(row)
-    return data[row]
+    if row == 2 then
+      return 'Click on me (data)'
+    else
+      return data[row]
+    end
   end
 
   t.view:setModel(t.data)
 
   function t.view:select(row)
     assertTrue(2, row)
-    t.view:close()
+    t.continue = true
   end
+
   t.view:show()
+  t:timeout(function()
+    return t.continue
+  end)
+  assertTrue(t.continue)
+  t.view:close()
 end
 
 test.all()

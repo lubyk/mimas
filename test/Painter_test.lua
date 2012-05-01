@@ -20,7 +20,7 @@ end
 function withUser.should.paintPath(t)
   -- we use the test env to protect from gc
   t.win = mimas.Window()
-  t.win:move(300, 300)
+  t.win:move(10, 10)
   t.win:resize(150, 100)
   function t.win:paint(p, w, h)
     local box_padding = 5
@@ -56,7 +56,7 @@ end
 function should.drawRoundedRect(t)
   -- we use the test env to protect from gc
   t.win = mimas.Window()
-  t.win:move(300, 450)
+  t.win:move(10, 10)
   t.win:resize(100, 100)
   function t.win:paint(p, w, h)
     local box_padding = 5
@@ -83,7 +83,7 @@ end
 function should.drawRect(t)
   -- we use the test env to protect from gc
   t.win = mimas.Window()
-  t.win:move(300, 600)
+  t.win:move(10, 10)
   t.win:resize(100, 100)
   function t.win:paint(p, w, h)
     local box_padding = 5

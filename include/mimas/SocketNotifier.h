@@ -38,6 +38,7 @@
  * file descriptor and a single event (read or write).
  *
  * @dub register: SocketNotifier_core
+ *      push: pushobject
  *      super: QObject
  */
 class SocketNotifier : public QSocketNotifier, public dub::Thread {

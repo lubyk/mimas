@@ -29,7 +29,7 @@ function withUSer.should.displayWidgets(t)
   lay:addWidget(btn1)
   lay:addWidget(btn2)
 
-  win:move(100, 100)
+  win:move(10, 10)
   win:resize(100,100)
   local callback = mimas.Callback(function()
     t.continue = true
@@ -61,7 +61,7 @@ function withUSer.should.changeAlignment(t)
   lay:addWidget(btn1, 0, mimas.AlignLeft)
   lay:addWidget(btn2, 0, mimas.AlignLeft)
 
-  win:move(100, 100)
+  win:move(10, 10)
   win:resize(300,100)
   local callback = mimas.Callback(function()
     t.continue = true
@@ -89,7 +89,7 @@ function withUSer.should.nestLayouts(t)
   sub:addWidget(btn1)
   sub:addWidget(btn2)
 
-  win:move(100, 100)
+  win:move(10, 10)
   win:resize(100,100)
   local callback = mimas.Callback(function()
     t.continue = true

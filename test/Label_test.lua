@@ -34,11 +34,11 @@ function should.acceptDestroyFromLua(t)
   t.layout:addWidget(label)
   t.win:show()
   t.thread = lk.Thread(function()
-    sleep(1000)
+    sleep(100)
     label = nil
     collectgarbage('collect')
     -- Label destroyed by Lua
-    sleep(1000)
+    sleep(100)
     assertTrue(t.win:close()) -- visual feedback needed..
   end)
 end
@@ -52,7 +52,7 @@ end
 
 function withUser.should.styleLabels(t)
   t.win = mimas.Window()
-  t.win:move(100, 120)
+  t.win:move(10, 10)
   t.lb = mimas.Label("Label not in layout", t.win)
   t.lb:move(180, 0)
   t.lb:resize(180, 20)

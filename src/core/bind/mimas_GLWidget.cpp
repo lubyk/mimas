@@ -35,7 +35,7 @@ static int GLWidget__cast_(lua_State *L) {
 }
 
 /** GLWidget::GLWidget()
- * include/mimas/GLWidget.h:92
+ * include/mimas/GLWidget.h:96
  */
 static int GLWidget_GLWidget(lua_State *L) {
   try {
@@ -51,7 +51,7 @@ static int GLWidget_GLWidget(lua_State *L) {
 }
 
 /** GLWidget::~GLWidget()
- * include/mimas/GLWidget.h:98
+ * include/mimas/GLWidget.h:102
  */
 static int GLWidget__GLWidget(lua_State *L) {
   try {
@@ -71,7 +71,7 @@ static int GLWidget__GLWidget(lua_State *L) {
 }
 
 /** void GLWidget::update()
- * include/mimas/GLWidget.h:105
+ * include/mimas/GLWidget.h:109
  */
 static int GLWidget_update(lua_State *L) {
   try {
@@ -87,7 +87,7 @@ static int GLWidget_update(lua_State *L) {
 }
 
 /** LuaStackSize GLWidget::openGLVersion(lua_State *L)
- * include/mimas/GLWidget.h:109
+ * include/mimas/GLWidget.h:113
  */
 static int GLWidget_openGLVersion(lua_State *L) {
   try {
@@ -102,7 +102,7 @@ static int GLWidget_openGLVersion(lua_State *L) {
 }
 
 /** bool GLWidget::compile(const char *vertex_shader, const char *fragment_shader)
- * include/mimas/GLWidget.h:115
+ * include/mimas/GLWidget.h:119
  */
 static int GLWidget_compile(lua_State *L) {
   try {

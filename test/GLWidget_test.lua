@@ -8,7 +8,7 @@
 --]]------------------------------------------------------
 require 'lubyk'
 
-local should = test.Suite('mimas.GLWindow')
+local should = test.Suite('mimas.GLWidget')
 local withUser = should:testWithUser()
 
 function should.autoload()
@@ -22,9 +22,46 @@ function should.createGl3Context()
   assertMatch('3.2', gl_version)
 end
 
-function should.displayGlWindow(t)
+function should.compile(t)
   t.win = mimas.GLWindow()
-  t.win:move(300,300)
+  t.win:move(10,10)
+  t.win:resize(400,400)
+  t.win:show()
+
+  assertTrue(t.win:compile(
+-- Vertex shader
+[=[
+#version 150
+layout(location=0) in vec4 in_Position;
+layout(location=1) in vec4 in_Color;
+out vec4 ex_Color;
+
+void main(void)
+{
+  gl_Position = in_Position;
+  ex_Color = in_Color;
+}
+]=],
+
+-- Fragment shader
+[=[
+#version 150
+ 
+in vec4 ex_Color;
+out vec4 out_Color;
+ 
+void main(void)
+{
+  out_Color = ex_Color;
+}
+]=]
+  ))
+  t.win:close()
+end     
+
+function withUser.should.displayGlWindow(t)
+  t.win = mimas.GLWindow()
+  t.win:move(10,10)
   t.win:resize(400,400)
   t.win:show()
 
@@ -56,24 +93,28 @@ void main(void)
 }
 ]=]
   )
-  t:timeout(500, function()
+  function t.win:click()
+    t.continue = true
+  end
+
+  t:timeout(function()
     return t.continue
   end)
   t.win:hide()
-  assertTrue(true)
+  assertTrue(t.continue)
 end
 
 function should.acceptDestroyFromGui(t)
   t.win = mimas.GLWidget()
-  t.win:move(100, 170)
+  t.win:move(10, 10)
   t.win:resize(50, 50)
   t.win:show()
 
   sleep(200)
   t.win:close()
-  t:timeout(function()
-    return t.win:deleted()
-  end)
+  while not t.win:deleted() do
+    sleep(200)
+  end
   assertTrue(t.win:deleted())
 end
 
@@ -94,4 +135,3 @@ function should.acceptDestroyFromLua()
 end
 
 test.all()
-
