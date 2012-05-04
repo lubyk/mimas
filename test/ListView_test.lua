@@ -9,7 +9,13 @@
 require 'lubyk'
 local should = test.Suite('mimas.ListView')
 local withUser = should:testWithUser()
-local data = {'György', 'John', 'Marina', 'Damian'}
+local data = {
+  'György', 'John', 'Marina', 'Damian',
+  'György', 'John', 'Marina', 'Damian',
+  'György', 'John', 'Marina', 'Damian',
+  'György', 'John', 'Marina', 'Damian',
+
+}
 
 function should.displayList(t)
   t.view = mimas.ListView()

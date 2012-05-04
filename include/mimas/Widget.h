@@ -52,6 +52,7 @@ class Widget : public QWidget, public dub::Thread {
   Q_OBJECT
   Q_PROPERTY(QString class READ cssClass)
   QString css_class_;
+  QSize   size_hint_;
 
 public:
   Widget(int window_flags)
@@ -79,6 +80,26 @@ public:
   void setStyle(const char *text) {
     setStyleSheet(QString("Widget { %2 }").arg(text));
   }
+  
+  // <self> w h
+  void setSizeHint(lua_State *L) {
+    if (lua_gettop(L) >= 3) {
+      int w = dub_checkint(L, 2);
+      int h = dub_checkint(L, 3);
+      size_hint_ = QSize(w, h);
+    } else {
+      // Invalidate sizeHint = use default behavior.
+      size_hint_ = QSize();
+    }
+    updateGeometry();
+  }
+
+  LuaStackSize sizeHint(lua_State *L) {
+    QSize sz(sizeHint());
+    lua_pushnumber(L, sz.width());
+    lua_pushnumber(L, sz.height());
+    return 2;
+  }
 
   // ============================================================ Dialog
   LuaStackSize getOpenFileName(const char *caption,
@@ -105,6 +126,9 @@ protected:
 
   virtual void paintEvent(QPaintEvent *event);
 
+  virtual QSize sizeHint() const {
+    return size_hint_;
+  }
   //--=============================================== COMMON CALLBACKS [
   virtual void closeEvent(QCloseEvent *event) {
     Widget::closed(this, event);

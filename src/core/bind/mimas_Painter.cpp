@@ -127,17 +127,18 @@ static int Painter_setBrush(lua_State *L) {
       return 0;
     } else {
       int type__ = lua_type(L, 2);
+      void **ptr2__;
       if (type__ == LUA_TNUMBER) {
         float h = dub_checknumber(L, 2);
         self->setBrush(h);
         return 0;
-      } else if (dub_issdata(L, 2, "Brush", type__)) {
-        Brush *brush = *((Brush **)dub_checksdata(L, 2, "mimas.Brush"));
-        self->setBrush(*brush);
+      } else if ( (ptr2__ = dub_issdata(L, 2, "mimas.Color", type__)) ) {
+        Color *color = *((Color **)ptr2__);
+        self->setBrush(*color);
         return 0;
       } else {
-        Color *color = *((Color **)dub_checksdata(L, 2, "mimas.Color"));
-        self->setBrush(*color);
+        Brush *brush = *((Brush **)dub_checksdata(L, 2, "mimas.Brush"));
+        self->setBrush(*brush);
         return 0;
       }
     }

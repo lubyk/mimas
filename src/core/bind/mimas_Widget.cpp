@@ -35,7 +35,7 @@ static int Widget__cast_(lua_State *L) {
 }
 
 /** Widget::Widget(int window_flags)
- * include/mimas/Widget.h:59
+ * include/mimas/Widget.h:60
  */
 static int Widget_Widget(lua_State *L) {
   try {
@@ -73,7 +73,7 @@ static int Widget_Widget(lua_State *L) {
 }
 
 /** Widget::~Widget()
- * include/mimas/Widget.h:68
+ * include/mimas/Widget.h:69
  */
 static int Widget__Widget(lua_State *L) {
   try {
@@ -93,7 +93,7 @@ static int Widget__Widget(lua_State *L) {
 }
 
 /** QString Widget::cssClass() const
- * include/mimas/Widget.h:70
+ * include/mimas/Widget.h:71
  */
 static int Widget_cssClass(lua_State *L) {
   try {
@@ -110,7 +110,7 @@ static int Widget_cssClass(lua_State *L) {
 }
 
 /** void Widget::setCssClass(const char *css_class)
- * include/mimas/Widget.h:74
+ * include/mimas/Widget.h:75
  */
 static int Widget_setCssClass(lua_State *L) {
   try {
@@ -127,7 +127,7 @@ static int Widget_setCssClass(lua_State *L) {
 }
 
 /** void Widget::setStyle(const char *text)
- * include/mimas/Widget.h:79
+ * include/mimas/Widget.h:80
  */
 static int Widget_setStyle(lua_State *L) {
   try {
@@ -143,8 +143,39 @@ static int Widget_setStyle(lua_State *L) {
   return dub_error(L);
 }
 
+/** void Widget::setSizeHint(lua_State *L)
+ * include/mimas/Widget.h:85
+ */
+static int Widget_setSizeHint(lua_State *L) {
+  try {
+    Widget *self = *((Widget **)dub_checksdata(L, 1, "mimas.Widget"));
+    self->setSizeHint(L);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setSizeHint: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setSizeHint: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** LuaStackSize Widget::sizeHint(lua_State *L)
+ * include/mimas/Widget.h:97
+ */
+static int Widget_sizeHint(lua_State *L) {
+  try {
+    Widget *self = *((Widget **)dub_checksdata(L, 1, "mimas.Widget"));
+    return self->sizeHint(L);
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "sizeHint: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "sizeHint: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 /** LuaStackSize Widget::getOpenFileName(const char *caption, const char *base_dir, const char *filter, int options, lua_State *L)
- * include/mimas/Widget.h:88
+ * include/mimas/Widget.h:109
  */
 static int Widget_getOpenFileName(lua_State *L) {
   try {
@@ -163,7 +194,7 @@ static int Widget_getOpenFileName(lua_State *L) {
 }
 
 /** LuaStackSize Widget::getExistingDirectory(const char *caption, const char *base_dir, int options, lua_State *L)
- * include/mimas/Widget.h:92
+ * include/mimas/Widget.h:113
  */
 static int Widget_getExistingDirectory(lua_State *L) {
   try {
@@ -684,7 +715,7 @@ static int Widget_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:61
+ * bind/QWidget.h:58
  */
 static int Widget_setSizePolicy(lua_State *L) {
   try {
@@ -703,7 +734,7 @@ static int Widget_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:63
+ * bind/QWidget.h:60
  */
 static int Widget_showFullScreen(lua_State *L) {
   try {
@@ -730,7 +761,7 @@ static int Widget_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:67
+ * bind/QWidget.h:64
  */
 static int Widget_swapFullScreen(lua_State *L) {
   try {
@@ -750,7 +781,7 @@ static int Widget_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:71
+ * bind/QWidget.h:68
  */
 static int Widget_globalPosition(lua_State *L) {
   try {
@@ -768,7 +799,7 @@ static int Widget_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:76
+ * bind/QWidget.h:73
  */
 static int Widget_position(lua_State *L) {
   try {
@@ -785,7 +816,7 @@ static int Widget_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:80
+ * bind/QWidget.h:77
  */
 static int Widget_globalMove(lua_State *L) {
   try {
@@ -913,6 +944,8 @@ static const struct luaL_Reg Widget_member_methods[] = {
   { "cssClass"     , Widget_cssClass      },
   { "setCssClass"  , Widget_setCssClass   },
   { "setStyle"     , Widget_setStyle      },
+  { "setSizeHint"  , Widget_setSizeHint   },
+  { "sizeHint"     , Widget_sizeHint      },
   { "getOpenFileName", Widget_getOpenFileName },
   { "getExistingDirectory", Widget_getExistingDirectory },
   { "move"         , Widget_move          },

@@ -40,7 +40,7 @@ static int MainWindow__cast_(lua_State *L) {
 }
 
 /** MainWindow::MainWindow()
- * include/mimas/MainWindow.h:53
+ * include/mimas/MainWindow.h:54
  */
 static int MainWindow_MainWindow(lua_State *L) {
   try {
@@ -56,7 +56,7 @@ static int MainWindow_MainWindow(lua_State *L) {
 }
 
 /** MainWindow::~MainWindow()
- * include/mimas/MainWindow.h:57
+ * include/mimas/MainWindow.h:58
  */
 static int MainWindow__MainWindow(lua_State *L) {
   try {
@@ -76,7 +76,7 @@ static int MainWindow__MainWindow(lua_State *L) {
 }
 
 /** void MainWindow::testMenus(bool inplace, lua_State *L)
- * include/mimas/MainWindow.h:60
+ * include/mimas/MainWindow.h:61
  */
 static int MainWindow_testMenus(lua_State *L) {
   try {
@@ -93,7 +93,7 @@ static int MainWindow_testMenus(lua_State *L) {
 }
 
 /** LuaStackSize MainWindow::getOpenFileName(const char *caption, const char *base_dir, const char *filter, int options, lua_State *L)
- * include/mimas/MainWindow.h:67
+ * include/mimas/MainWindow.h:68
  */
 static int MainWindow_getOpenFileName(lua_State *L) {
   try {
@@ -112,7 +112,7 @@ static int MainWindow_getOpenFileName(lua_State *L) {
 }
 
 /** LuaStackSize MainWindow::getExistingDirectory(const char *caption, const char *base_dir, int options, lua_State *L)
- * include/mimas/MainWindow.h:72
+ * include/mimas/MainWindow.h:73
  */
 static int MainWindow_getExistingDirectory(lua_State *L) {
   try {
@@ -684,7 +684,7 @@ static int MainWindow_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:61
+ * bind/QWidget.h:58
  */
 static int MainWindow_setSizePolicy(lua_State *L) {
   try {
@@ -703,7 +703,7 @@ static int MainWindow_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:63
+ * bind/QWidget.h:60
  */
 static int MainWindow_showFullScreen(lua_State *L) {
   try {
@@ -730,7 +730,7 @@ static int MainWindow_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:67
+ * bind/QWidget.h:64
  */
 static int MainWindow_swapFullScreen(lua_State *L) {
   try {
@@ -750,7 +750,7 @@ static int MainWindow_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:71
+ * bind/QWidget.h:68
  */
 static int MainWindow_globalPosition(lua_State *L) {
   try {
@@ -768,7 +768,7 @@ static int MainWindow_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:76
+ * bind/QWidget.h:73
  */
 static int MainWindow_position(lua_State *L) {
   try {
@@ -785,7 +785,7 @@ static int MainWindow_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:80
+ * bind/QWidget.h:77
  */
 static int MainWindow_globalMove(lua_State *L) {
   try {
@@ -972,7 +972,7 @@ extern "C" int luaopen_mimas_MainWindow(lua_State *L)
   // register member methods
   luaL_register(L, NULL, MainWindow_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "MainWindow", "MainWindow");
+  dub_register(L, "mimas", "MainWindow_core", "MainWindow");
   // <mt>
   lua_pop(L, 1);
   return 0;

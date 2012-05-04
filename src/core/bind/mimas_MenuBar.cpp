@@ -40,7 +40,7 @@ static int MenuBar__cast_(lua_State *L) {
 }
 
 /** MenuBar::MenuBar(QWidget *parent=0)
- * include/mimas/MenuBar.h:48
+ * include/mimas/MenuBar.h:49
  */
 static int MenuBar_MenuBar(lua_State *L) {
   try {
@@ -64,7 +64,7 @@ static int MenuBar_MenuBar(lua_State *L) {
 }
 
 /** MenuBar::~MenuBar()
- * include/mimas/MenuBar.h:51
+ * include/mimas/MenuBar.h:52
  */
 static int MenuBar__MenuBar(lua_State *L) {
   try {
@@ -621,7 +621,7 @@ static int MenuBar_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:61
+ * bind/QWidget.h:58
  */
 static int MenuBar_setSizePolicy(lua_State *L) {
   try {
@@ -640,7 +640,7 @@ static int MenuBar_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:63
+ * bind/QWidget.h:60
  */
 static int MenuBar_showFullScreen(lua_State *L) {
   try {
@@ -667,7 +667,7 @@ static int MenuBar_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:67
+ * bind/QWidget.h:64
  */
 static int MenuBar_swapFullScreen(lua_State *L) {
   try {
@@ -687,7 +687,7 @@ static int MenuBar_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:71
+ * bind/QWidget.h:68
  */
 static int MenuBar_globalPosition(lua_State *L) {
   try {
@@ -705,7 +705,7 @@ static int MenuBar_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:76
+ * bind/QWidget.h:73
  */
 static int MenuBar_position(lua_State *L) {
   try {
@@ -722,7 +722,7 @@ static int MenuBar_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:80
+ * bind/QWidget.h:77
  */
 static int MenuBar_globalMove(lua_State *L) {
   try {
@@ -905,7 +905,7 @@ extern "C" int luaopen_mimas_MenuBar(lua_State *L)
   // register member methods
   luaL_register(L, NULL, MenuBar_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "MenuBar", "MenuBar");
+  dub_register(L, "mimas", "MenuBar_core", "MenuBar");
   // <mt>
   lua_pop(L, 1);
   return 0;

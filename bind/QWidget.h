@@ -52,9 +52,6 @@ class QWidget : public QObject {
   /** Get size of text with current widget font.
    */
   void textSize(const char *text);
-  
-  // void setCssClass(const char *css_class);
-  // void setSizeHint(int w, int h);
 
   /** Control how the widget behaves in a layout related to it's sizeHint().
    */

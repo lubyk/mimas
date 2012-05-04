@@ -107,7 +107,7 @@ local function makeWidget(main, parent, def)
         else
           local base
           if path then
-            base = lk.directory(path)
+            base = lk.pathDir(path)
           end
           path = main:getOpenFileName(def.message or 'Select lua script', base)
         end

@@ -8,21 +8,20 @@
   menu bar (MainWindow::setMenuBar).
 
 --]]------------------------------------------------------
-local constr  = mimas_core.MenuBar
-local mt      = mimas_core.MenuBar_
-mimas.MenuBar_ = mt
-mimas.MenuBar    = constr
+local lib     = mimas.MenuBar_core
+mimas.MenuBar = lib
 
-function mimas.MenuBar(win)
-  local self = constr()
+local new = lib.new
+function lib.new(win)
+  local self = new()
   if win then
     win:setMenuBar(self)
   end
   return self
 end
 
-local addMenu = mt.addMenu
-function mt:addMenu(title)
+local addMenu = lib.addMenu
+function lib:addMenu(title)
   local menu
   if type(title) == 'table' then
     -- we suppose we have a menu

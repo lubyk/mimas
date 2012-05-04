@@ -34,10 +34,6 @@ lua:
       lua_pushnumber(L, self->fontMetrics().width(text));
       lua_pushnumber(L, self->fontMetrics().height());
       return 2;
-                                
-#   setSizeHint: |
-#     self->size_hint_ = QSize(w, h);
-#     self->updateGeometry();
 
     setSizePolicy: |
       self->setSizePolicy((QSizePolicy::Policy)horizontal, (QSizePolicy::Policy)vertical);

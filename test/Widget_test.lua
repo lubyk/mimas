@@ -145,7 +145,7 @@ end
 --[[
 function withUser.should.openFileDialog(t)
   local path = lk.scriptPath()
-  local basedir, filename = lk.directory(path)
+  local basedir, filename = lk.pathDir(path)
   t.win = mimas.Window()
   t.win:show()
   assertMatch(path..'$', t.win:getOpenFileName(string.format('Select "%s"', filename), basedir, 'Lua files (*.lua)'))
@@ -153,8 +153,8 @@ function withUser.should.openFileDialog(t)
 end
 
 function withUser.should.getExistingDirectory(t)
-  local path = lk.directory(lk.scriptPath())
-  local basedir, dirname = lk.directory(path)
+  local path = lk.pathDir(lk.scriptPath())
+  local basedir, dirname = lk.pathDir(path)
   t.win = mimas.Window()
   t.win:show()
   assertMatch(path..'$', t.win:getExistingDirectory(string.format('Select "%s"', dirname), basedir))

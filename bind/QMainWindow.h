@@ -1,5 +1,5 @@
 /** This is a dummy class to create bindings for objects inheriting from Qt's
- * QMenu.
+ * QMainWindow.
  *
  * @see QWidget
  * @dub super: QWidget

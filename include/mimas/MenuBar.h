@@ -40,6 +40,7 @@
  * @see Menu
  * @see QMenuBar
  * @dub push: pushobject
+ *      register: MenuBar_core
  */
 class MenuBar : public QMenuBar, public dub::Thread {
   Q_OBJECT

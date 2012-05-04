@@ -46,6 +46,7 @@ class Painter;
  *
  * @see QMainWindow
  * @dub push: pushobject
+ *      register: MainWindow_core
  */
 class MainWindow : public QMainWindow, public dub::Thread {
   Q_OBJECT

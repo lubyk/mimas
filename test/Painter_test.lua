@@ -80,6 +80,26 @@ function should.drawRoundedRect(t)
   end)
 end
 
+function should.setBrush(t)
+  t.win = mimas.Window()
+  t.win:move(10,10)
+  t.win:resize(100,100)
+  function t.win:paint(p, w, h)
+    assertPass(function()
+      p:setBrush(mimas.NoBrush)
+    end)
+    assertPass(function()
+      p:setBrush(mimas.colors.Red)
+    end)
+    t.continue = true
+  end
+  t.win:show()
+  while not t.continue do
+    sleep(100)
+  end
+  t.win:close()
+end
+
 function should.drawRect(t)
   -- we use the test env to protect from gc
   t.win = mimas.Window()

@@ -25,7 +25,7 @@ function lib.new(type)
   app:setStyleSheet [[
     /* FIXME: QWidget is too broad... we need to fix QPushButton and Co...
     */
-    Widget, QLabel, ListView, TableView, TabWidget, QTabBar::tab:selected,
+    Widget, MainWindow, Label, ListView, TableView, TabWidget, QTabBar::tab:selected,
     Menu, CheckBox, GroupBox {
       background:#151515;
       color:#B4B4B4;

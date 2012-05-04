@@ -6,72 +6,52 @@
   ...
 
 --]]------------------------------------------------------
-local mt          = mimas_core.MainWindow_
-mimas.MainWindow_ = mt
+local lib = mimas.MainWindow_core
+mimas.MainWindow = lib
 
-local constr  = mimas_core.MainWindow
-function mimas.MainWindow(...)
-  return mimas.bootstrap('MainWindow', constr, ...)
-end
-
-local addWidget = mt.addWidget
-function mt:addWidget(other, ...)
-  addWidget(self, other:widget(), ...)
-end
-
-local setParent = mt.setParent
-function mt:setParent(other, ...)
-  setParent(self, other:widget(), ...)
-end
-
-local setCentralWidget = mt.setCentralWidget
-function mt:setCentralWidget(other, ...)
-  setCentralWidget(self, other:widget(), ...)
-end
-
-local addLayout = mt.addLayout
-function mt:addLayout(other)
-  addLayout(self, other:layout())
+local new = lib.new
+function lib.new(...)
+  return mimas.bootstrap(lib, new, ...)
 end
 
 -- default keyboard action
 -- TODO: add CMD+W
-function mt:keyboard(key, on)
+function lib:keyboard(key, on)
   if on then
-    if key == mimas.ESC then
+    if key == mimas.Key_Escape then
       -- ESC
       self:close()
-    elseif key == mimas.Space then
+    elseif key == mimas.Key_Space then
       self:swapFullScreen()
     end
   end
 end
 
-local close  = mt.close
-function mt:close()
-  -- close is like delete: ensure it only runs in GUI thread
-  if self:deleted() then
-    return false
-  else
-    close(self)
-    return true
-  end
-end
+--local close  = lib.close
+--function lib:close()
+--  -- close is like delete: ensure it only runs in GUI thread
+--  if self:deleted() then
+--    return false
+--  else
+--    close(self)
+--    return true
+--  end
+--end
 
-function mt:center()
+function lib:center()
   local w, h = app:screenSize()
   local sw, sh = self:size()
   self:move((w - sw) / 2, (h - sh) / 2)
 end
 
-local getOpenFileName = mt.getOpenFileName
+local getOpenFileName = lib.getOpenFileName
 
-function mt:getOpenFileName(caption, base_dir, filter, options)
+function lib:getOpenFileName(caption, base_dir, filter, options)
   return getOpenFileName(self, caption, base_dir or '', filter or '', options or 0)
 end
 
-local getExistingDirectory = mt.getExistingDirectory
-function mt:getExistingDirectory(caption, base_dir, options)
+local getExistingDirectory = lib.getExistingDirectory
+function lib:getExistingDirectory(caption, base_dir, options)
   return getExistingDirectory(self, caption, base_dir or '', options or mimas.ShowDirsOnly)
 end
 

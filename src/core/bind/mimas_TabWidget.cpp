@@ -689,7 +689,7 @@ static int TabWidget_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:61
+ * bind/QWidget.h:58
  */
 static int TabWidget_setSizePolicy(lua_State *L) {
   try {
@@ -708,7 +708,7 @@ static int TabWidget_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:63
+ * bind/QWidget.h:60
  */
 static int TabWidget_showFullScreen(lua_State *L) {
   try {
@@ -735,7 +735,7 @@ static int TabWidget_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:67
+ * bind/QWidget.h:64
  */
 static int TabWidget_swapFullScreen(lua_State *L) {
   try {
@@ -755,7 +755,7 @@ static int TabWidget_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:71
+ * bind/QWidget.h:68
  */
 static int TabWidget_globalPosition(lua_State *L) {
   try {
@@ -773,7 +773,7 @@ static int TabWidget_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:76
+ * bind/QWidget.h:73
  */
 static int TabWidget_position(lua_State *L) {
   try {
@@ -790,7 +790,7 @@ static int TabWidget_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:80
+ * bind/QWidget.h:77
  */
 static int TabWidget_globalMove(lua_State *L) {
   try {
