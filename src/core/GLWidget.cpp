@@ -1,5 +1,50 @@
 #include "mimas/GLWidget.h"
 
+#ifdef __macosx__
+struct GLSLContext : public QGLContext {
+  GLSLContext(const QGLFormat& format, QPaintDevice* device) : QGLContext(format,device) {}
+  GLSLContext(const QGLFormat& format) : QGLContext(format) {}
+
+  virtual void* chooseMacVisual(GDHandle handle) {
+    return mimasSelectModernOpenGLMac(handle);
+  }
+};
+#else
+struct GLSLFormat : public QGLFormat {
+  GLSLFormat() {
+    setVersion(3, 2);
+    setProfile(QGLFormat::CoreProfile);
+    setSampleBuffers(true);
+  }
+};
+#endif // __macosx__
+
+
+GLWidget::GLWidget()
+#ifdef __macosx__
+  : QGLWidget(new GLSLContext(QGLFormat::defaultFormat()))
+#else
+  : QGLWidget(GLSLFormat())
+#endif
+  , vertext_shader_id_(0)
+  , fragment_shader_id_(0)
+  , program_id_(0)
+  , vao_id_(0)
+  , vbo_id_(0)
+  , color_buffer_id_(0) {
+  // FIXME: Linux VM without OpenGL displays an error but marks as valid.
+  // see related bug below.
+  if (!isValid()) throw dub::Exception("Could not create OpenGL context.");
+  setAttribute(Qt::WA_DeleteOnClose);
+  // get focus on tab and click
+  setFocusPolicy(Qt::StrongFocus);
+}   
+
+GLWidget::~GLWidget() {
+  destroyShaders();
+  destroyVBO();
+}
+
 const GLchar* FragmentShader = {
     "#version 150\n"\
  
@@ -119,7 +164,10 @@ void GLWidget::createVBO() {
 void GLWidget::destroyVBO() {
   GLenum gl_error = glGetError();
 
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  // FIXME: what does this do ? Do we need this ?
+  // Makes linux crash if object does not have a proper OpenGL context (see
+  // GLWidget() bug above.
+  // glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   if (color_buffer_id_ > 0) {
     glDisableVertexAttribArray(1);

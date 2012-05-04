@@ -61,48 +61,10 @@ if (gl_error != GL_NO_ERROR) { \
  */
 class GLWidget : public QGLWidget, public dub::Thread {
   Q_OBJECT
-#ifdef __macosx__
-  struct GLSLContext : public QGLContext {
-    GLSLContext(const QGLFormat& format, QPaintDevice* device) : QGLContext(format,device) {}
-    GLSLContext(const QGLFormat& format) : QGLContext(format) {}
-
-    virtual void* chooseMacVisual(GDHandle handle) {
-      return mimasSelectModernOpenGLMac(handle);
-    }
-  };
-#else
-  struct GLSLFormat : public QGLFormat {
-    GLSLFormat() {
-      setVersion(3, 2);
-      setProfile(QGLFormat::CoreProfile);
-      setSampleBuffers(true);
-    }
-  };
-#endif // __macosx__
-
 public:
- 
-  GLWidget()
-#ifdef __macosx__
-    : QGLWidget(new GLSLContext(QGLFormat::defaultFormat()))
-#else
-    : QGLWidget(GLSLFormat())
-#endif
-    , vertext_shader_id_(0)
-    , fragment_shader_id_(0)
-    , program_id_(0)
-    , vao_id_(0)
-    , vbo_id_(0)
-    , color_buffer_id_(0) {
-    setAttribute(Qt::WA_DeleteOnClose);
-    // get focus on tab and click
-    setFocusPolicy(Qt::StrongFocus);
-  }   
+  GLWidget();
 
-  ~GLWidget() {
-    destroyShaders();
-    destroyVBO();
-  }
+  ~GLWidget();
 
   // =============================================================
 
