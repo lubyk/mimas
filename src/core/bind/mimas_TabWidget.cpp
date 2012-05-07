@@ -40,7 +40,7 @@ static int TabWidget__cast_(lua_State *L) {
 }
 
 /** TabWidget::TabWidget(QWidget *parent=NULL)
- * include/mimas/TabWidget.h:48
+ * include/mimas/TabWidget.h:49
  */
 static int TabWidget_TabWidget(lua_State *L) {
   try {
@@ -64,7 +64,7 @@ static int TabWidget_TabWidget(lua_State *L) {
 }
 
 /** TabWidget::~TabWidget()
- * include/mimas/TabWidget.h:51
+ * include/mimas/TabWidget.h:52
  */
 static int TabWidget__TabWidget(lua_State *L) {
   try {
@@ -84,7 +84,7 @@ static int TabWidget__TabWidget(lua_State *L) {
 }
 
 /** int TabWidget::insertTab(int pos, QWidget *page, const char *name)
- * include/mimas/TabWidget.h:60
+ * include/mimas/TabWidget.h:61
  */
 static int TabWidget_insertTab(lua_State *L) {
   try {
@@ -103,7 +103,7 @@ static int TabWidget_insertTab(lua_State *L) {
 }
 
 /** int TabWidget::addTab(QWidget *page, const char *name)
- * include/mimas/TabWidget.h:70
+ * include/mimas/TabWidget.h:71
  */
 static int TabWidget_addTab(lua_State *L) {
   try {
@@ -121,7 +121,7 @@ static int TabWidget_addTab(lua_State *L) {
 }
 
 /** LuaStackSize TabWidget::currentIndex(lua_State *L)
- * include/mimas/TabWidget.h:77
+ * include/mimas/TabWidget.h:78
  */
 static int TabWidget_currentIndex(lua_State *L) {
   try {
@@ -136,7 +136,7 @@ static int TabWidget_currentIndex(lua_State *L) {
 }
 
 /** void TabWidget::setCurrentIndex(int idx)
- * include/mimas/TabWidget.h:89
+ * include/mimas/TabWidget.h:90
  */
 static int TabWidget_setCurrentIndex(lua_State *L) {
   try {
@@ -977,7 +977,7 @@ extern "C" int luaopen_mimas_TabWidget(lua_State *L)
   // register member methods
   luaL_register(L, NULL, TabWidget_member_methods);
   // save meta-table in mimas
-  dub_register(L, "mimas", "TabWidget", "TabWidget");
+  dub_register(L, "mimas", "TabWidget_core", "TabWidget");
   // <mt>
   lua_pop(L, 1);
   return 0;

@@ -39,6 +39,7 @@
  *
  * @see QTabWidget
  * @dub push: pushobject
+ *      register: TabWidget_core
  *
  */
 class TabWidget : public QTabWidget, public dub::Thread {

@@ -8,6 +8,8 @@
 
 --]]------------------------------------------------------
 local lib = lk.SubClass(mimas.Widget)
+lib.background = mimas.Color(0, 0, 0.1, 0.9) 
+lib.pen        = mimas.Pen(2, mimas.Color(0, 0, 0.3, 1))
 mimas.SimpleDialog = lib
 
 local private = {}
@@ -32,12 +34,12 @@ function lib:minimumSize()
   return self.widgets.lay:minimumSize()
 end
 
+local show = lib.show
 function lib:show()
-  self.super:show()
   self:resize(self:minimumSize())
+  show(self)
 end
 
--- FIXME: Set does not resize correctly...
 function lib:set(def)
   if self.widgets then
     -- Delete layout
@@ -48,8 +50,25 @@ function lib:set(def)
   for _,elem in ipairs(def) do
     private.makeWidget(self, self.widgets.lay, elem)
   end
+  if def.style_sheet then
+    self:setStyleSheet(def.style_sheet)
+  elseif def.style then
+    self:setStyle(def.style)
+  end
+  if def.background or def.background == false then
+    self.background = def.background
+  end
 end
 
+function lib:paint(p, w, h)
+  if self.background then
+    local BP = 1--0.5
+    local ARC_RADIUS = 15
+    p:setBrush(self.background)
+    p:setPen(self.pen)
+    p:drawRoundedRect(BP, BP, w - 2 * BP, h - 2 * BP, ARC_RADIUS / 2)
+  end
+end
 
 --=============================================== PRIVATE
 local function makeWidget(main, parent, def)
@@ -120,7 +139,7 @@ local function makeWidget(main, parent, def)
 
     else
       --=============================================== input field
-      elem = mimas.LineEdit(def[3])
+      elem = mimas.LineEdit(def[3] or '')
       main.widgets[def[2]] = elem
       main.form[def[2]] = def[3]
       function elem:editingFinished(text)

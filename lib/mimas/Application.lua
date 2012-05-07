@@ -72,10 +72,9 @@ function lib.new(type)
       background: #444;
     }
     GroupBox {
-      background: #333;
-      border: 1px solid #777;
+      background: hsva(0,0,70,80);
+      border: 1px solid #555;
       border-radius: 5px;
-      margin-top:9px;
     }
     QGroupBox::title {
       subcontrol-origin: margin;
