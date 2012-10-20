@@ -8,8 +8,8 @@
 
 --]]------------------------------------------------------
 local lib = lk.SubClass(mimas.Widget)
-lib.background = mimas.Color(0, 0, 0.1, 0.9) 
-lib.pen        = mimas.Pen(2, mimas.Color(0, 0, 0.3, 1))
+lib.background_color = mimas.Color(0, 0, 0.1, 0.9) 
+lib.pen              = mimas.Pen(2, mimas.Color(0, 0, 0.3, 1))
 mimas.SimpleDialog = lib
 
 local private = {}
@@ -55,16 +55,14 @@ function lib:set(def)
   elseif def.style then
     self:setStyle(def.style)
   end
-  if def.background or def.background == false then
-    self.background = def.background
-  end
+  self.background = def.background
 end
 
 function lib:paint(p, w, h)
-  if self.background then
+  if self.background == 'rounded' then
     local BP = 1--0.5
     local ARC_RADIUS = 15
-    p:setBrush(self.background)
+    p:setBrush(self.background_color)
     p:setPen(self.pen)
     p:drawRoundedRect(BP, BP, w - 2 * BP, h - 2 * BP, ARC_RADIUS / 2)
   end

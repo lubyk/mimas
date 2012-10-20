@@ -70,9 +70,9 @@ function withUser.should.displayGlWindow(t)
   local function animate(now)
     local dt = (now - t.last) * t.dt
     t.n = t.n + t.dt
-    t.x = math.cos(t.n / 0.9) * 360 / math.pi
-    t.y = math.sin(t.n / 0.7) * 360 / math.pi
-    t.z = math.sin(t.n) * 360 / math.pi
+    t.x = math.cos(t.n / 0.9) * 180 / math.pi
+    t.y = math.sin(t.n / 0.7) * 180 / math.pi
+    t.z = math.sin(t.n) * 180 / math.pi
     t.label:setText(string.format('fps: %.2f', computeFps(now)))
     t.last = now
   end
