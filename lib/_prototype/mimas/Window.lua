@@ -7,13 +7,7 @@
   operations in other (local) nodes.
 
 --]]------------------------------------------------------
-inlet('update', 'Redraw window content')
-inlet('x', 'x position')
-inlet('y', 'y position')
-inlet('w', 'width')
-inlet('h', 'height')
-
-outlet('paint', 'Asks subnodes to paint in the provided region (painter, x, y, w, h)')
+outlet 'paint'
 
 defaults {
   x = 0,

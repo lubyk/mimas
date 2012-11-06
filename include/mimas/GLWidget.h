@@ -103,57 +103,31 @@ protected:
         glewGetErrorString(err)
         );
     } 
-    glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT);
-  }
-  /*
-    lua_State *L = lua_;
 
-    if (!pushLuaCallback("initializeGL")) return;
+    if (!dub_pushcallback("initializeGL")) return;
     // <func> <self>
-    int status = lua_pcall(L, 1, 0, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in 'initializeGL' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(1, 0);
   }
-  */
 
   virtual void resizeGL(int width, int height) {
-    glViewport(0, 0, width, height);
-  }
-/*
+    // glViewport(0, 0, width, height);
+    lua_State *L = dub_L;
 
-    lua_State *L = lua_;
-
-    if (!pushLuaCallback("resizeGL")) return;
+    if (!dub_pushcallback("resizeGL")) return;
     lua_pushnumber(L, width);
     lua_pushnumber(L, height);
     // <func> <self> <width> <height>
-    int status = lua_pcall(L, 3, 0, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in 'resizeGL' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(3, 0);
   }
-  */
 
   virtual void paintGL() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-  }
-  /*
-    lua_State *L = lua_;
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    if (!pushLuaCallback("paintGL")) return;
+    if (!dub_pushcallback("paintGL")) return;
     // <func> <self>
-    int status = lua_pcall(L, 1, 0, 0);
-
-    if (status) {
-      fprintf(stderr, "Error in 'paintGL' callback: %s\n", lua_tostring(L, -1));
-    }
+    dub_call(1, 0);
   }
-  */
 
   // --=============================================== Widget callbacks
   virtual void closeEvent(QCloseEvent *event) {
