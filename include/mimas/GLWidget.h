@@ -33,6 +33,7 @@
 
 #include "mimas/mimas.h"
 #include "mimas/Widget.h"
+#include <assert.h>
 
 #include <QtOpenGL/QGLWidget>
 #include <QtOpenGL/QGLContext>
@@ -111,6 +112,8 @@ protected:
         glewGetErrorString(err)
         );
     } 
+    // Clear any residual errors from glewInit.
+    glGetError();
 
     if (!dub_pushcallback("initializeGL")) return;
     // <func> <self>
@@ -118,7 +121,6 @@ protected:
   }
 
   virtual void resizeGL(int width, int height) {
-    // glViewport(0, 0, width, height);
     lua_State *L = dub_L;
 
     if (!dub_pushcallback("resizeGL")) return;
@@ -129,9 +131,6 @@ protected:
   }
 
   virtual void paintGL() {
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
-
     if (!dub_pushcallback("paintGL")) return;
     // <func> <self>
     dub_call(1, 0);
@@ -163,6 +162,7 @@ protected:
 
   virtual void resizeEvent(QResizeEvent *event) {
     Widget::resized(this, width(), height());
+    QGLWidget::resizeEvent(event);
   }
 
   virtual void moveEvent(QMoveEvent * event) {

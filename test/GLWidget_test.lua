@@ -22,86 +22,24 @@ function should.createGl3Context()
   assertMatch('3.2', gl_version)
 end
 
-function should.compile(t)
+
+function withUser.should.callResizeCallback(t)
   t.win = mimas.GLWindow()
   t.win:move(10,10)
   t.win:resize(400,400)
   t.win:show()
 
-  assertTrue(t.win:compile(
--- Vertex shader
-[=[
-#version 150
- in vec4 in_Position;
- in vec4 in_Color;
-out vec4 ex_Color;
+  function t.win:resizeGL(w, h)
+    t.continue = true
+  end
 
-void main(void)
-{
-  gl_Position = in_Position;
-  ex_Color = in_Color;
-}
-]=],
-
--- Fragment shader
-[=[
-#version 150
- 
-in vec4 ex_Color;
-out vec4 out_Color;
- 
-void main(void)
-{
-  out_Color = ex_Color;
-}
-]=]
-  ))
-  t.win:update()
-  t.win:close()
-end     
-
-function withUser.should.displayGlWindow(t)
-  t.win = mimas.GLWindow()
-  t.win:move(10,10)
-  t.win:resize(400,400)
-  t.win:show()
-
-  t.win:compile(
--- Vertex shader
-[=[
-#version 150
- in vec4 in_Position;
- in vec4 in_Color;
-out vec4 ex_Color;
-
-void main(void)
-{
-  gl_Position = in_Position;
-  ex_Color = in_Color;
-}
-]=],
-
--- Fragment shader
-[=[
-#version 150
- 
-in vec4 ex_Color;
-out vec4 out_Color;
- 
-void main(void)
-{
-  out_Color = ex_Color;
-}
-]=]
-  )
-  function t.win:click()
+  function t.win:resize(w, h)
     t.continue = true
   end
 
   t:timeout(function()
     return t.continue
   end)
-  t.win:hide()
   assertTrue(t.continue)
 end
 
