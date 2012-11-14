@@ -32,8 +32,8 @@ function should.compile(t)
 -- Vertex shader
 [=[
 #version 150
-layout(location=0) in vec4 in_Position;
-layout(location=1) in vec4 in_Color;
+ in vec4 in_Position;
+ in vec4 in_Color;
 out vec4 ex_Color;
 
 void main(void)
@@ -56,6 +56,7 @@ void main(void)
 }
 ]=]
   ))
+  t.win:update()
   t.win:close()
 end     
 
@@ -69,8 +70,8 @@ function withUser.should.displayGlWindow(t)
 -- Vertex shader
 [=[
 #version 150
-layout(location=0) in vec4 in_Position;
-layout(location=1) in vec4 in_Color;
+ in vec4 in_Position;
+ in vec4 in_Color;
 out vec4 ex_Color;
 
 void main(void)

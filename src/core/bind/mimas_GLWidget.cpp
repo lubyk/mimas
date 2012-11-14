@@ -18,14 +18,19 @@ static int GLWidget__cast_(lua_State *L) {
   GLWidget *self = *((GLWidget **)dub_checksdata_n(L, 1, "mimas.GLWidget"));
   const char *key = luaL_checkstring(L, 2);
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
-  int key_h = dub_hash(key, 2);
+  int key_h = dub_hash(key, 3);
   switch(key_h) {
     case 0: {
+      if (DUB_ASSERT_KEY(key, "mimas.QGLWidget")) break;
+      *retval__ = static_cast<QGLWidget *>(self);
+      return 1;
+    }
+    case 1: {
       if (DUB_ASSERT_KEY(key, "mimas.QWidget")) break;
       *retval__ = static_cast<QWidget *>(self);
       return 1;
     }
-    case 1: {
+    case 2: {
       if (DUB_ASSERT_KEY(key, "mimas.QObject")) break;
       *retval__ = static_cast<QObject *>(self);
       return 1;
@@ -34,12 +39,13 @@ static int GLWidget__cast_(lua_State *L) {
   return 0;
 }
 
-/** GLWidget::GLWidget()
- * include/mimas/GLWidget.h:65
+/** GLWidget::GLWidget(int options)
+ * include/mimas/GLWidget.h:64
  */
 static int GLWidget_GLWidget(lua_State *L) {
   try {
-    GLWidget *retval__ = new GLWidget();
+    int options = dub_checkint(L, 1);
+    GLWidget *retval__ = new GLWidget(options);
     retval__->pushobject(L, retval__, "mimas.GLWidget", true);
     return 1;
   } catch (std::exception &e) {
@@ -51,7 +57,7 @@ static int GLWidget_GLWidget(lua_State *L) {
 }
 
 /** GLWidget::~GLWidget()
- * include/mimas/GLWidget.h:67
+ * include/mimas/GLWidget.h:66
  */
 static int GLWidget__GLWidget(lua_State *L) {
   try {
@@ -71,7 +77,7 @@ static int GLWidget__GLWidget(lua_State *L) {
 }
 
 /** void GLWidget::update()
- * include/mimas/GLWidget.h:71
+ * include/mimas/GLWidget.h:94
  */
 static int GLWidget_update(lua_State *L) {
   try {
@@ -87,7 +93,7 @@ static int GLWidget_update(lua_State *L) {
 }
 
 /** LuaStackSize GLWidget::openGLVersion(lua_State *L)
- * include/mimas/GLWidget.h:75
+ * include/mimas/GLWidget.h:98
  */
 static int GLWidget_openGLVersion(lua_State *L) {
   try {
@@ -101,20 +107,18 @@ static int GLWidget_openGLVersion(lua_State *L) {
   return dub_error(L);
 }
 
-/** bool GLWidget::compile(const char *vertex_shader, const char *fragment_shader)
- * include/mimas/GLWidget.h:81
+/** void QGLWidget::swapBuffers()
+ * bind/QGLWidget.h:12
  */
-static int GLWidget_compile(lua_State *L) {
+static int GLWidget_swapBuffers(lua_State *L) {
   try {
     GLWidget *self = *((GLWidget **)dub_checksdata(L, 1, "mimas.GLWidget"));
-    const char *vertex_shader = dub_checkstring(L, 2);
-    const char *fragment_shader = dub_checkstring(L, 3);
-    lua_pushboolean(L, self->compile(vertex_shader, fragment_shader));
-    return 1;
+    self->swapBuffers();
+    return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "compile: %s", e.what());
+    lua_pushfstring(L, "swapBuffers: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "compile: Unknown exception");
+    lua_pushfstring(L, "swapBuffers: Unknown exception");
   }
   return dub_error(L);
 }
@@ -852,7 +856,7 @@ static const struct luaL_Reg GLWidget_member_methods[] = {
   { "__gc"         , GLWidget__GLWidget   },
   { "update"       , GLWidget_update      },
   { "openGLVersion", GLWidget_openGLVersion },
-  { "compile"      , GLWidget_compile     },
+  { "swapBuffers"  , GLWidget_swapBuffers },
   { "move"         , GLWidget_move        },
   { "resize"       , GLWidget_resize      },
   { "x"            , GLWidget_x           },
@@ -899,12 +903,40 @@ static const struct luaL_Reg GLWidget_member_methods[] = {
   { NULL, NULL},
 };
 
+// --=============================================== CONSTANTS
+static const struct dub_const_Reg GLWidget_const[] = {
+  { "DoubleBuffer" , GLWidget::DoubleBuffer },
+  { "DepthBuffer"  , GLWidget::DepthBuffer },
+  { "Rgba"         , GLWidget::Rgba       },
+  { "AlphaChannel" , GLWidget::AlphaChannel },
+  { "AccumBuffer"  , GLWidget::AccumBuffer },
+  { "StencilBuffer", GLWidget::StencilBuffer },
+  { "StereoBuffers", GLWidget::StereoBuffers },
+  { "DirectRendering", GLWidget::DirectRendering },
+  { "HasOverlay"   , GLWidget::HasOverlay },
+  { "SampleBuffers", GLWidget::SampleBuffers },
+  { "DeprecatedFunctions", GLWidget::DeprecatedFunctions },
+  { "SingleBuffer" , GLWidget::SingleBuffer },
+  { "NoDepthBuffer", GLWidget::NoDepthBuffer },
+  { "ColorIndex"   , GLWidget::ColorIndex },
+  { "NoAlphaChannel", GLWidget::NoAlphaChannel },
+  { "NoAccumBuffer", GLWidget::NoAccumBuffer },
+  { "NoStencilBuffer", GLWidget::NoStencilBuffer },
+  { "NoStereoBuffers", GLWidget::NoStereoBuffers },
+  { "IndirectRendering", GLWidget::IndirectRendering },
+  { "NoOverlay"    , GLWidget::NoOverlay  },
+  { "NoSampleBuffers", GLWidget::NoSampleBuffers },
+  { "NoDeprecatedFunctions", GLWidget::NoDeprecatedFunctions },
+  { NULL, 0},
+};
 
 extern "C" int luaopen_mimas_GLWidget(lua_State *L)
 {
   // Create the metatable which will contain all the member methods
   luaL_newmetatable(L, "mimas.GLWidget");
   // <mt>
+  // register class constants
+  dub_register_const(L, GLWidget_const);
 
   // register member methods
   luaL_register(L, NULL, GLWidget_member_methods);

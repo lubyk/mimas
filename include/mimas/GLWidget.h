@@ -52,20 +52,43 @@ if (gl_error != GL_NO_ERROR) { \
 }
   
 /** GLWidget
- * This class lets you draw OpenGL elements with Widgets on top.
- * http://doc.trolltech.com/qq/qq26-openglcanvas.html
+ * Modern OpenGL widget.
  *
  * @dub register: GLWidget_core
  *      push: pushobject
- *      super: QWidget
+ *      super: QGLWidget
  */
 class GLWidget : public QGLWidget, public dub::Thread {
   Q_OBJECT
 public:
-  GLWidget();
+  GLWidget(int options);
 
   ~GLWidget();
 
+   enum GLFormat {
+     DoubleBuffer          = QGL::DoubleBuffer,
+     DepthBuffer           = QGL::DepthBuffer,
+     Rgba                  = QGL::Rgba,
+     AlphaChannel          = QGL::AlphaChannel,
+     AccumBuffer           = QGL::AccumBuffer,
+     StencilBuffer         = QGL::StencilBuffer,
+     StereoBuffers         = QGL::StereoBuffers,
+     DirectRendering       = QGL::DirectRendering,
+     HasOverlay            = QGL::HasOverlay,
+     SampleBuffers         = QGL::SampleBuffers,
+     DeprecatedFunctions   = QGL::DeprecatedFunctions,
+     SingleBuffer          = QGL::SingleBuffer,
+     NoDepthBuffer         = QGL::NoDepthBuffer,
+     ColorIndex            = QGL::ColorIndex,
+     NoAlphaChannel        = QGL::NoAlphaChannel,
+     NoAccumBuffer         = QGL::NoAccumBuffer,
+     NoStencilBuffer       = QGL::NoStencilBuffer,
+     NoStereoBuffers       = QGL::NoStereoBuffers,
+     IndirectRendering     = QGL::IndirectRendering,
+     NoOverlay             = QGL::NoOverlay,
+     NoSampleBuffers       = QGL::NoSampleBuffers,
+     NoDeprecatedFunctions = QGL::NoDeprecatedFunctions,
+   };
   // =============================================================
 
   void update() {
@@ -76,21 +99,6 @@ public:
     lua_pushstring(L, (char*)glGetString(GL_VERSION));
     lua_pushstring(L, (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
     return 2;
-  }
-
-  bool compile(const char *vertex_shader, const char *fragment_shader) {
-    if (!isVisible()) {
-      // This should initialize OpenGL
-      show();
-    }
-    if (!glGetString(GL_VERSION)) {
-      printf("OpenGL not initialized. Show window before compiling.\n");
-    } else {
-      createShaders(vertex_shader, fragment_shader);
-      createVBO();
-    }
-    update();
-    return true;
   }
 
 protected:
@@ -170,27 +178,6 @@ protected:
     if (!Widget::keyboard(this, event, false))
       QWidget::keyReleaseEvent(event);
   }
-
-
-
-  //virtual void paintEvent(QPaintEvent *event);
-private:
-  GLuint
-    vertext_shader_id_,
-    fragment_shader_id_,
-    program_id_,
-    vao_id_,
-    vbo_id_,
-    color_buffer_id_;
-   
-  // FIXME: Write gl bindings so that we can do all this in Lua.
-  void createVBO();
-
-  void destroyVBO();
-
-  void createShaders(const char *vertex_shader, const char *fragment_shader);
-
-  void destroyShaders();
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_GLWIDGET_H_
