@@ -14,6 +14,7 @@
 #include "mimas/Callback.h"
 #include "mimas/CheckBox.h"
 #include "mimas/Color.h"
+#include "mimas/Cursor.h"
 #include "mimas/DataSource.h"
 #include "mimas/FileObserver.h"
 #include "mimas/GLWidget.h"
@@ -47,6 +48,7 @@ int luaopen_mimas_Button(lua_State *L);
 int luaopen_mimas_Callback(lua_State *L);
 int luaopen_mimas_CheckBox(lua_State *L);
 int luaopen_mimas_Color(lua_State *L);
+int luaopen_mimas_Cursor(lua_State *L);
 int luaopen_mimas_DataSource(lua_State *L);
 int luaopen_mimas_FileObserver(lua_State *L);
 int luaopen_mimas_GLWidget(lua_State *L);
@@ -625,6 +627,29 @@ static const struct dub_const_Reg mimas_const[] = {
   { "SplashScreenFlag", SplashScreenFlag     },
   { "DesktopFlag"  , DesktopFlag          },
   { "SubWindowFlag", SubWindowFlag        },
+  { "ArrowCursor"  , ArrowCursor          },
+  { "UpArrowCursor", UpArrowCursor        },
+  { "CrossCursor"  , CrossCursor          },
+  { "WaitCursor"   , WaitCursor           },
+  { "IBeamCursor"  , IBeamCursor          },
+  { "SizeVerCursor", SizeVerCursor        },
+  { "SizeHorCursor", SizeHorCursor        },
+  { "SizeBDiagCursor", SizeBDiagCursor      },
+  { "SizeFDiagCursor", SizeFDiagCursor      },
+  { "SizeAllCursor", SizeAllCursor        },
+  { "BlankCursor"  , BlankCursor          },
+  { "SplitVCursor" , SplitVCursor         },
+  { "SplitHCursor" , SplitHCursor         },
+  { "PointingHandCursor", PointingHandCursor   },
+  { "ForbiddenCursor", ForbiddenCursor      },
+  { "OpenHandCursor", OpenHandCursor       },
+  { "ClosedHandCursor", ClosedHandCursor     },
+  { "WhatsThisCursor", WhatsThisCursor      },
+  { "BusyCursor"   , BusyCursor           },
+  { "DragMoveCursor", DragMoveCursor       },
+  { "DragCopyCursor", DragCopyCursor       },
+  { "DragLinkCursor", DragLinkCursor       },
+  { "BitmapCursor" , BitmapCursor         },
   { "MousePress"   , MousePress           },
   { "MouseRelease" , MouseRelease         },
   { "DoubleClick"  , DoubleClick          },
@@ -639,6 +664,7 @@ extern "C" int luaopen_mimas_core(lua_State *L) {
   luaopen_mimas_Callback(L);
   luaopen_mimas_CheckBox(L);
   luaopen_mimas_Color(L);
+  luaopen_mimas_Cursor(L);
   luaopen_mimas_DataSource(L);
   luaopen_mimas_FileObserver(L);
   luaopen_mimas_GLWidget(L);

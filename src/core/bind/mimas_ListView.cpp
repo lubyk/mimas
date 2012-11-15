@@ -40,7 +40,7 @@ static int ListView__cast_(lua_State *L) {
 }
 
 /** ListView::ListView(QWidget *parent=NULL)
- * include/mimas/ListView.h:54
+ * include/mimas/ListView.h:55
  */
 static int ListView_ListView(lua_State *L) {
   try {
@@ -56,15 +56,15 @@ static int ListView_ListView(lua_State *L) {
       return 1;
     }
   } catch (std::exception &e) {
-    lua_pushfstring(L, "ListView: %s", e.what());
+    lua_pushfstring(L, "new: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "ListView: Unknown exception");
+    lua_pushfstring(L, "new: Unknown exception");
   }
   return dub_error(L);
 }
 
 /** ListView::~ListView()
- * include/mimas/ListView.h:56
+ * include/mimas/ListView.h:57
  */
 static int ListView__ListView(lua_State *L) {
   try {
@@ -76,47 +76,15 @@ static int ListView__ListView(lua_State *L) {
     userdata->gc = false;
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "~ListView: %s", e.what());
+    lua_pushfstring(L, "__gc: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "~ListView: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** LuaStackSize ListView::selectedIndexes(lua_State *L)
- * include/mimas/ListView.h:63
- */
-static int ListView_selectedIndexes(lua_State *L) {
-  try {
-    ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    return self->selectedIndexes(L);
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "selectedIndexes: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "selectedIndexes: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** LuaStackSize ListView::indexAt(float x, float y, lua_State *L)
- * include/mimas/ListView.h:86
- */
-static int ListView_indexAt(lua_State *L) {
-  try {
-    ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
-    float x = dub_checknumber(L, 2);
-    float y = dub_checknumber(L, 3);
-    return self->indexAt(x, y, L);
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "indexAt: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "indexAt: Unknown exception");
+    lua_pushfstring(L, "__gc: Unknown exception");
   }
   return dub_error(L);
 }
 
 /** void ListView::selectRow(int row)
- * include/mimas/ListView.h:98
+ * include/mimas/ListView.h:60
  */
 static int ListView_selectRow(lua_State *L) {
   try {
@@ -133,7 +101,7 @@ static int ListView_selectRow(lua_State *L) {
 }
 
 /** void ListView::enablePaintItem(bool enable)
- * include/mimas/ListView.h:107
+ * include/mimas/ListView.h:69
  */
 static int ListView_enablePaintItem(lua_State *L) {
   try {
@@ -150,7 +118,7 @@ static int ListView_enablePaintItem(lua_State *L) {
 }
 
 /** void ListView::enableHtml(bool enable, const char *css=NULL)
- * include/mimas/ListView.h:112
+ * include/mimas/ListView.h:74
  */
 static int ListView_enableHtml(lua_State *L) {
   try {
@@ -170,6 +138,38 @@ static int ListView_enableHtml(lua_State *L) {
     lua_pushfstring(L, "enableHtml: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "enableHtml: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** LuaStackSize ListView::lselectedIndexes(lua_State *L)
+ * include/mimas/ListView.h:81
+ */
+static int ListView_lselectedIndexes(lua_State *L) {
+  try {
+    ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
+    return self->lselectedIndexes(L);
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "selectedIndexes: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "selectedIndexes: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** LuaStackSize ListView::lindexAt(float x, float y, lua_State *L)
+ * include/mimas/ListView.h:106
+ */
+static int ListView_lindexAt(lua_State *L) {
+  try {
+    ListView *self = *((ListView **)dub_checksdata(L, 1, "mimas.ListView"));
+    float x = dub_checknumber(L, 2);
+    float y = dub_checknumber(L, 3);
+    return self->lindexAt(x, y, L);
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "indexAt: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "indexAt: Unknown exception");
   }
   return dub_error(L);
 }
@@ -970,11 +970,11 @@ static const struct luaL_Reg ListView_member_methods[] = {
   { "_cast_"       , ListView__cast_      },
   { "new"          , ListView_ListView    },
   { "__gc"         , ListView__ListView   },
-  { "selectedIndexes", ListView_selectedIndexes },
-  { "indexAt"      , ListView_indexAt     },
   { "selectRow"    , ListView_selectRow   },
   { "enablePaintItem", ListView_enablePaintItem },
   { "enableHtml"   , ListView_enableHtml  },
+  { "selectedIndexes", ListView_lselectedIndexes },
+  { "indexAt"      , ListView_lindexAt    },
   { "setModel"     , ListView_setModel    },
   { "scrollToBottom", ListView_scrollToBottom },
   { "scrollToTop"  , ListView_scrollToTop },

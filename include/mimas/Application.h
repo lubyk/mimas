@@ -91,6 +91,17 @@ public:
     sendMouseEvent(widget, QPoint(x,y), QEvent::MouseMove, Qt::NoButton, Qt::NoModifier);
   }
 
+  static void setAttribute(int key, bool value) {
+    QApplication::setAttribute((Qt::ApplicationAttribute)key, value);
+  }
+
+  static void setOverrideCursor(const QCursor &cursor) {
+    QApplication::setOverrideCursor(cursor);
+  }
+
+  static void restoreOverrideCursor() {
+    QApplication::restoreOverrideCursor();
+  }
 protected:
   void sendMouseEvent(QWidget *widget, const QPoint &pos, int type, int btn, int mod) {
     sendEvent(widget, new QMouseEvent(

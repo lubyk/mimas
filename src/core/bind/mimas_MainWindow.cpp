@@ -48,9 +48,9 @@ static int MainWindow_MainWindow(lua_State *L) {
     retval__->pushobject(L, retval__, "mimas.MainWindow", true);
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "MainWindow: %s", e.what());
+    lua_pushfstring(L, "new: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "MainWindow: Unknown exception");
+    lua_pushfstring(L, "new: Unknown exception");
   }
   return dub_error(L);
 }
@@ -68,9 +68,9 @@ static int MainWindow__MainWindow(lua_State *L) {
     userdata->gc = false;
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "~MainWindow: %s", e.what());
+    lua_pushfstring(L, "__gc: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "~MainWindow: Unknown exception");
+    lua_pushfstring(L, "__gc: Unknown exception");
   }
   return dub_error(L);
 }

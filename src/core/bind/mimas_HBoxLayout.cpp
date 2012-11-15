@@ -18,8 +18,13 @@ static int HBoxLayout__cast_(lua_State *L) {
   HBoxLayout *self = *((HBoxLayout **)dub_checksdata_n(L, 1, "mimas.HBoxLayout"));
   const char *key = luaL_checkstring(L, 2);
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
-  int key_h = dub_hash(key, 2);
+  int key_h = dub_hash(key, 4);
   switch(key_h) {
+    case 3: {
+      if (DUB_ASSERT_KEY(key, "mimas.QBoxLayout")) break;
+      *retval__ = static_cast<QBoxLayout *>(self);
+      return 1;
+    }
     case 0: {
       if (DUB_ASSERT_KEY(key, "mimas.QLayout")) break;
       *retval__ = static_cast<QLayout *>(self);
@@ -51,9 +56,9 @@ static int HBoxLayout_HBoxLayout(lua_State *L) {
       return 1;
     }
   } catch (std::exception &e) {
-    lua_pushfstring(L, "HBoxLayout: %s", e.what());
+    lua_pushfstring(L, "new: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "HBoxLayout: Unknown exception");
+    lua_pushfstring(L, "new: Unknown exception");
   }
   return dub_error(L);
 }
@@ -71,9 +76,9 @@ static int HBoxLayout__HBoxLayout(lua_State *L) {
     userdata->gc = false;
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "~HBoxLayout: %s", e.what());
+    lua_pushfstring(L, "__gc: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "~HBoxLayout: Unknown exception");
+    lua_pushfstring(L, "__gc: Unknown exception");
   }
   return dub_error(L);
 }
@@ -195,26 +200,8 @@ static int HBoxLayout_insertLayout(lua_State *L) {
   return dub_error(L);
 }
 
-/** bool HBoxLayout::setAlignment(QWidget *w, int alignment)
- * include/mimas/HBoxLayout.h:86
- */
-static int HBoxLayout_setAlignment(lua_State *L) {
-  try {
-    HBoxLayout *self = *((HBoxLayout **)dub_checksdata(L, 1, "mimas.HBoxLayout"));
-    QWidget *w = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
-    int alignment = dub_checkint(L, 3);
-    lua_pushboolean(L, self->setAlignment(w, alignment));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setAlignment: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setAlignment: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void HBoxLayout::addStretch(int stretch=1)
- * include/mimas/HBoxLayout.h:92
+/** void QBoxLayout::addStretch(int stretch=0)
+ * bind/QBoxLayout.h:11
  */
 static int HBoxLayout_addStretch(lua_State *L) {
   try {
@@ -236,8 +223,8 @@ static int HBoxLayout_addStretch(lua_State *L) {
   return dub_error(L);
 }
 
-/** void HBoxLayout::addSpacing(int size)
- * include/mimas/HBoxLayout.h:98
+/** void QBoxLayout::addSpacing(int size)
+ * bind/QBoxLayout.h:15
  */
 static int HBoxLayout_addSpacing(lua_State *L) {
   try {
@@ -253,8 +240,8 @@ static int HBoxLayout_addSpacing(lua_State *L) {
   return dub_error(L);
 }
 
-/** void HBoxLayout::setSpacing(int space)
- * include/mimas/HBoxLayout.h:104
+/** void QBoxLayout::setSpacing(int space)
+ * bind/QBoxLayout.h:19
  */
 static int HBoxLayout_setSpacing(lua_State *L) {
   try {
@@ -270,8 +257,60 @@ static int HBoxLayout_setSpacing(lua_State *L) {
   return dub_error(L);
 }
 
-/** void HBoxLayout::setContentsMargins(int left, int top, int right, int bottom)
- * include/mimas/HBoxLayout.h:108
+/** void QLayout::activate()
+ * bind/QLayout.h:12
+ */
+static int HBoxLayout_activate(lua_State *L) {
+  try {
+    HBoxLayout *self = *((HBoxLayout **)dub_checksdata(L, 1, "mimas.HBoxLayout"));
+    self->activate();
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "activate: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "activate: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** bool QLayout::setAlignment(QWidget *w, int alignment)
+ * bind/QLayout.h:13
+ */
+static int HBoxLayout_setAlignment(lua_State *L) {
+  try {
+    HBoxLayout *self = *((HBoxLayout **)dub_checksdata(L, 1, "mimas.HBoxLayout"));
+    QWidget *w = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+    int alignment = dub_checkint(L, 3);
+    lua_pushboolean(L, self->setAlignment(w, (Qt::Alignment)alignment));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setAlignment: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setAlignment: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** LuaStackSize QLayout::minimumSize(lua_State *L)
+ * bind/QLayout.h:14
+ */
+static int HBoxLayout_minimumSize(lua_State *L) {
+  try {
+    HBoxLayout *self = *((HBoxLayout **)dub_checksdata(L, 1, "mimas.HBoxLayout"));
+    QSize s(self->minimumSize());
+    lua_pushnumber(L, s.width());
+    lua_pushnumber(L, s.height());
+    return 2;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "minimumSize: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "minimumSize: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QLayout::setContentsMargins(int left, int top, int right, int bottom)
+ * bind/QLayout.h:15
  */
 static int HBoxLayout_setContentsMargins(lua_State *L) {
   try {
@@ -286,21 +325,6 @@ static int HBoxLayout_setContentsMargins(lua_State *L) {
     lua_pushfstring(L, "setContentsMargins: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "setContentsMargins: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** LuaStackSize HBoxLayout::minimumSize(lua_State *L) const
- * include/mimas/HBoxLayout.h:112
- */
-static int HBoxLayout_minimumSize(lua_State *L) {
-  try {
-    HBoxLayout *self = *((HBoxLayout **)dub_checksdata(L, 1, "mimas.HBoxLayout"));
-    return self->minimumSize(L);
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "minimumSize: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "minimumSize: Unknown exception");
   }
   return dub_error(L);
 }
@@ -430,12 +454,13 @@ static const struct luaL_Reg HBoxLayout_member_methods[] = {
   { "insertWidget" , HBoxLayout_insertWidget },
   { "addLayout"    , HBoxLayout_addLayout },
   { "insertLayout" , HBoxLayout_insertLayout },
-  { "setAlignment" , HBoxLayout_setAlignment },
   { "addStretch"   , HBoxLayout_addStretch },
   { "addSpacing"   , HBoxLayout_addSpacing },
   { "setSpacing"   , HBoxLayout_setSpacing },
-  { "setContentsMargins", HBoxLayout_setContentsMargins },
+  { "activate"     , HBoxLayout_activate  },
+  { "setAlignment" , HBoxLayout_setAlignment },
   { "minimumSize"  , HBoxLayout_minimumSize },
+  { "setContentsMargins", HBoxLayout_setContentsMargins },
   { "objectName"   , HBoxLayout_objectName },
   { "setObjectName", HBoxLayout_setObjectName },
   { "property"     , HBoxLayout_property  },

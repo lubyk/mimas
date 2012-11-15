@@ -39,9 +39,9 @@ static int Painter_Painter(lua_State *L) {
     dub_pushudata(L, retval__, "mimas.Painter", true);
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "Painter: %s", e.what());
+    lua_pushfstring(L, "new: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "Painter: Unknown exception");
+    lua_pushfstring(L, "new: Unknown exception");
   }
   return dub_error(L);
 }

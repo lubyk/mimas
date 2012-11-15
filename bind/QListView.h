@@ -6,7 +6,7 @@
  * @dub super: QWidget
  */
 class QListView {
- public:
+public:
   /** Set data source model.
    */
   void setModel(DataSource *model);

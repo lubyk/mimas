@@ -17,7 +17,5 @@ class QApplication {
   void setStyleSheet(QString text);
 
   QString styleSheet();
-
-  static void setAttribute(int key, bool value);
 };
 

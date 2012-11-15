@@ -26,58 +26,25 @@
 
   ==============================================================================
 */
-#ifndef LUBYK_INCLUDE_MIMAS_H_BOX_LAYOUT_H_
-#define LUBYK_INCLUDE_MIMAS_H_BOX_LAYOUT_H_
+#ifndef LUBYK_INCLUDE_MIMAS_CURSOR_H_
+#define LUBYK_INCLUDE_MIMAS_CURSOR_H_
 
 #include "mimas/mimas.h"
-
-#include <QtGui/QHBoxLayout>
+#include "mimas/Color.h"
+#include <QtGui/QCursor>
 
 #include <iostream>
 
-/** HBoxLayout (arrange widgets horizontally).
+/** Cursor set by Application.
  *
- * @dub register: HBoxLayout_core
- *      push: pushobject
- *      super: QBoxLayout
  */
-class HBoxLayout : public QHBoxLayout, public dub::Object {
-  Q_OBJECT
+class Cursor : public QCursor {
 public:
-  HBoxLayout(QWidget *parent = NULL)
-    : QHBoxLayout(parent) {
-  }
+  Cursor() : QCursor() {}
 
-  ~HBoxLayout() {
-  }
+  Cursor(int shape) : QCursor((Qt::CursorShape)shape) {}
 
-  void addWidget(QWidget *widget, int stretch = 0, int alignment = 0) {
-    QHBoxLayout::addWidget(widget, stretch, (Qt::Alignment)alignment);
-  }
-
-  void insertWidget(int pos, QWidget *widget, int stretch = 0, int alignment = 0) {
-    if (pos < 0) {
-      // -1 = add after last, -2 = add after element before last
-      pos = count() + 1 + pos;
-    } else {
-      pos = pos - 1;
-    }
-    QBoxLayout::insertWidget(pos, widget, stretch, (Qt::Alignment)alignment);
-  }
-
-  void addLayout(QLayout *layout, int stretch = 0) {
-    QBoxLayout::addLayout(layout);
-  }
-
-  void insertLayout(int pos, QLayout *layout, int stretch = 0) {
-    if (pos < 0) {
-      // -1 = add after last, -2 = add after element before last
-      pos = count() + 1 + pos;
-    } else {
-      pos = pos - 1;
-    }
-    QBoxLayout::insertLayout(pos, layout, stretch);
-  }
 };
 
-#endif // LUBYK_INCLUDE_MIMAS_H_BOX_LAYOUT_H_
+#endif // LUBYK_INCLUDE_MIMAS_CURSOR_H_
+

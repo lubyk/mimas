@@ -39,7 +39,7 @@
  *
  * @dub register: VBoxLayout_core
  *      push: pushobject
- *      super: QLayout
+ *      super: QBoxLayout
  */
 class VBoxLayout : public QVBoxLayout, public dub::Thread
 {
@@ -79,47 +79,6 @@ public:
       pos = pos - 1;
     }
     QBoxLayout::insertLayout(pos, layout, stretch);
-  }
-
-  /** Set the alignment of the given widget.
-   * Returns true if the widget was found in this layout (not including
-   * children).
-   */
-  bool setAlignment(QWidget *w, int alignment) {
-    return QLayout::setAlignment(w, (Qt::Alignment)alignment);
-  }
-
-  /** Add a strechable item.
-   */
-  void addStretch(int stretch = 1) {
-    QVBoxLayout::addStretch(stretch);
-  }
-
-  /** Add a single fixed space.
-   */
-  void addSpacing(int size) {
-    QVBoxLayout::addSpacing(size);
-  }
-
-  /** Fixed spacing between items.
-   */
-  void setSpacing(int space) {
-    QVBoxLayout::setSpacing(space);
-  }
-
-  void setContentsMargins(int left, int top, int right, int bottom) {
-    QVBoxLayout::setContentsMargins(left, top, right, bottom);
-  }
-
-  void activate() {
-    QLayout::activate();
-  }
-
-  LuaStackSize minimumSize(lua_State *L) const {
-    QSize s(QVBoxLayout::minimumSize());
-    lua_pushnumber(L, s.width());
-    lua_pushnumber(L, s.height());
-    return 2;
   }
 };
 

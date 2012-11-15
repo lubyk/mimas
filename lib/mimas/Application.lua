@@ -176,3 +176,19 @@ function lib.singleShot(app, timeout, func_or_clbk)
   singleShot(app, timeout, clbk, '1callback()')
 end
 
+local setOverrideCursor = lib.setOverrideCursor
+function lib:hideCursor()
+  self.cursor = mimas.Cursor(mimas.BlankCursor)
+  setOverrideCursor(self.cursor)
+end
+
+local restoreOverrideCursor = lib.restoreOverrideCursor
+function lib:restoreCursor()
+  restoreOverrideCursor()
+  self.cursor = nil
+end
+
+function lib:setCursor(type)
+  self.cursor = mimas.Cursor(type)
+  setOverrideCursor(self.cursor)
+end

@@ -18,8 +18,13 @@ static int VBoxLayout__cast_(lua_State *L) {
   VBoxLayout *self = *((VBoxLayout **)dub_checksdata_n(L, 1, "mimas.VBoxLayout"));
   const char *key = luaL_checkstring(L, 2);
   void **retval__ = (void**)lua_newuserdata(L, sizeof(void*));
-  int key_h = dub_hash(key, 2);
+  int key_h = dub_hash(key, 4);
   switch(key_h) {
+    case 3: {
+      if (DUB_ASSERT_KEY(key, "mimas.QBoxLayout")) break;
+      *retval__ = static_cast<QBoxLayout *>(self);
+      return 1;
+    }
     case 0: {
       if (DUB_ASSERT_KEY(key, "mimas.QLayout")) break;
       *retval__ = static_cast<QLayout *>(self);
@@ -51,9 +56,9 @@ static int VBoxLayout_VBoxLayout(lua_State *L) {
       return 1;
     }
   } catch (std::exception &e) {
-    lua_pushfstring(L, "VBoxLayout: %s", e.what());
+    lua_pushfstring(L, "new: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "VBoxLayout: Unknown exception");
+    lua_pushfstring(L, "new: Unknown exception");
   }
   return dub_error(L);
 }
@@ -71,9 +76,9 @@ static int VBoxLayout__VBoxLayout(lua_State *L) {
     userdata->gc = false;
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "~VBoxLayout: %s", e.what());
+    lua_pushfstring(L, "__gc: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "~VBoxLayout: Unknown exception");
+    lua_pushfstring(L, "__gc: Unknown exception");
   }
   return dub_error(L);
 }
@@ -195,26 +200,8 @@ static int VBoxLayout_insertLayout(lua_State *L) {
   return dub_error(L);
 }
 
-/** bool VBoxLayout::setAlignment(QWidget *w, int alignment)
- * include/mimas/VBoxLayout.h:88
- */
-static int VBoxLayout_setAlignment(lua_State *L) {
-  try {
-    VBoxLayout *self = *((VBoxLayout **)dub_checksdata(L, 1, "mimas.VBoxLayout"));
-    QWidget *w = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
-    int alignment = dub_checkint(L, 3);
-    lua_pushboolean(L, self->setAlignment(w, alignment));
-    return 1;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setAlignment: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setAlignment: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void VBoxLayout::addStretch(int stretch=1)
- * include/mimas/VBoxLayout.h:94
+/** void QBoxLayout::addStretch(int stretch=0)
+ * bind/QBoxLayout.h:11
  */
 static int VBoxLayout_addStretch(lua_State *L) {
   try {
@@ -236,8 +223,8 @@ static int VBoxLayout_addStretch(lua_State *L) {
   return dub_error(L);
 }
 
-/** void VBoxLayout::addSpacing(int size)
- * include/mimas/VBoxLayout.h:100
+/** void QBoxLayout::addSpacing(int size)
+ * bind/QBoxLayout.h:15
  */
 static int VBoxLayout_addSpacing(lua_State *L) {
   try {
@@ -253,8 +240,8 @@ static int VBoxLayout_addSpacing(lua_State *L) {
   return dub_error(L);
 }
 
-/** void VBoxLayout::setSpacing(int space)
- * include/mimas/VBoxLayout.h:106
+/** void QBoxLayout::setSpacing(int space)
+ * bind/QBoxLayout.h:19
  */
 static int VBoxLayout_setSpacing(lua_State *L) {
   try {
@@ -270,28 +257,8 @@ static int VBoxLayout_setSpacing(lua_State *L) {
   return dub_error(L);
 }
 
-/** void VBoxLayout::setContentsMargins(int left, int top, int right, int bottom)
- * include/mimas/VBoxLayout.h:110
- */
-static int VBoxLayout_setContentsMargins(lua_State *L) {
-  try {
-    VBoxLayout *self = *((VBoxLayout **)dub_checksdata(L, 1, "mimas.VBoxLayout"));
-    int left = dub_checkint(L, 2);
-    int top = dub_checkint(L, 3);
-    int right = dub_checkint(L, 4);
-    int bottom = dub_checkint(L, 5);
-    self->setContentsMargins(left, top, right, bottom);
-    return 0;
-  } catch (std::exception &e) {
-    lua_pushfstring(L, "setContentsMargins: %s", e.what());
-  } catch (...) {
-    lua_pushfstring(L, "setContentsMargins: Unknown exception");
-  }
-  return dub_error(L);
-}
-
-/** void VBoxLayout::activate()
- * include/mimas/VBoxLayout.h:114
+/** void QLayout::activate()
+ * bind/QLayout.h:12
  */
 static int VBoxLayout_activate(lua_State *L) {
   try {
@@ -306,17 +273,58 @@ static int VBoxLayout_activate(lua_State *L) {
   return dub_error(L);
 }
 
-/** LuaStackSize VBoxLayout::minimumSize(lua_State *L) const
- * include/mimas/VBoxLayout.h:118
+/** bool QLayout::setAlignment(QWidget *w, int alignment)
+ * bind/QLayout.h:13
+ */
+static int VBoxLayout_setAlignment(lua_State *L) {
+  try {
+    VBoxLayout *self = *((VBoxLayout **)dub_checksdata(L, 1, "mimas.VBoxLayout"));
+    QWidget *w = *((QWidget **)dub_checksdata(L, 2, "mimas.QWidget"));
+    int alignment = dub_checkint(L, 3);
+    lua_pushboolean(L, self->setAlignment(w, (Qt::Alignment)alignment));
+    return 1;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setAlignment: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setAlignment: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** LuaStackSize QLayout::minimumSize(lua_State *L)
+ * bind/QLayout.h:14
  */
 static int VBoxLayout_minimumSize(lua_State *L) {
   try {
     VBoxLayout *self = *((VBoxLayout **)dub_checksdata(L, 1, "mimas.VBoxLayout"));
-    return self->minimumSize(L);
+    QSize s(self->minimumSize());
+    lua_pushnumber(L, s.width());
+    lua_pushnumber(L, s.height());
+    return 2;
   } catch (std::exception &e) {
     lua_pushfstring(L, "minimumSize: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "minimumSize: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QLayout::setContentsMargins(int left, int top, int right, int bottom)
+ * bind/QLayout.h:15
+ */
+static int VBoxLayout_setContentsMargins(lua_State *L) {
+  try {
+    VBoxLayout *self = *((VBoxLayout **)dub_checksdata(L, 1, "mimas.VBoxLayout"));
+    int left = dub_checkint(L, 2);
+    int top = dub_checkint(L, 3);
+    int right = dub_checkint(L, 4);
+    int bottom = dub_checkint(L, 5);
+    self->setContentsMargins(left, top, right, bottom);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setContentsMargins: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setContentsMargins: Unknown exception");
   }
   return dub_error(L);
 }
@@ -446,13 +454,13 @@ static const struct luaL_Reg VBoxLayout_member_methods[] = {
   { "insertWidget" , VBoxLayout_insertWidget },
   { "addLayout"    , VBoxLayout_addLayout },
   { "insertLayout" , VBoxLayout_insertLayout },
-  { "setAlignment" , VBoxLayout_setAlignment },
   { "addStretch"   , VBoxLayout_addStretch },
   { "addSpacing"   , VBoxLayout_addSpacing },
   { "setSpacing"   , VBoxLayout_setSpacing },
-  { "setContentsMargins", VBoxLayout_setContentsMargins },
   { "activate"     , VBoxLayout_activate  },
+  { "setAlignment" , VBoxLayout_setAlignment },
   { "minimumSize"  , VBoxLayout_minimumSize },
+  { "setContentsMargins", VBoxLayout_setContentsMargins },
   { "objectName"   , VBoxLayout_objectName },
   { "setObjectName", VBoxLayout_setObjectName },
   { "property"     , VBoxLayout_property  },

@@ -43,9 +43,9 @@ static int Application_Application(lua_State *L) {
     retval__->pushobject(L, retval__, "mimas.Application", true);
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "Application: %s", e.what());
+    lua_pushfstring(L, "new: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "Application: Unknown exception");
+    lua_pushfstring(L, "new: Unknown exception");
   }
   return dub_error(L);
 }
@@ -63,9 +63,9 @@ static int Application__Application(lua_State *L) {
     userdata->gc = false;
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "~Application: %s", e.what());
+    lua_pushfstring(L, "__gc: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "~Application: Unknown exception");
+    lua_pushfstring(L, "__gc: Unknown exception");
   }
   return dub_error(L);
 }
@@ -183,6 +183,54 @@ static int Application_mouse(lua_State *L) {
     lua_pushfstring(L, "mouse: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "mouse: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** static void Application::setAttribute(int key, bool value)
+ * include/mimas/Application.h:94
+ */
+static int Application_setAttribute(lua_State *L) {
+  try {
+    int key = dub_checkint(L, 1);
+    bool value = dub_checkboolean(L, 2);
+    Application::setAttribute(key, value);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setAttribute: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setAttribute: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** static void Application::setOverrideCursor(const QCursor &cursor)
+ * include/mimas/Application.h:98
+ */
+static int Application_setOverrideCursor(lua_State *L) {
+  try {
+    QCursor *cursor = *((QCursor **)dub_checksdata(L, 1, "mimas.QCursor"));
+    Application::setOverrideCursor(*cursor);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setOverrideCursor: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setOverrideCursor: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** static void Application::restoreOverrideCursor()
+ * include/mimas/Application.h:102
+ */
+static int Application_restoreOverrideCursor(lua_State *L) {
+  try {
+    Application::restoreOverrideCursor();
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "restoreOverrideCursor: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "restoreOverrideCursor: Unknown exception");
   }
   return dub_error(L);
 }
@@ -381,6 +429,9 @@ static const struct luaL_Reg Application_member_methods[] = {
   { "screenSize"   , Application_screenSize },
   { "click"        , Application_click    },
   { "mouse"        , Application_mouse    },
+  { "setAttribute" , Application_setAttribute },
+  { "setOverrideCursor", Application_setOverrideCursor },
+  { "restoreOverrideCursor", Application_restoreOverrideCursor },
   { "quit"         , Application_quit     },
   { "setQuitOnLastWindowClosed", Application_setQuitOnLastWindowClosed },
   { "setStyleSheet", Application_setStyleSheet },

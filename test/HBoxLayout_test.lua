@@ -18,7 +18,7 @@ function withUser.should.displayWidgets(t)
   local lay = mimas.HBoxLayout(win)
   local btn1 = mimas.Button("Push if OK", function()
     t.continue = true
-    t.win:close()
+    win:close()
   end)
   local btn2 = mimas.Button("Quit")
   lay:addWidget(btn1)

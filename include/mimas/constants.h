@@ -599,4 +599,32 @@ enum WindowFlags {
   SubWindowFlag    = Qt::SubWindow,
 };
 
+/** Cursor types.
+ */
+enum Cursors {
+  ArrowCursor         = Qt::ArrowCursor,
+  UpArrowCursor       = Qt::UpArrowCursor,
+  CrossCursor         = Qt::CrossCursor,
+  WaitCursor          = Qt::WaitCursor ,
+  IBeamCursor         = Qt::IBeamCursor,
+  SizeVerCursor       = Qt::SizeVerCursor,
+  SizeHorCursor       = Qt::SizeHorCursor,
+  SizeBDiagCursor     = Qt::SizeBDiagCursor,
+  SizeFDiagCursor     = Qt::SizeFDiagCursor,
+  SizeAllCursor       = Qt::SizeAllCursor,
+  BlankCursor         = Qt::BlankCursor,
+  SplitVCursor        = Qt::SplitVCursor,
+  SplitHCursor        = Qt::SplitHCursor,
+  PointingHandCursor  = Qt::PointingHandCursor,
+  ForbiddenCursor     = Qt::ForbiddenCursor,
+  OpenHandCursor      = Qt::OpenHandCursor,
+  ClosedHandCursor    = Qt::ClosedHandCursor,
+  WhatsThisCursor     = Qt::WhatsThisCursor,
+  BusyCursor          = Qt::BusyCursor,
+  DragMoveCursor      = Qt::DragMoveCursor,
+  DragCopyCursor      = Qt::DragCopyCursor,
+  DragLinkCursor      = Qt::DragLinkCursor,
+  BitmapCursor        = Qt::BitmapCursor,
+};
+
 #endif // LUBYK_INCLUDE_MIMAS_CONSTANTS_H_

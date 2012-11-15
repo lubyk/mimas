@@ -40,7 +40,7 @@ static int GLWidget__cast_(lua_State *L) {
 }
 
 /** GLWidget::GLWidget(int options)
- * include/mimas/GLWidget.h:64
+ * include/mimas/GLWidget.h:65
  */
 static int GLWidget_GLWidget(lua_State *L) {
   try {
@@ -49,15 +49,15 @@ static int GLWidget_GLWidget(lua_State *L) {
     retval__->pushobject(L, retval__, "mimas.GLWidget", true);
     return 1;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "GLWidget: %s", e.what());
+    lua_pushfstring(L, "new: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "GLWidget: Unknown exception");
+    lua_pushfstring(L, "new: Unknown exception");
   }
   return dub_error(L);
 }
 
 /** GLWidget::~GLWidget()
- * include/mimas/GLWidget.h:66
+ * include/mimas/GLWidget.h:67
  */
 static int GLWidget__GLWidget(lua_State *L) {
   try {
@@ -69,15 +69,15 @@ static int GLWidget__GLWidget(lua_State *L) {
     userdata->gc = false;
     return 0;
   } catch (std::exception &e) {
-    lua_pushfstring(L, "~GLWidget: %s", e.what());
+    lua_pushfstring(L, "__gc: %s", e.what());
   } catch (...) {
-    lua_pushfstring(L, "~GLWidget: Unknown exception");
+    lua_pushfstring(L, "__gc: Unknown exception");
   }
   return dub_error(L);
 }
 
 /** void GLWidget::update()
- * include/mimas/GLWidget.h:94
+ * include/mimas/GLWidget.h:95
  */
 static int GLWidget_update(lua_State *L) {
   try {
@@ -93,7 +93,7 @@ static int GLWidget_update(lua_State *L) {
 }
 
 /** LuaStackSize GLWidget::openGLVersion(lua_State *L)
- * include/mimas/GLWidget.h:98
+ * include/mimas/GLWidget.h:99
  */
 static int GLWidget_openGLVersion(lua_State *L) {
   try {

@@ -32,3 +32,7 @@ function lib:insertWidget(pos, other, ...)
   end
 end
 
+local addStretch = lib.addStretch
+function lib:addStretch(sz)
+  addStretch(self, sz or 1)
+end

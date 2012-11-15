@@ -1,0 +1,11 @@
+lua:
+  methods:
+    minimumSize: |
+      QSize s(self->minimumSize());
+      lua_pushnumber(L, s.width());
+      lua_pushnumber(L, s.height());
+      return 2;
+
+    setAlignment: |
+      lua_pushboolean(L, self->setAlignment(w, (Qt::Alignment)alignment));
+      return 1;

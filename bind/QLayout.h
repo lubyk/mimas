@@ -9,6 +9,9 @@
  */
 class QLayout {
  public:
+  void activate();
+  bool setAlignment(QWidget *w, int alignment);
+  LuaStackSize minimumSize(lua_State *L);
+  void setContentsMargins(int left, int top, int right, int bottom);
 };
-
 

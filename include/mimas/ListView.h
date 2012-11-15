@@ -26,8 +26,8 @@
 
   ==============================================================================
 */
-#ifndef LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
-#define LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
+#ifndef LUBYK_INCLUDE_MIMAS_LIST_VIEW_H_
+#define LUBYK_INCLUDE_MIMAS_LIST_VIEW_H_
 
 #include "mimas/mimas.h"
 #include "mimas/DataSource.h"
@@ -45,6 +45,7 @@
  *
  * @dub register: ListView_core
  *      push: pushobject
+ *      super: QListView
  */
 class ListView : public QListView, public dub::Thread {
   Q_OBJECT
@@ -56,12 +57,29 @@ class ListView : public QListView, public dub::Thread {
   ~ListView();
 
   // ============================================================= ListView
+  void selectRow(int row) {
+    QModelIndex index = model()->index(row - 1, 0);
+    if ( index.isValid() )
+        selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
+  }
 
+  /** Turning this option on will call the 'paintItem' callback to draw
+   * each cell (with the text as parameter).
+   */
+  void enablePaintItem(bool enable);
+
+  /** Turning this option on will render html content in
+   * each cell.
+   */
+  void enableHtml(bool enable, const char *css = NULL);
+      
   /** Return a list of selected elements. Each element is identified
    * with a table {row, col}.
+   *
+   * @dub name: selectedIndexes
    */
-  LuaStackSize selectedIndexes(lua_State *L) {
-    QModelIndexList indexes = QListView::selectedIndexes();
+  LuaStackSize lselectedIndexes(lua_State *L) {
+    QModelIndexList indexes = selectedIndexes();
     lua_newtable(L);
     // <tbl>
     int i = 0;
@@ -82,10 +100,12 @@ class ListView : public QListView, public dub::Thread {
 
   /** Return the index of the model at the given x,y position.
    * @return row, col
+   *
+   * @dub name: indexAt
    */
-  LuaStackSize indexAt(float x, float y, lua_State *L) {
+  LuaStackSize lindexAt(float x, float y, lua_State *L) {
     // indexAt calls "data" method in data_source_ (don't ask why...)
-    QModelIndex idx = QListView::indexAt(QPoint(x, y));
+    QModelIndex idx = indexAt(QPoint(x, y));
     if (idx.isValid()) {
       lua_pushnumber(L, idx.row() + 1);
       lua_pushnumber(L, idx.column() + 1);
@@ -95,22 +115,6 @@ class ListView : public QListView, public dub::Thread {
     }
   }
 
-  void selectRow(int row) {
-    QModelIndex index = model()->index(row - 1, 0);
-    if ( index.isValid() )
-        selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
-  }
-
-  /** Turning this option on will call the 'paintItem' callback to draw
-   * each cell (with the text as parameter).
-   */
-  void enablePaintItem(bool enable);
-
-  /** Turning this option on will render html content in
-   * each cell.
-   */
-  void enableHtml(bool enable, const char *css = NULL);
-      
 protected:
 
   //--=============================================== COMMON CALLBACKS [
@@ -187,4 +191,4 @@ private:
 
 };
 
-#endif // LUBYK_INCLUDE_MIMAS_TABLE_VIEW_H_
+#endif // LUBYK_INCLUDE_MIMAS_LIST_VIEW_H_
