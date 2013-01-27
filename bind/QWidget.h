@@ -62,6 +62,7 @@ class QWidget : public QObject {
   /** Swap fullscreen mode.
    */
   void swapFullScreen();
+
   /** Returns (x,y) position of the widget in the global
    * screen coordinates.
    */

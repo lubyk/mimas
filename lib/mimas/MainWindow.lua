@@ -14,30 +14,6 @@ function lib.new(...)
   return mimas.bootstrap(lib, new, ...)
 end
 
--- default keyboard action
--- TODO: add CMD+W
-function lib:keyboard(key, on)
-  if on then
-    if key == mimas.Key_Escape then
-      -- ESC
-      self:close()
-    elseif key == mimas.Key_Space then
-      self:swapFullScreen()
-    end
-  end
-end
-
---local close  = lib.close
---function lib:close()
---  -- close is like delete: ensure it only runs in GUI thread
---  if self:deleted() then
---    return false
---  else
---    close(self)
---    return true
---  end
---end
-
 function lib:center()
   local w, h = app:screenSize()
   local sw, sh = self:size()

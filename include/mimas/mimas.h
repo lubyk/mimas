@@ -36,6 +36,8 @@ enum ClickTypes {
   MousePress   = 1,
   MouseRelease = 2,
   DoubleClick  = 3,
+  // Used to detect event type in controls.
+  MouseMove    = 4,
 };
 
 

@@ -73,7 +73,7 @@ int luaopen_mimas_Widget(lua_State *L);
 }
 
 /** QVariant variantFromLua(lua_State *L, int index)
- * include/mimas/mimas.h:51
+ * include/mimas/mimas.h:53
  */
 static int mimas_variantFromLua(lua_State *L) {
   try {
@@ -88,7 +88,7 @@ static int mimas_variantFromLua(lua_State *L) {
 }
 
 /** int pushVariantInLua(lua_State *L, const QVariant &value)
- * include/mimas/mimas.h:52
+ * include/mimas/mimas.h:54
  */
 static int mimas_pushVariantInLua(lua_State *L) {
   try {
@@ -653,6 +653,7 @@ static const struct dub_const_Reg mimas_const[] = {
   { "MousePress"   , MousePress           },
   { "MouseRelease" , MouseRelease         },
   { "DoubleClick"  , DoubleClick          },
+  { "MouseMove"    , MouseMove            },
   { NULL, 0},
 };
 
