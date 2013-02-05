@@ -6,7 +6,7 @@
   Portable GUI scripted in Lua and compatible with Lubyk.
 
 --]]------------------------------------------------------
-mimas = Autoload('mimas', mimas)
+mimas = Autoload('mimas')
 require 'mimas.core'
 
 --=============================================== app
