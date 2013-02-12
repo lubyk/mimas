@@ -30,6 +30,7 @@ end
 --end
 
 function lib:center()
+  -- WARNING: global 'app' used here
   local w, h = app:screenSize()
   local sw, sh = self:size()
   self:move((w - sw) / 2, (h - sh) / 2)

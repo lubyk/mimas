@@ -42,13 +42,14 @@ local insertTab = lib.insertTab
 function lib:addTab(widget, label)
   local pos = addTab(self, widget, label)
   self.tabs[pos] = widget
+  table.insert(self.tabs, widget)
   --styleFix(self)
   return pos
 end
 
 function lib:insertTab(pos, widget, label)
   local pos = insertTab(self, pos, widget, label)
-  self.tabs[pos] = widget
+  table.insert(self.tabs, pos, widget)
   --styleFix(self)
   return pos
 end
