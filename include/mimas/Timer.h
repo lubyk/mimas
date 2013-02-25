@@ -45,7 +45,7 @@ public:
 
   /** Private constructor. Use MakeApplication instead.
    */
-  Timer(int timeout)
+  Timer(double timeout)
     : QTimer(0)
   {
     setInterval(timeout);
@@ -60,7 +60,7 @@ public:
   /** Expects an interval in seconds.
    */
   void start(double interval) {
-    QTimer::start(interval / 1000);
+    QTimer::start(interval * 1000);
   }
 
   void start() {
@@ -75,7 +75,7 @@ public:
    */
   void setInterval(double interval) {
     // QTimer expects an interval in milliseconds.
-    QTimer::setInterval(interval / 1000);
+    QTimer::setInterval(interval * 1000);
   }
 
 private slots:
