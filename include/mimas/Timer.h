@@ -46,7 +46,7 @@ public:
   /** Private constructor. Use MakeApplication instead.
    */
   Timer(int timeout)
-      : QTimer(0)
+    : QTimer(0)
   {
     setInterval(timeout);
     QObject::connect(this, SIGNAL(timeout()),
@@ -57,8 +57,10 @@ public:
   virtual ~Timer() {
   }
 
-  void start(int timeout) {
-    QTimer::start(timeout);
+  /** Expects an interval in seconds.
+   */
+  void start(double interval) {
+    QTimer::start(interval / 1000);
   }
 
   void start() {
@@ -69,8 +71,11 @@ public:
     QTimer::stop();
   }
 
-  void setInterval(int msec) {
-    QTimer::setInterval(msec);
+  /** Expects an interval in seconds.
+   */
+  void setInterval(double interval) {
+    // QTimer expects an interval in milliseconds.
+    QTimer::setInterval(interval / 1000);
   }
 
 private slots:
