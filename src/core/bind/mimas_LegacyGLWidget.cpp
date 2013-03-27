@@ -518,8 +518,27 @@ static int LegacyGLWidget_setWindowTitle(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QWidget::windowTitle()
+/** void QWidget::setToolTip(const QString &text)
  * bind/QWidget.h:39
+ */
+static int LegacyGLWidget_setToolTip(lua_State *L) {
+  try {
+    LegacyGLWidget *self = *((LegacyGLWidget **)dub_checksdata(L, 1, "mimas.LegacyGLWidget"));
+    size_t text_sz_;
+    const char *text = dub_checklstring(L, 2, &text_sz_);
+    
+    self->setToolTip(QString::fromUtf8(text, text_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setToolTip: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setToolTip: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QString QWidget::windowTitle()
+ * bind/QWidget.h:40
  */
 static int LegacyGLWidget_windowTitle(lua_State *L) {
   try {
@@ -535,7 +554,7 @@ static int LegacyGLWidget_windowTitle(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int LegacyGLWidget_size(lua_State *L) {
   try {
@@ -553,7 +572,7 @@ static int LegacyGLWidget_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int LegacyGLWidget_setStyle(lua_State *L) {
   try {
@@ -570,7 +589,7 @@ static int LegacyGLWidget_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:51
+ * bind/QWidget.h:52
  */
 static int LegacyGLWidget_setStyleSheet(lua_State *L) {
   try {
@@ -587,7 +606,7 @@ static int LegacyGLWidget_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:54
+ * bind/QWidget.h:55
  */
 static int LegacyGLWidget_textSize(lua_State *L) {
   try {
@@ -605,7 +624,7 @@ static int LegacyGLWidget_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:58
+ * bind/QWidget.h:59
  */
 static int LegacyGLWidget_setSizePolicy(lua_State *L) {
   try {
@@ -624,7 +643,7 @@ static int LegacyGLWidget_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int LegacyGLWidget_showFullScreen(lua_State *L) {
   try {
@@ -651,7 +670,7 @@ static int LegacyGLWidget_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:64
+ * bind/QWidget.h:65
  */
 static int LegacyGLWidget_swapFullScreen(lua_State *L) {
   try {
@@ -671,7 +690,7 @@ static int LegacyGLWidget_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:68
+ * bind/QWidget.h:70
  */
 static int LegacyGLWidget_globalPosition(lua_State *L) {
   try {
@@ -689,7 +708,7 @@ static int LegacyGLWidget_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:73
+ * bind/QWidget.h:75
  */
 static int LegacyGLWidget_position(lua_State *L) {
   try {
@@ -706,7 +725,7 @@ static int LegacyGLWidget_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:77
+ * bind/QWidget.h:79
  */
 static int LegacyGLWidget_globalMove(lua_State *L) {
   try {
@@ -857,6 +876,7 @@ static const struct luaL_Reg LegacyGLWidget_member_methods[] = {
   { "isFullScreen" , LegacyGLWidget_isFullScreen },
   { "addAction"    , LegacyGLWidget_addAction },
   { "setWindowTitle", LegacyGLWidget_setWindowTitle },
+  { "setToolTip"   , LegacyGLWidget_setToolTip },
   { "windowTitle"  , LegacyGLWidget_windowTitle },
   { "size"         , LegacyGLWidget_size  },
   { "setStyle"     , LegacyGLWidget_setStyle },

@@ -125,6 +125,23 @@ static int Label_setText(lua_State *L) {
   return dub_error(L);
 }
 
+/** void QLabel::setWordWrap(bool enable)
+ * bind/QLabel.h:11
+ */
+static int Label_setWordWrap(lua_State *L) {
+  try {
+    Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
+    bool enable = dub_checkboolean(L, 2);
+    self->setWordWrap(enable);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setWordWrap: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setWordWrap: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 /** void QWidget::move(int x, int y)
  * bind/QWidget.h:10
  */
@@ -542,8 +559,27 @@ static int Label_setWindowTitle(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QWidget::windowTitle()
+/** void QWidget::setToolTip(const QString &text)
  * bind/QWidget.h:39
+ */
+static int Label_setToolTip(lua_State *L) {
+  try {
+    Label *self = *((Label **)dub_checksdata(L, 1, "mimas.Label"));
+    size_t text_sz_;
+    const char *text = dub_checklstring(L, 2, &text_sz_);
+    
+    self->setToolTip(QString::fromUtf8(text, text_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setToolTip: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setToolTip: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QString QWidget::windowTitle()
+ * bind/QWidget.h:40
  */
 static int Label_windowTitle(lua_State *L) {
   try {
@@ -559,7 +595,7 @@ static int Label_windowTitle(lua_State *L) {
 }
 
 /** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:45
+ * bind/QWidget.h:46
  */
 static int Label_addWidget(lua_State *L) {
   try {
@@ -576,7 +612,7 @@ static int Label_addWidget(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int Label_size(lua_State *L) {
   try {
@@ -594,7 +630,7 @@ static int Label_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int Label_setStyle(lua_State *L) {
   try {
@@ -611,7 +647,7 @@ static int Label_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:51
+ * bind/QWidget.h:52
  */
 static int Label_setStyleSheet(lua_State *L) {
   try {
@@ -628,7 +664,7 @@ static int Label_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:54
+ * bind/QWidget.h:55
  */
 static int Label_textSize(lua_State *L) {
   try {
@@ -646,7 +682,7 @@ static int Label_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:58
+ * bind/QWidget.h:59
  */
 static int Label_setSizePolicy(lua_State *L) {
   try {
@@ -665,7 +701,7 @@ static int Label_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int Label_showFullScreen(lua_State *L) {
   try {
@@ -692,7 +728,7 @@ static int Label_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:64
+ * bind/QWidget.h:65
  */
 static int Label_swapFullScreen(lua_State *L) {
   try {
@@ -712,7 +748,7 @@ static int Label_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:68
+ * bind/QWidget.h:70
  */
 static int Label_globalPosition(lua_State *L) {
   try {
@@ -730,7 +766,7 @@ static int Label_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:73
+ * bind/QWidget.h:75
  */
 static int Label_position(lua_State *L) {
   try {
@@ -747,7 +783,7 @@ static int Label_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:77
+ * bind/QWidget.h:79
  */
 static int Label_globalMove(lua_State *L) {
   try {
@@ -874,6 +910,7 @@ static const struct luaL_Reg Label_member_methods[] = {
   { "__gc"         , Label__Label         },
   { "setAlignment" , Label_setAlignment   },
   { "setText"      , Label_setText        },
+  { "setWordWrap"  , Label_setWordWrap    },
   { "move"         , Label_move           },
   { "resize"       , Label_resize         },
   { "x"            , Label_x              },
@@ -899,6 +936,7 @@ static const struct luaL_Reg Label_member_methods[] = {
   { "isFullScreen" , Label_isFullScreen   },
   { "addAction"    , Label_addAction      },
   { "setWindowTitle", Label_setWindowTitle },
+  { "setToolTip"   , Label_setToolTip     },
   { "windowTitle"  , Label_windowTitle    },
   { "addWidget"    , Label_addWidget      },
   { "size"         , Label_size           },

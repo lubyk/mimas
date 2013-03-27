@@ -69,6 +69,7 @@ public:
     // ignore parent (hierarchical views) for now
     return createIndex(row, column);
   }
+
 protected:
   virtual QModelIndex parent(const QModelIndex &child) const {
     return QModelIndex(); // no parent
@@ -102,38 +103,44 @@ protected:
     return count < 0 ? 0 : count;
   }
 
-  virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const {
-    if (role != Qt::DisplayRole) return QVariant();
+  virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    if (!dub_pushcallback("data")) return QVariant();
+  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+
+  virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) {
+    if (role != Qt::EditRole) return false;
+
+    if (!dub_pushcallback("setData")) return false;
+    lua_State *L = const_cast<lua_State*>(dub_L);
+    lua_pushnumber(L, index.row() + 1);
+    lua_pushnumber(L, index.column() + 1);
+    // <func> <self> <row> <column> <value>
+    int sz = 3 + pushVariantInLua(L, value);
+    if (!dub_call(sz, 1)) {
+      // failed
+      return false;
+    } 
+    bool ret = lua_isfalse(L, -1) ? false : true;
+    lua_pop(L, 1);
+    return ret;
+  }
+
+  virtual Qt::ItemFlags flags(const QModelIndex & index) const {
+    if (!dub_pushcallback("flags")) return 0;
     lua_State *L = const_cast<lua_State*>(dub_L);
     lua_pushnumber(L, index.row() + 1);
     lua_pushnumber(L, index.column() + 1);
     // <func> <self> <row> <column>
     if (!dub_call(3, 1)) {
       // failed
-      return QVariant();
+      return 0;
     } 
-    QVariant res = variantFromLua(L, -1);
+    int res = lua_tonumber(L, -1);
     lua_pop(L, 1);
-    return res;
+    return (Qt::ItemFlags)res;
   }
 
-  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const {
-    if (role != Qt::DisplayRole) return QVariant();
-
-    if (!dub_pushcallback("header")) return QVariant();
-    lua_State *L = const_cast<lua_State*>(dub_L);
-    lua_pushnumber(L, section + 1);
-    lua_pushnumber(L, orientation);
-    // <func> <self> <section> <orientation>
-    if (!dub_call(3, 1)) {
-      return QVariant();
-    }
-    QVariant res = variantFromLua(L, -1);
-    lua_pop(L, 1);
-    return res;
-  }
 };
 
 #endif // LUBYK_INCLUDE_MIMAS_DATA_SOURCE_H

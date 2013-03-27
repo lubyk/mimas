@@ -1,51 +1,48 @@
 --[[------------------------------------------------------
 
-  mimas.Poller
-  ------------
+  # Poller when runngin mimas GUI
 
-  This is used to bridge lk.Scheduler with Qt's event
-  loop.
+  This is used to bridge lk.Scheduler with Qt's event loop by using a
+  mimas.Timer for scheduling (timeout) and a mimas.SocketNotifier for each
+  file descriptor.
 
 --]]------------------------------------------------------
 require 'mimas.SocketNotifier'
-local lib    = {type = 'mimas.Poller'}
-lib.__index  = lib
-mimas.Poller = lib
+local lib    = class 'mimas.Poller'
 local app    = app
 local private = {}
 
-setmetatable(lib, {
-  -- Create a new mimas.Poller. This is used by mimas.Application.
-  __call = function(lib)
-    local self = {
-      -- FIXME: REMOVE THIS !!! (SHOULD NOT BE NEEDED)
-      notifiers = {},
-      timer     = mimas.Timer(0)
-    }
+-- Create a new mimas.Poller. This is used by mimas.Application.
+function lib.new()
+  local self = {
+    -- FIXME: REMOVE THIS !!! (SHOULD NOT BE NEEDED)
+    notifiers = {},
+    timer     = mimas.Timer(0)
+  }
 
-    function self.timer.timeout()
-      private.resume(self)
-    end
-
-    self.co = coroutine.create(function()
-      assert(sched.poller == self)
-      -- run scheduler (poll operation will yield)
-      sched:loop()
-
-      -- We need this to quit
-      --app:quit()
-    end)
-
-    -- This will start the coroutine
-    self.timer:start(0)
-    return setmetatable(self, lib)
+  function self.timer.timeout()
+    private.resume(self)
   end
-})
 
-local zmq_to_mimas_ev = {
-  [zmq.POLLIN]  = mimas.SocketNotifier.Read,
-  [zmq.POLLOUT] = mimas.SocketNotifier.Write,
+  self.co = coroutine.create(function()
+    assert(sched.poller == self)
+    -- run scheduler (poll operation will yield)
+    sched:loop()
+
+    -- We need this to quit
+    --app:quit()
+  end)
+
+  -- This will start the coroutine
+  self.timer:start(0)
+  return setmetatable(self, lib)
+end
+
+local TRANSLATE_EV = {
+  [lk.Poller.READ_FLAG]  = mimas.SocketNotifier.Read,
+  [lk.Poller.WRITE_FLAG] = mimas.SocketNotifier.Write,
 }
+
 
 function private.makeNotifier(self, fd, event)
   local list = self.notifiers[event]
@@ -55,7 +52,7 @@ function private.makeNotifier(self, fd, event)
   end
   local notifier = list[fd]
   if not notifier then
-    notifier = mimas.SocketNotifier(fd, zmq_to_mimas_ev[event])
+    notifier = mimas.SocketNotifier(fd, TRANSLATE_EV[event])
     list[fd] = notifier
     notifier.fd    = fd
     notifier.event = event
@@ -101,6 +98,7 @@ function private:resume(idx)
   end
 end
 
+-- This operations yields time for the GUI.
 function lib:resumeAt(at)
   local timeout = elapsed() - at
   if timeout < 0 or at == 0 then

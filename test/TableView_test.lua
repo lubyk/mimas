@@ -28,6 +28,7 @@ function withUser.should.displayTable(t)
   t.view:setAlternatingRowColors(true)
   t.view:setVisibleHeaders(mimas.Vertical, false)
   t.view:setGridStyle(mimas.NoPenStyle)
+  t.view:setEditTriggers(mimas.AllEditTriggers)
 
   function t.view:columnCount()
     return #data.head
@@ -46,9 +47,15 @@ function withUser.should.displayTable(t)
     end
   end
 
-  function t.view:header(column_i, orientation)
+  function t.view:setData(row, col, value)
+    if value == '' then return false end
+    print(row, col, value)
+    data[row][col] = value
+  end
+
+  function t.view:header(section, orientation)
     if orientation == mimas.Horizontal then
-      return data.head[column_i]
+      return data.head[section]
     else
       return nil
     end
@@ -58,6 +65,11 @@ function withUser.should.displayTable(t)
     if row == 2 and col == 2 then
       t.continue = true
     end
+    return true -- continue normal processing
+   end
+
+  function t.view:flags(row, col)
+    return mimas.ItemIsEditable + mimas.ItemIsEnabled
   end
 
   -- We must do this because the column count is cached on the first

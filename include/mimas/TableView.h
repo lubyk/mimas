@@ -76,16 +76,97 @@ public:
     QTableView::setGridStyle((Qt::PenStyle)style);
   }
 
+  void setEditTriggers(int triggers) {
+    QTableView::setEditTriggers((QAbstractItemView::EditTriggers)triggers);
+  }
+
+  // What does this do ?
   virtual void selectRow(int row) {
     QTableView::selectRow(row - 1);
   }
 
+  // What does this do ?
   virtual void selectColumn(int row) {
     QTableView::selectColumn(row - 1);
   }
 
+  LuaStackSize currentIndex(lua_State *L) {
+    QModelIndex idx = QAbstractItemView::currentIndex();
+    lua_pushnumber(L, idx.row() + 1);
+    lua_pushnumber(L, idx.column() + 1);
+    return 2;
+  }
+
+  void setCurrentIndex(int row, int col) {
+    QAbstractItemView::setCurrentIndex(
+        model()->index(row - 1, col - 1, QModelIndex())
+    );
+  }
+
+  /** Start editing a cell.
+   * We call this function "do_edit" to avoid overloading virtual "edit"
+   * function.
+   */
+  void do_edit(int row, int col) {
+    QModelIndex index = model()->index(row - 1, col - 1, QModelIndex());
+    QTableView::edit(index);
+  }
+
+  void setStretchHorizontal(bool enable) {
+    horizontalHeader()->setStretchLastSection(enable);
+  }
+
+  void setStretchVertical(bool enable) {
+    verticalHeader()->setStretchLastSection(enable);
+  }
+
+  void setShowHorizontalHeader(bool enable) {
+    if (enable) {
+      horizontalHeader()->show();
+    } else {
+      horizontalHeader()->hide();
+    }
+  }
+
+  void setShowVerticalHeader(bool enable) {
+    if (enable) {
+      verticalHeader()->show();
+    } else {
+      verticalHeader()->hide();
+    }
+  }
+
+  void foobar();
+
 protected:
 
+  virtual int sizeHintForColumn(int column) const {
+    if (!dub_pushcallback("sizeHintForColumn")) return -1;
+    lua_State *L = const_cast<lua_State*>(dub_L);
+    lua_pushnumber(L, column + 1);
+    // ... <func> <self> <column>
+    if (!dub_call(2, 1)) return -1;
+    int res = lua_tonumber(L, -1);
+    lua_pop(L, 1);
+    return res;
+  }
+
+
+  virtual void selectionChanged(const QItemSelection & selected, const QItemSelection & deselected ) {
+    if (dub_pushcallback("selected")) {
+      lua_State *L = dub_L;
+      if (selected.indexes().isEmpty()) {
+        // ... <selected> <self>
+        dub_call(1, 0);
+      } else {
+        const QModelIndex idx = selected.indexes().last();
+        lua_pushnumber(L, idx.row() + 1);
+        lua_pushnumber(L, idx.column() + 1);
+        // ... <selected> <self> <row> <col>
+        dub_call(3, 0);
+      }
+    }
+  }
   //--=============================================== COMMON CALLBACKS [
   virtual void closeEvent(QCloseEvent *event) {
     Widget::closed(this, event);
@@ -137,7 +218,6 @@ protected:
     if (!Widget::keyboard(this, event, false))
       QTableView::keyReleaseEvent(event);
   }
-
   //--=============================================== COMMON CALLBACKS ]
 
 private slots:

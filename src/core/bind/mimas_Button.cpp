@@ -525,8 +525,27 @@ static int Button_setWindowTitle(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QWidget::windowTitle()
+/** void QWidget::setToolTip(const QString &text)
  * bind/QWidget.h:39
+ */
+static int Button_setToolTip(lua_State *L) {
+  try {
+    Button *self = *((Button **)dub_checksdata(L, 1, "mimas.Button"));
+    size_t text_sz_;
+    const char *text = dub_checklstring(L, 2, &text_sz_);
+    
+    self->setToolTip(QString::fromUtf8(text, text_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setToolTip: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setToolTip: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QString QWidget::windowTitle()
+ * bind/QWidget.h:40
  */
 static int Button_windowTitle(lua_State *L) {
   try {
@@ -542,7 +561,7 @@ static int Button_windowTitle(lua_State *L) {
 }
 
 /** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:45
+ * bind/QWidget.h:46
  */
 static int Button_addWidget(lua_State *L) {
   try {
@@ -559,7 +578,7 @@ static int Button_addWidget(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int Button_size(lua_State *L) {
   try {
@@ -577,7 +596,7 @@ static int Button_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int Button_setStyle(lua_State *L) {
   try {
@@ -594,7 +613,7 @@ static int Button_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:51
+ * bind/QWidget.h:52
  */
 static int Button_setStyleSheet(lua_State *L) {
   try {
@@ -611,7 +630,7 @@ static int Button_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:54
+ * bind/QWidget.h:55
  */
 static int Button_textSize(lua_State *L) {
   try {
@@ -629,7 +648,7 @@ static int Button_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:58
+ * bind/QWidget.h:59
  */
 static int Button_setSizePolicy(lua_State *L) {
   try {
@@ -648,7 +667,7 @@ static int Button_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int Button_showFullScreen(lua_State *L) {
   try {
@@ -675,7 +694,7 @@ static int Button_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:64
+ * bind/QWidget.h:65
  */
 static int Button_swapFullScreen(lua_State *L) {
   try {
@@ -695,7 +714,7 @@ static int Button_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:68
+ * bind/QWidget.h:70
  */
 static int Button_globalPosition(lua_State *L) {
   try {
@@ -713,7 +732,7 @@ static int Button_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:73
+ * bind/QWidget.h:75
  */
 static int Button_position(lua_State *L) {
   try {
@@ -730,7 +749,7 @@ static int Button_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:77
+ * bind/QWidget.h:79
  */
 static int Button_globalMove(lua_State *L) {
   try {
@@ -881,6 +900,7 @@ static const struct luaL_Reg Button_member_methods[] = {
   { "isFullScreen" , Button_isFullScreen  },
   { "addAction"    , Button_addAction     },
   { "setWindowTitle", Button_setWindowTitle },
+  { "setToolTip"   , Button_setToolTip    },
   { "windowTitle"  , Button_windowTitle   },
   { "addWidget"    , Button_addWidget     },
   { "size"         , Button_size          },

@@ -13,6 +13,8 @@ class QTableView {
   void scrollToBottom();
   void scrollToTop();
   void setAlternatingRowColors(bool enable);
+  void setShowGrid(bool enable);
+  void resizeColumnsToContents();
 };
    
 

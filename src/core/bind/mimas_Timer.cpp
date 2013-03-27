@@ -29,12 +29,12 @@ static int Timer__cast_(lua_State *L) {
   return 0;
 }
 
-/** Timer::Timer(int timeout)
+/** Timer::Timer(double timeout)
  * include/mimas/Timer.h:50
  */
 static int Timer_Timer(lua_State *L) {
   try {
-    int timeout = dub_checkint(L, 1);
+    double timeout = dub_checknumber(L, 1);
     Timer *retval__ = new Timer(timeout);
     retval__->pushobject(L, retval__, "mimas.Timer", true);
     return 1;
@@ -66,16 +66,16 @@ static int Timer__Timer(lua_State *L) {
   return dub_error(L);
 }
 
-/** void Timer::start(int timeout)
- * include/mimas/Timer.h:60
+/** void Timer::start(double interval)
+ * include/mimas/Timer.h:62
  */
 static int Timer_start(lua_State *L) {
   try {
     Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
     int top__ = lua_gettop(L);
     if (top__ >= 2) {
-      int timeout = dub_checkint(L, 2);
-      self->start(timeout);
+      double interval = dub_checknumber(L, 2);
+      self->start(interval);
       return 0;
     } else {
       self->start();
@@ -90,7 +90,7 @@ static int Timer_start(lua_State *L) {
 }
 
 /** void Timer::stop()
- * include/mimas/Timer.h:68
+ * include/mimas/Timer.h:70
  */
 static int Timer_stop(lua_State *L) {
   try {
@@ -105,14 +105,14 @@ static int Timer_stop(lua_State *L) {
   return dub_error(L);
 }
 
-/** void Timer::setInterval(int msec)
- * include/mimas/Timer.h:72
+/** void Timer::setInterval(double interval)
+ * include/mimas/Timer.h:76
  */
 static int Timer_setInterval(lua_State *L) {
   try {
     Timer *self = *((Timer **)dub_checksdata(L, 1, "mimas.Timer"));
-    int msec = dub_checkint(L, 2);
-    self->setInterval(msec);
+    double interval = dub_checknumber(L, 2);
+    self->setInterval(interval);
     return 0;
   } catch (std::exception &e) {
     lua_pushfstring(L, "setInterval: %s", e.what());

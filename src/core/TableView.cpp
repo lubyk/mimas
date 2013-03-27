@@ -112,3 +112,9 @@ void TableView::slider(int orientation, int action) {
   dub_call(3, 0);
 }
 
+#include <QPlastiqueStyle>
+void TableView::foobar() {
+  printf("Set Style\n");
+  verticalHeader()->setStyle(new QPlastiqueStyle);
+}
+

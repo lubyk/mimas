@@ -70,6 +70,27 @@ enum AlignFlags {
   AlignCenter               = Qt::AlignCenter,
 };
 
+enum ItemFlags {
+  NoItemFlags               = Qt::NoItemFlags,
+  ItemIsSelectable          = Qt::ItemIsSelectable,
+  ItemIsEditable            = Qt::ItemIsEditable,
+  ItemIsDragEnabled         = Qt::ItemIsDragEnabled,
+  ItemIsDropEnabled         = Qt::ItemIsDropEnabled,
+  ItemIsUserCheckable       = Qt::ItemIsUserCheckable,
+  ItemIsEnabled             = Qt::ItemIsEnabled,
+  ItemIsTristate            = Qt::ItemIsTristate,
+};
+
+enum EditTriggers {
+  NoEditTriggers            = QAbstractItemView::NoEditTriggers,
+  CurrentChanged            = QAbstractItemView::CurrentChanged,
+  DoubleClicked             = QAbstractItemView::DoubleClicked,
+  SelectedClicked           = QAbstractItemView::SelectedClicked,
+  EditKeyPressed            = QAbstractItemView::EditKeyPressed,
+  AnyKeyPressed             = QAbstractItemView::AnyKeyPressed,
+  AllEditTriggers           = QAbstractItemView::AllEditTriggers,
+};
+
 enum TextFlags {
   TextDontClip              = Qt::TextDontClip,
   TextSingleLine            = Qt::TextSingleLine,

@@ -36,6 +36,7 @@ class QWidget : public QObject {
   bool isFullScreen();
   void addAction(Action *action);
   void setWindowTitle(const QString &text);
+  void setToolTip(const QString &text);
   QString windowTitle();
 
   // ==============================================

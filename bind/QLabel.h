@@ -8,5 +8,6 @@
 class QLabel {
  public:
   void setText(const QString &text);
+  void setWordWrap(bool enable);
 };
 

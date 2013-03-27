@@ -118,8 +118,25 @@ static int TableView_setGridStyle(lua_State *L) {
   return dub_error(L);
 }
 
-/** virtual void TableView::selectRow(int row)
+/** void TableView::setEditTriggers(int triggers)
  * include/mimas/TableView.h:79
+ */
+static int TableView_setEditTriggers(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    int triggers = dub_checkint(L, 2);
+    self->setEditTriggers(triggers);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setEditTriggers: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setEditTriggers: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** virtual void TableView::selectRow(int row)
+ * include/mimas/TableView.h:84
  */
 static int TableView_selectRow(lua_State *L) {
   try {
@@ -136,7 +153,7 @@ static int TableView_selectRow(lua_State *L) {
 }
 
 /** virtual void TableView::selectColumn(int row)
- * include/mimas/TableView.h:83
+ * include/mimas/TableView.h:89
  */
 static int TableView_selectColumn(lua_State *L) {
   try {
@@ -148,6 +165,141 @@ static int TableView_selectColumn(lua_State *L) {
     lua_pushfstring(L, "selectColumn: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "selectColumn: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** LuaStackSize TableView::currentIndex(lua_State *L)
+ * include/mimas/TableView.h:93
+ */
+static int TableView_currentIndex(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    return self->currentIndex(L);
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "currentIndex: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "currentIndex: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void TableView::setCurrentIndex(int row, int col)
+ * include/mimas/TableView.h:100
+ */
+static int TableView_setCurrentIndex(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    int row = dub_checkint(L, 2);
+    int col = dub_checkint(L, 3);
+    self->setCurrentIndex(row, col);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setCurrentIndex: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setCurrentIndex: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void TableView::do_edit(int row, int col)
+ * include/mimas/TableView.h:110
+ */
+static int TableView_do_edit(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    int row = dub_checkint(L, 2);
+    int col = dub_checkint(L, 3);
+    self->do_edit(row, col);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "do_edit: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "do_edit: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void TableView::setStretchHorizontal(bool enable)
+ * include/mimas/TableView.h:115
+ */
+static int TableView_setStretchHorizontal(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    bool enable = dub_checkboolean(L, 2);
+    self->setStretchHorizontal(enable);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setStretchHorizontal: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setStretchHorizontal: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void TableView::setStretchVertical(bool enable)
+ * include/mimas/TableView.h:119
+ */
+static int TableView_setStretchVertical(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    bool enable = dub_checkboolean(L, 2);
+    self->setStretchVertical(enable);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setStretchVertical: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setStretchVertical: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void TableView::setShowHorizontalHeader(bool enable)
+ * include/mimas/TableView.h:123
+ */
+static int TableView_setShowHorizontalHeader(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    bool enable = dub_checkboolean(L, 2);
+    self->setShowHorizontalHeader(enable);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setShowHorizontalHeader: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setShowHorizontalHeader: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void TableView::setShowVerticalHeader(bool enable)
+ * include/mimas/TableView.h:131
+ */
+static int TableView_setShowVerticalHeader(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    bool enable = dub_checkboolean(L, 2);
+    self->setShowVerticalHeader(enable);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setShowVerticalHeader: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setShowVerticalHeader: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void TableView::foobar()
+ * include/mimas/TableView.h:139
+ */
+static int TableView_foobar(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    self->foobar();
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "foobar: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "foobar: Unknown exception");
   }
   return dub_error(L);
 }
@@ -214,6 +366,39 @@ static int TableView_setAlternatingRowColors(lua_State *L) {
     lua_pushfstring(L, "setAlternatingRowColors: %s", e.what());
   } catch (...) {
     lua_pushfstring(L, "setAlternatingRowColors: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QTableView::setShowGrid(bool enable)
+ * bind/QTableView.h:16
+ */
+static int TableView_setShowGrid(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    bool enable = dub_checkboolean(L, 2);
+    self->setShowGrid(enable);
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setShowGrid: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setShowGrid: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void QTableView::resizeColumnsToContents()
+ * bind/QTableView.h:17
+ */
+static int TableView_resizeColumnsToContents(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    self->resizeColumnsToContents();
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "resizeColumnsToContents: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "resizeColumnsToContents: Unknown exception");
   }
   return dub_error(L);
 }
@@ -635,8 +820,27 @@ static int TableView_setWindowTitle(lua_State *L) {
   return dub_error(L);
 }
 
-/** QString QWidget::windowTitle()
+/** void QWidget::setToolTip(const QString &text)
  * bind/QWidget.h:39
+ */
+static int TableView_setToolTip(lua_State *L) {
+  try {
+    TableView *self = *((TableView **)dub_checksdata(L, 1, "mimas.TableView"));
+    size_t text_sz_;
+    const char *text = dub_checklstring(L, 2, &text_sz_);
+    
+    self->setToolTip(QString::fromUtf8(text, text_sz_));
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "setToolTip: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "setToolTip: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** QString QWidget::windowTitle()
+ * bind/QWidget.h:40
  */
 static int TableView_windowTitle(lua_State *L) {
   try {
@@ -652,7 +856,7 @@ static int TableView_windowTitle(lua_State *L) {
 }
 
 /** void QWidget::addWidget(QWidget *widget)
- * bind/QWidget.h:45
+ * bind/QWidget.h:46
  */
 static int TableView_addWidget(lua_State *L) {
   try {
@@ -669,7 +873,7 @@ static int TableView_addWidget(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::size()
- * bind/QWidget.h:49
+ * bind/QWidget.h:50
  */
 static int TableView_size(lua_State *L) {
   try {
@@ -687,7 +891,7 @@ static int TableView_size(lua_State *L) {
 }
 
 /** void QWidget::setStyle(const char *text)
- * bind/QWidget.h:50
+ * bind/QWidget.h:51
  */
 static int TableView_setStyle(lua_State *L) {
   try {
@@ -704,7 +908,7 @@ static int TableView_setStyle(lua_State *L) {
 }
 
 /** void QWidget::setStyleSheet(const char *text)
- * bind/QWidget.h:51
+ * bind/QWidget.h:52
  */
 static int TableView_setStyleSheet(lua_State *L) {
   try {
@@ -721,7 +925,7 @@ static int TableView_setStyleSheet(lua_State *L) {
 }
 
 /** void QWidget::textSize(const char *text)
- * bind/QWidget.h:54
+ * bind/QWidget.h:55
  */
 static int TableView_textSize(lua_State *L) {
   try {
@@ -739,7 +943,7 @@ static int TableView_textSize(lua_State *L) {
 }
 
 /** void QWidget::setSizePolicy(int horizontal, int vertical)
- * bind/QWidget.h:58
+ * bind/QWidget.h:59
  */
 static int TableView_setSizePolicy(lua_State *L) {
   try {
@@ -758,7 +962,7 @@ static int TableView_setSizePolicy(lua_State *L) {
 }
 
 /** void QWidget::showFullScreen(bool enable=true)
- * bind/QWidget.h:60
+ * bind/QWidget.h:61
  */
 static int TableView_showFullScreen(lua_State *L) {
   try {
@@ -785,7 +989,7 @@ static int TableView_showFullScreen(lua_State *L) {
 }
 
 /** void QWidget::swapFullScreen()
- * bind/QWidget.h:64
+ * bind/QWidget.h:65
  */
 static int TableView_swapFullScreen(lua_State *L) {
   try {
@@ -805,7 +1009,7 @@ static int TableView_swapFullScreen(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::globalPosition()
- * bind/QWidget.h:68
+ * bind/QWidget.h:70
  */
 static int TableView_globalPosition(lua_State *L) {
   try {
@@ -823,7 +1027,7 @@ static int TableView_globalPosition(lua_State *L) {
 }
 
 /** LuaStackSize QWidget::position()
- * bind/QWidget.h:73
+ * bind/QWidget.h:75
  */
 static int TableView_position(lua_State *L) {
   try {
@@ -840,7 +1044,7 @@ static int TableView_position(lua_State *L) {
 }
 
 /** void QWidget::globalMove(float x, float y)
- * bind/QWidget.h:77
+ * bind/QWidget.h:79
  */
 static int TableView_globalMove(lua_State *L) {
   try {
@@ -967,12 +1171,23 @@ static const struct luaL_Reg TableView_member_methods[] = {
   { "__gc"         , TableView__TableView },
   { "setVisibleHeaders", TableView_setVisibleHeaders },
   { "setGridStyle" , TableView_setGridStyle },
+  { "setEditTriggers", TableView_setEditTriggers },
   { "selectRow"    , TableView_selectRow  },
   { "selectColumn" , TableView_selectColumn },
+  { "currentIndex" , TableView_currentIndex },
+  { "setCurrentIndex", TableView_setCurrentIndex },
+  { "do_edit"      , TableView_do_edit    },
+  { "setStretchHorizontal", TableView_setStretchHorizontal },
+  { "setStretchVertical", TableView_setStretchVertical },
+  { "setShowHorizontalHeader", TableView_setShowHorizontalHeader },
+  { "setShowVerticalHeader", TableView_setShowVerticalHeader },
+  { "foobar"       , TableView_foobar     },
   { "setModel"     , TableView_setModel   },
   { "scrollToBottom", TableView_scrollToBottom },
   { "scrollToTop"  , TableView_scrollToTop },
   { "setAlternatingRowColors", TableView_setAlternatingRowColors },
+  { "setShowGrid"  , TableView_setShowGrid },
+  { "resizeColumnsToContents", TableView_resizeColumnsToContents },
   { "move"         , TableView_move       },
   { "resize"       , TableView_resize     },
   { "x"            , TableView_x          },
@@ -998,6 +1213,7 @@ static const struct luaL_Reg TableView_member_methods[] = {
   { "isFullScreen" , TableView_isFullScreen },
   { "addAction"    , TableView_addAction  },
   { "setWindowTitle", TableView_setWindowTitle },
+  { "setToolTip"   , TableView_setToolTip },
   { "windowTitle"  , TableView_windowTitle },
   { "addWidget"    , TableView_addWidget  },
   { "size"         , TableView_size       },
