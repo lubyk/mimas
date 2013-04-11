@@ -35,6 +35,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QWidget>
+#include <QtGui/QToolTip>
 
 #include <iostream>
 
@@ -102,6 +103,17 @@ public:
   static void restoreOverrideCursor() {
     QApplication::restoreOverrideCursor();
   }
+
+  // We do not make this a static because syntax app.showToolTip is uncommon
+  // and static functions are weird for this.
+  void showToolTip(int gx, int gy, const QString &text, QWidget *w = 0) {
+    QToolTip::showText(QPoint(gx, gy), text, w);
+  }
+
+  void hideToolTip() {
+    QToolTip::hideText();
+  }
+
 protected:
   void sendMouseEvent(QWidget *widget, const QPoint &pos, int type, int btn, int mod) {
     sendEvent(widget, new QMouseEvent(

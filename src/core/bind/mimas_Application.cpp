@@ -35,7 +35,7 @@ static int Application__cast_(lua_State *L) {
 }
 
 /** Application::Application()
- * include/mimas/Application.h:55
+ * include/mimas/Application.h:56
  */
 static int Application_Application(lua_State *L) {
   try {
@@ -51,7 +51,7 @@ static int Application_Application(lua_State *L) {
 }
 
 /** Application::~Application()
- * include/mimas/Application.h:57
+ * include/mimas/Application.h:58
  */
 static int Application__Application(lua_State *L) {
   try {
@@ -71,7 +71,7 @@ static int Application__Application(lua_State *L) {
 }
 
 /** int Application::exec()
- * include/mimas/Application.h:61
+ * include/mimas/Application.h:62
  */
 static int Application_exec(lua_State *L) {
   try {
@@ -87,7 +87,7 @@ static int Application_exec(lua_State *L) {
 }
 
 /** LuaStackSize Application::screenSize(lua_State *L)
- * include/mimas/Application.h:69
+ * include/mimas/Application.h:70
  */
 static int Application_screenSize(lua_State *L) {
   try {
@@ -102,7 +102,7 @@ static int Application_screenSize(lua_State *L) {
 }
 
 /** void Application::click(QWidget *widget, int x=10, int y=10, int type=QEvent::None, int btn=Qt::LeftButton, int mod=Qt::NoModifier)
- * include/mimas/Application.h:79
+ * include/mimas/Application.h:80
  */
 static int Application_click(lua_State *L) {
   try {
@@ -157,7 +157,7 @@ static int Application_click(lua_State *L) {
 }
 
 /** void Application::mouse(QWidget *widget, int x=10, int y=10)
- * include/mimas/Application.h:90
+ * include/mimas/Application.h:91
  */
 static int Application_mouse(lua_State *L) {
   try {
@@ -187,8 +187,57 @@ static int Application_mouse(lua_State *L) {
   return dub_error(L);
 }
 
+/** void Application::showToolTip(int gx, int gy, const QString &text, QWidget *w=0)
+ * include/mimas/Application.h:109
+ */
+static int Application_showToolTip(lua_State *L) {
+  try {
+    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
+    int top__ = lua_gettop(L);
+    if (top__ >= 5) {
+      int gx = dub_checkint(L, 2);
+      int gy = dub_checkint(L, 3);
+      size_t text_sz_;
+      const char *text = dub_checklstring(L, 4, &text_sz_);
+      
+      QWidget *w = *((QWidget **)dub_checksdata(L, 5, "mimas.QWidget"));
+      self->showToolTip(gx, gy, QString::fromUtf8(text, text_sz_), w);
+      return 0;
+    } else {
+      int gx = dub_checkint(L, 2);
+      int gy = dub_checkint(L, 3);
+      size_t text_sz_;
+      const char *text = dub_checklstring(L, 4, &text_sz_);
+      
+      self->showToolTip(gx, gy, QString::fromUtf8(text, text_sz_));
+      return 0;
+    }
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "showToolTip: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "showToolTip: Unknown exception");
+  }
+  return dub_error(L);
+}
+
+/** void Application::hideToolTip()
+ * include/mimas/Application.h:113
+ */
+static int Application_hideToolTip(lua_State *L) {
+  try {
+    Application *self = *((Application **)dub_checksdata(L, 1, "mimas.Application"));
+    self->hideToolTip();
+    return 0;
+  } catch (std::exception &e) {
+    lua_pushfstring(L, "hideToolTip: %s", e.what());
+  } catch (...) {
+    lua_pushfstring(L, "hideToolTip: Unknown exception");
+  }
+  return dub_error(L);
+}
+
 /** static void Application::setAttribute(int key, bool value)
- * include/mimas/Application.h:94
+ * include/mimas/Application.h:95
  */
 static int Application_setAttribute(lua_State *L) {
   try {
@@ -205,7 +254,7 @@ static int Application_setAttribute(lua_State *L) {
 }
 
 /** static void Application::setOverrideCursor(const QCursor &cursor)
- * include/mimas/Application.h:98
+ * include/mimas/Application.h:99
  */
 static int Application_setOverrideCursor(lua_State *L) {
   try {
@@ -221,7 +270,7 @@ static int Application_setOverrideCursor(lua_State *L) {
 }
 
 /** static void Application::restoreOverrideCursor()
- * include/mimas/Application.h:102
+ * include/mimas/Application.h:103
  */
 static int Application_restoreOverrideCursor(lua_State *L) {
   try {
@@ -429,6 +478,8 @@ static const struct luaL_Reg Application_member_methods[] = {
   { "screenSize"   , Application_screenSize },
   { "click"        , Application_click    },
   { "mouse"        , Application_mouse    },
+  { "showToolTip"  , Application_showToolTip },
+  { "hideToolTip"  , Application_hideToolTip },
   { "setAttribute" , Application_setAttribute },
   { "setOverrideCursor", Application_setOverrideCursor },
   { "restoreOverrideCursor", Application_restoreOverrideCursor },
